@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zoo-Management-Application", "Zoo-Management-Application\Zoo-Management-Application.csproj", "{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{07880957-15F3-48F8-B203-95CB575C9D7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07880957-15F3-48F8-B203-95CB575C9D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07880957-15F3-48F8-B203-95CB575C9D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07880957-15F3-48F8-B203-95CB575C9D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07880957-15F3-48F8-B203-95CB575C9D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3A2BCBC-AEF6-4963-BC4D-182C079BAC58}
+	EndGlobalSection
+EndGlobal
