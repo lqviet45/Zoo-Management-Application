@@ -2,6 +2,8 @@
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
+using ServiceContracts.DTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -9,21 +11,22 @@ namespace Zoo_Management_Application.Controllers
 	[ApiController]
 	public class UserController : ControllerBase
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IUserServices _userServices;
 
-		public UserController(ApplicationDbContext context)
+		public UserController(IUserServices userServices)
 		{
-			_context = context;
+			_userServices = userServices;
 		}
 
+		//[Bind(nameof(UserAddRequest.UserName), nameof(UserAddRequest.Email)
+		//	, nameof(UserAddRequest.PhoneNumber), nameof(UserAddRequest.Gender), nameof(UserAddRequest.Password), nameof(UserAddRequest.ConfirmPassword)
+		//	, nameof(UserAddRequest.RoleId), nameof(UserAddRequest.Experience))]
 		[HttpPost]
-		public async Task<ActionResult<User>> PostUser(User user)
+		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
 		{
-			await _context.Users.AddAsync(user);
+			var userResponse = await _userServices.AddUser(userAddRequest);
 
-			await _context.SaveChangesAsync();
-
-			return Ok(user);
+			return Ok(userResponse);
 		}
 	}
 }
