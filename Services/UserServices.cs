@@ -30,14 +30,18 @@ namespace Services
 			return user.ToUserResponse();
 		}
 
-		public Task<List<UserResponse>> GetAllStaff()
+		public async Task<List<UserResponse>> GetAllStaff()
 		{
-			throw new NotImplementedException();
+		 	var listStaff = await _userRepositories.GetAllStaff();
+			var listStaffResponse = listStaff.Select(user => user.ToUserResponse()).ToList();
+			return listStaffResponse;
 		}
 
-		public Task<List<UserResponse>> GetAllZooTrainer()
+		public async Task<List<UserResponse>> GetAllZooTrainer()
 		{
-			throw new NotImplementedException();
+			var listZooTrainer = await _userRepositories.GetAllZooTrainer();
+			var listZooTrainerresponse = listZooTrainer.Select(user => user.ToUserResponse()).ToList();
+			return listZooTrainerresponse;
 		}
 	}
 }

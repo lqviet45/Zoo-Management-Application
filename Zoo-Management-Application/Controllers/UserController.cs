@@ -1,7 +1,4 @@
-﻿using Entities.AppDbContext;
-using Entities.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -27,6 +24,20 @@ namespace Zoo_Management_Application.Controllers
 			var userResponse = await _userServices.AddUser(userAddRequest);
 
 			return Ok(userResponse);
+		}
+
+		[HttpGet("staff")]
+		public async Task<ActionResult<List<UserResponse>>> GetAllStaff()
+		{
+			var listStaff = await _userServices.GetAllStaff();
+			return Ok(listStaff);
+		}
+
+		[HttpGet("zootrainer")]
+		public async Task<ActionResult<UserResponse>> GetAllZooTrainer()
+		{
+			var listZooTrainer = await _userServices.GetAllZooTrainer();
+			return Ok(listZooTrainer);
 		}
 	}
 }

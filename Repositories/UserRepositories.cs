@@ -35,7 +35,7 @@ namespace Repositories
 
 		public Task<List<User>> GetAllZooTrainer()
 		{
-			var listZooTrainer = _dbContext.Users.Where(user => user.RoleId == 3).ToListAsync();
+			var listZooTrainer = _dbContext.Users.Where(user => user.RoleId == 3).Include("Experience").ToListAsync();
 			return listZooTrainer;
 		}
 	}
