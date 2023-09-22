@@ -39,7 +39,7 @@ namespace Entities.Models
 		public int RoleId { get; set; }
 		public virtual Role? Role { get; set; }
 
-		public virtual ICollection<Animal> Animals { get; set; } = new HashSet<Animal>();
+		public virtual ICollection<Animal> Animals { get; set; } = null!;
 
 		public virtual Experience? Experience { get; set; }
 	}

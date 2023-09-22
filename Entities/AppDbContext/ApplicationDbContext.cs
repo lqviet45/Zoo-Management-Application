@@ -60,8 +60,11 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<Cage>().ToTable(nameof(Cage));
 			modelBuilder.Entity<Species>().ToTable(nameof(Species));
 			modelBuilder.Entity<Animal>().ToTable(nameof(Animal));
-			modelBuilder.Entity<Skill>().ToTable(nameof(Skill));
-			modelBuilder.Entity<Experience>().ToTable(nameof(Experience));
+
+			modelBuilder.Entity<Experience>()
+				.HasMany(e => e.Skills)
+				.WithMany(e => e.Experiences);
+				
 
 			modelBuilder.Entity<FeedingFood>().ToTable(nameof(FeedingFood));
 			modelBuilder.Entity<Meal>().ToTable(nameof(Meal));

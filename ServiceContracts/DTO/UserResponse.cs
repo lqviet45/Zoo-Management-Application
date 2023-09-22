@@ -26,11 +26,8 @@ namespace ServiceContracts.DTO
 
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
-
-		[Required(ErrorMessage = "Role can not be empty!")]
-		public int RoleId { get; set; }
-		public Experience? Experience { get; set; }
 		public Role? Role { get; set; }
+		public Experience? Experience { get; set; }
 	}
 
 	public static class UserExtention
@@ -49,7 +46,8 @@ namespace ServiceContracts.DTO
 				Email = user.Email,
 				PhoneNumber = user.PhoneNumber,
 				DateOfBirth = user.DateOfBirth,
-				RoleId = user.RoleId,
+				Role = user.Role,
+				Experience = user.Experience,
 				Gender = user.Gender
 			};
 		}

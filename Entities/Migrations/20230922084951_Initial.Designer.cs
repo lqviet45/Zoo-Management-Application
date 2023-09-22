@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230921111511_AddingManyToManyForSkill-2")]
-    partial class AddingManyToManyForSkill2
+    [Migration("20230922084951_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,20 +150,24 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Experience", b =>
                 {
-                    b.Property<long>("ZooTrainerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("SkillId")
+                    b.Property<int>("ExperienceId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceId"));
 
                     b.Property<int>("YearExp")
                         .HasColumnType("int");
 
-                    b.HasKey("ZooTrainerId");
+                    b.Property<long>("ZooTrainerId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("SkillId");
+                    b.HasKey("ExperienceId");
 
-                    b.ToTable("Experience", (string)null);
+                    b.HasIndex("ZooTrainerId")
+                        .IsUnique();
+
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("Entities.Models.FeedingFood", b =>
@@ -284,7 +288,7 @@ namespace Entities.Migrations
 
                     b.HasKey("SkillId");
 
-                    b.ToTable("Skill", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Entities.Models.Species", b =>
@@ -378,6 +382,21 @@ namespace Entities.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("ExperienceSkill", b =>
+                {
+                    b.Property<int>("ExperiencesExperienceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillsSkillId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExperiencesExperienceId", "SkillsSkillId");
+
+                    b.HasIndex("SkillsSkillId");
+
+                    b.ToTable("ExperienceSkill");
+                });
+
             modelBuilder.Entity("AnimalUser", b =>
                 {
                     b.HasOne("Entities.Models.Animal", null)
@@ -425,10 +444,6 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Experience", b =>
                 {
-                    b.HasOne("Entities.Models.Skill", null)
-                        .WithMany("Experiences")
-                        .HasForeignKey("SkillId");
-
                     b.HasOne("Entities.Models.User", "ZooTrainer")
                         .WithOne("Experience")
                         .HasForeignKey("Entities.Models.Experience", "ZooTrainerId")
@@ -498,9 +513,19 @@ namespace Entities.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Entities.Models.Skill", b =>
+            modelBuilder.Entity("ExperienceSkill", b =>
                 {
-                    b.Navigation("Experiences");
+                    b.HasOne("Entities.Models.Experience", null)
+                        .WithMany()
+                        .HasForeignKey("ExperiencesExperienceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsSkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>

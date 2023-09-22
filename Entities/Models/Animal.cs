@@ -36,6 +36,6 @@ namespace Entities.Models
 		public virtual Cage? Cage { get; set; }
 		public virtual Species? Species { get; set; }
 
-		public virtual ICollection<User> ZooTrainers { get; set; } = new HashSet<User>();
+		public virtual ICollection<User> ZooTrainers { get; set; } = null!;
 	}
 }

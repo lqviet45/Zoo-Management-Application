@@ -147,15 +147,24 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Experience", b =>
                 {
-                    b.Property<long>("ZooTrainerId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("ExperienceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceId"));
 
                     b.Property<int>("YearExp")
                         .HasColumnType("int");
 
-                    b.HasKey("ZooTrainerId");
+                    b.Property<long>("ZooTrainerId")
+                        .HasColumnType("bigint");
 
-                    b.ToTable("Experience", (string)null);
+                    b.HasKey("ExperienceId");
+
+                    b.HasIndex("ZooTrainerId")
+                        .IsUnique();
+
+                    b.ToTable("Experiences");
                 });
 
             modelBuilder.Entity("Entities.Models.FeedingFood", b =>
@@ -276,7 +285,7 @@ namespace Entities.Migrations
 
                     b.HasKey("SkillId");
 
-                    b.ToTable("Skill", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Entities.Models.Species", b =>
@@ -372,13 +381,13 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("ExperienceSkill", b =>
                 {
-                    b.Property<long>("ExperiencesZooTrainerId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("ExperiencesExperienceId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SkillsSkillId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExperiencesZooTrainerId", "SkillsSkillId");
+                    b.HasKey("ExperiencesExperienceId", "SkillsSkillId");
 
                     b.HasIndex("SkillsSkillId");
 
@@ -505,7 +514,7 @@ namespace Entities.Migrations
                 {
                     b.HasOne("Entities.Models.Experience", null)
                         .WithMany()
-                        .HasForeignKey("ExperiencesZooTrainerId")
+                        .HasForeignKey("ExperiencesExperienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

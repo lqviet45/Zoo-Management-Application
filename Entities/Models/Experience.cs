@@ -6,15 +6,16 @@ namespace Entities.Models
 {
 	public class Experience
 	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int ExperienceId { get; set; }
+
 		[ForeignKey("User")]
 		[NotNull]
-		[Key]
 		public long ZooTrainerId { get; set; }
 
 		[NotNull]
 		public int YearExp { get; set; }
-
-		public virtual User? ZooTrainer { get; set; }
 		public virtual ICollection<Skill> Skills { get; set; } = new HashSet<Skill>();
 
 	}
