@@ -37,6 +37,9 @@ namespace Entities.Models
 		[NotNull]
 		[ForeignKey("Role")]
 		public int RoleId { get; set; }
+
+		[ForeignKey("Experience")]
+		public int? ExperienceId { get; set; }
 		public virtual Role? Role { get; set; }
 
 		public virtual ICollection<Animal> Animals { get; set; } = null!;

@@ -20,5 +20,6 @@ namespace Entities.Models
 		public string? SkillName { get; set; }
 
 		public virtual ICollection<Experience> Experiences { get; set; } = new HashSet<Experience>();
+
 	}
 }

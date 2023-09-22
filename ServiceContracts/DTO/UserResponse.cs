@@ -26,8 +26,8 @@ namespace ServiceContracts.DTO
 
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
-		public Role? Role { get; set; }
-		public Experience? Experience { get; set; }
+		public virtual Role? Role { get; set; }
+		public virtual Experience? Experience { get; set; }
 	}
 
 	public static class UserExtention

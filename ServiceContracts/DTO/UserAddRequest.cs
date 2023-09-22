@@ -13,6 +13,7 @@ namespace ServiceContracts.DTO
 	{
 		[Required(ErrorMessage = "UserName Can not be blank!")]
 		public string? UserName { get; set; }
+
 		[Required(ErrorMessage = "Email can not be blank!")]
 		[EmailAddress(ErrorMessage = "Invalid email address!")]
 		public string? Email { get; set;}
@@ -25,6 +26,7 @@ namespace ServiceContracts.DTO
 		[Phone(ErrorMessage = "Invalid phone number!")]
 		[StringLength(12)]
 		public string? PhoneNumber { get; set; }
+
 		[Required(ErrorMessage = "Password can not be blank!")]
 		[MaxLength(20, ErrorMessage = "Password has max lenght is 20 character!")]
 		public string? Password { get; set; }
