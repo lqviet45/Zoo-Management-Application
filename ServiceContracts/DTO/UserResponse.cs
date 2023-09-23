@@ -9,7 +9,7 @@ namespace ServiceContracts.DTO
 	/// </summary>
 	public class UserResponse
 	{
-		public long UsertId { get; set; }
+		public long UserId { get; set; }
 
 		[Required(ErrorMessage = "UserName Can not be blank!")]
 		public string? UserName { get; set; }
@@ -26,11 +26,12 @@ namespace ServiceContracts.DTO
 
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
+		public int RoleId { get; set; }
 		public virtual Role? Role { get; set; }
 		public virtual Experience? Experience { get; set; }
 	}
 
-	public static class UserExtention
+	public static class UserExtension
 	{
 		/// <summary>
 		/// A method to Convert User To UserResponse
@@ -41,12 +42,12 @@ namespace ServiceContracts.DTO
 		{
 			return new UserResponse()
 			{
-				UsertId = user.UserId,
+				UserId = user.UserId,
 				UserName = user.UserName,
 				Email = user.Email,
 				PhoneNumber = user.PhoneNumber,
 				DateOfBirth = user.DateOfBirth,
-				Role = user.Role,
+				RoleId = user.RoleId,
 				Experience = user.Experience,
 				Gender = user.Gender
 			};
