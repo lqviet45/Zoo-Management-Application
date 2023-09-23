@@ -24,5 +24,19 @@ namespace ServiceContracts
 		/// </summary>
 		/// <returns>A list of User object as UserResponse</returns>
 		Task<List<UserResponse>> GetAllStaff();
+
+		/// <summary>
+		/// Get a Staff by Id
+		/// </summary>
+		/// <param name="staffId">The staff Id to get</param>
+		/// <returns>Matching user object as UserResponse type</returns>
+		Task<UserResponse?> GetStaffById(long staffId);
+
+		/// <summary>
+		/// Get a zooTrainer by Id
+		/// </summary>
+		/// <param name="zooTrainerId">The zooTrainer Id to get</param>
+		/// <returns>Matching user object as UserResponse type</returns>
+		Task<UserResponse?> GetZooTrainerById(long zooTrainerId);
 	}
 }

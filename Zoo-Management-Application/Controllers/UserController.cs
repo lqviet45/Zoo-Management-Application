@@ -25,19 +25,5 @@ namespace Zoo_Management_Application.Controllers
 
 			return Ok(userResponse);
 		}
-
-		[HttpGet("staff")]
-		public async Task<ActionResult<List<UserResponse>>> GetAllStaff()
-		{
-			var listStaff = await _userServices.GetAllStaff();
-			return Ok(listStaff);
-		}
-
-		[HttpGet("zootrainer")]
-		public async Task<ActionResult<UserResponse>> GetAllZooTrainer()
-		{
-			var listZooTrainer = await _userServices.GetAllZooTrainer();
-			return Ok(listZooTrainer);
-		}
 	}
 }

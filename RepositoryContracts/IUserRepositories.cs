@@ -25,5 +25,19 @@ namespace RepositoryContracts
 		/// </summary>
 		/// <returns>A list of User object</returns>
 		Task<List<User>> GetAllStaff();
+
+		/// <summary>
+		/// Get a staff by Id
+		/// </summary>
+		/// <param name="staffId">The Id of the staff</param>
+		/// <returns>A matching User object</returns>
+		Task<User?> GetStaffById(long staffId);
+
+		/// <summary>
+		/// Get a ZooTrainer by Id
+		/// </summary>
+		/// <param name="zooTrainerId">The Id of the ZooTrainer</param>
+		/// <returns>A matching User object</returns>
+		Task<User?> GetZooTrainerById(long zooTrainerId);
 	}
 }

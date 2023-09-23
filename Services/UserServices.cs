@@ -43,5 +43,21 @@ namespace Services
 			var listZooTrainerresponse = listZooTrainer.Select(user => user.ToUserResponse()).ToList();
 			return listZooTrainerresponse;
 		}
+
+		public async Task<UserResponse?> GetStaffById(long staffId)
+		{
+			var matchingStaff = await _userRepositories.GetStaffById(staffId);
+
+			if (matchingStaff is null) return null;
+
+			return matchingStaff.ToUserResponse();
+		}
+
+		public async Task<UserResponse?> GetZooTrainerById(long zooTrainerId)
+		{
+			var matchingZooTrainer = await _userRepositories.GetZooTrainerById(zooTrainerId);
+			if (matchingZooTrainer is null) return null;
+			return matchingZooTrainer.ToUserResponse();
+		}
 	}
 }
