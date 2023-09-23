@@ -1,0 +1,31 @@
+﻿using Entities.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace ServiceContracts.DTO
+{
+	public class UserUpdateRequest
+	{
+		[Required(ErrorMessage = "User Id can not be empty!")]
+		public long UserId { get; set; }
+
+		[Required(ErrorMessage = "UserName Can not be blank!")]
+		public string? UserName { get; set; }
+
+		[Required(ErrorMessage = "Email can not be blank!")]
+		[EmailAddress(ErrorMessage = "Invalid email address!")]
+		public string? Email { get; set; }
+
+		[Required(ErrorMessage = "Gender can not be blank!")]
+		//[JsonConverter(typeof(StringEnumConverter))]
+		public string? Gender { get; set; }
+
+		[Required(ErrorMessage = "Phone number can not be blank!")]
+		[Phone(ErrorMessage = "Invalid phone number!")]
+		[StringLength(12)]
+		public string? PhoneNumber { get; set; }
+		[Required(ErrorMessage = "Date of birth can not be blank!")]
+		public DateTime DateOfBirth { get; set; }
+		public Experience? Experience { get; set; }
+	}
+}

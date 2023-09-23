@@ -33,5 +33,11 @@ namespace Zoo_Management_Application.Controllers
 			}
 			return Ok(mathcingStaff);
 		}
+
+		//[HttpPut]
+		//public Task<ActionResult<UserResponse>> PutStaff(UserUpdateRequest userUpdateRequest)
+		//{
+			
+		//}
 	}
 }
