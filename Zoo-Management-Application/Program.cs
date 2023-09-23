@@ -12,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserRepositories, UserRepositories>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
+builder.Services.AddScoped<IAreaRepositories, AreaRepositories>();
+builder.Services.AddScoped<IAreaServices, AreaServices>();	
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
