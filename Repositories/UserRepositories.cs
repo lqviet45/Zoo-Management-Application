@@ -60,6 +60,11 @@ namespace Repositories
 			return matchingStaff;
 		}
 
+		public Task<User?> GetUserByName(string? userName)
+		{
+		    return _dbContext.Users.FirstOrDefaultAsync(user => user.UserName == userName);
+		}
+
 		public async Task<User?> GetZooTrainerById(long zooTrainerId)
 		{
 			var matchingZooTrainer = await _dbContext.Users

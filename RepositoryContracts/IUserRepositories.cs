@@ -39,5 +39,12 @@ namespace RepositoryContracts
 		/// <param name="zooTrainerId">The Id of the ZooTrainer</param>
 		/// <returns>A matching User object</returns>
 		Task<User?> GetZooTrainerById(long zooTrainerId);
+
+		/// <summary>
+		/// Get a user by userName
+		/// </summary>
+		/// <param name="userName">The userName to get</param>
+		/// <returns>A matching user or null</returns>
+		Task<User?> GetUserByName(string? userName);
 	}
 }

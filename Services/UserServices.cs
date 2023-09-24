@@ -21,6 +21,12 @@ namespace Services
 		{
 			ArgumentNullException.ThrowIfNull(userAddRequest);
 
+
+			var userExist = await _userRepositories.GetUserByName(userAddRequest.UserName);
+			if (userExist != null) {
+				throw new ArgumentException("The userName is exist!");
+			}
+
 			ValidationHelper.ModelValidation(userAddRequest);
 
 			User user = userAddRequest.MapToUser();
