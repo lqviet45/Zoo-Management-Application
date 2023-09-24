@@ -25,5 +25,19 @@ namespace ServiceContracts
 		/// <param name="id">Area ID</param>
 		/// <returns>The matching Area</returns>
 		Task<AreaResponse?> GetAreaById(int? id);
+
+		/// <summary>
+		/// Deletes an Area obj based on the given AreaId
+		/// </summary>
+		/// <param name="id">AreaId to deelete</param>
+		/// <returns>Returns true if the deletion is successful, otherwise false</returns>
+		Task<bool> DeleteArea(int id);
+
+		/// <summary>
+		/// Updates the specified Area details based on the given areaId
+		/// </summary>
+		/// <param name="areaUpdateRequest">Area details to update, including Area ID</param>
+		/// <returns>Returns the Area response obj after updation</returns>
+		Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest);
 	}
 }

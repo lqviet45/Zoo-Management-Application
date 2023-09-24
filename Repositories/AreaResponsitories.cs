@@ -28,6 +28,14 @@ namespace Repositories
 			return area;
 		}
 
+		public async Task<bool> DeleteArea(int AreaId)
+		{
+			_dbContext.Areas.RemoveRange(_dbContext.Areas.Where(temp => temp.AreaId == AreaId));
+			int rowDeleted = await _dbContext.SaveChangesAsync();
+
+			return rowDeleted > 0;
+		}
+
 		public Task<List<Area>> GetAllArea()
 		{
 			var listArea = _dbContext.Areas.ToListAsync();
@@ -40,6 +48,24 @@ namespace Repositories
 			var area = _dbContext.Areas.Where(area => area.AreaId == areaId).FirstOrDefaultAsync();
 
 			return area;
+		}
+
+		public Task<Area?> GetAreaByName(string areaName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<Area> UpdateArea(Area area)
+		{
+			Area? matchingArea = await _dbContext.Areas.FirstOrDefaultAsync(temp => temp.AreaId == area.AreaId);
+
+			if(matchingArea == null) { return area; }
+
+			matchingArea.AreaName = area.AreaName;
+
+			int countUpdated = await _dbContext.SaveChangesAsync();
+
+			return matchingArea;
 		}
 	}
 }

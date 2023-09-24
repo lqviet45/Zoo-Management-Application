@@ -32,6 +32,11 @@ namespace Services
 
 		}
 
+		public Task<bool> DeleteArea(int id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<List<AreaResponse>> GetAllArea()
 		{
 			var listArea = await _areaRepositories.GetAllArea();
@@ -48,6 +53,15 @@ namespace Services
 			if (area == null) return null;
 
 			return area.ToAreaResponse();
+		}
+
+		public Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest)
+		{
+			if(areaUpdateRequest == null) throw new ArgumentNullException(nameof(areaUpdateRequest));
+
+			ValidationHelper.ModelValidation(areaUpdateRequest);
+
+			throw new NotImplementedException();
 		}
 	}
 }
