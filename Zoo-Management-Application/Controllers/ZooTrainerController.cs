@@ -23,10 +23,10 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(listZooTrainer);
 		}
 
-		[HttpGet("{zooTrainerId}")]
-		public async Task<IActionResult> GetZooTrainer(long zooTrainerId)
+		[HttpGet("{Id}")]
+		public async Task<IActionResult> GetZooTrainer(long Id)
 		{
-			var mathcingZooTrainer = await _userServices.GetStaffById(zooTrainerId);
+			var mathcingZooTrainer = await _userServices.GetStaffById(Id);
 			if (mathcingZooTrainer == null)
 			{
 				return NotFound("The ZooTrainer Id dosen't exist!");

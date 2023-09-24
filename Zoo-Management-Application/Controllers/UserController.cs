@@ -23,7 +23,16 @@ namespace Zoo_Management_Application.Controllers
 		{
 			var userResponse = await _userServices.AddUser(userAddRequest);
 
-			return Ok(userResponse);
+			var routeValues = new { Id = userResponse.UserId };
+			if (userResponse.RoleId == 2)
+			{
+				return CreatedAtAction("GetStaff", "Staff", routeValues, userResponse);
+			}
+            else if (userResponse.RoleId == 3)
+            {
+				return CreatedAtAction("GetZooTrainer", "ZooTrainer", routeValues, userResponse);
+			}
+			return NoContent();
 		}
 	}
 }

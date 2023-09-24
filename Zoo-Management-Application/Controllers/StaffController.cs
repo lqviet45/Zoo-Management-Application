@@ -23,10 +23,10 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(listStaff);
 		}
 
-		[HttpGet("{staffId}")]
-		public async Task<IActionResult> GetStaff(long staffId)
+		[HttpGet("{Id}")]
+		public async Task<IActionResult> GetStaff(long Id)
 		{
-			var mathcingStaff = await _userServices.GetStaffById(staffId);
+			var mathcingStaff = await _userServices.GetStaffById(Id);
 			if (mathcingStaff == null)
 			{
 				return NotFound("The Staff Id dosen't exist!");
