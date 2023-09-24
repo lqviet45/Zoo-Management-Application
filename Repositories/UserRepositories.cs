@@ -60,6 +60,14 @@ namespace Repositories
 			return matchingStaff;
 		}
 
+		public async Task<User?> GetUserById(long id)
+		{
+			var matchingUser = await _dbContext.Users.
+				FirstOrDefaultAsync(user => user.UserId == id);
+
+			return matchingUser;
+		}
+
 		public Task<User?> GetUserByName(string? userName)
 		{
 		    return _dbContext.Users.FirstOrDefaultAsync(user => user.UserName == userName);
@@ -75,6 +83,29 @@ namespace Repositories
 				matchingZooTrainer.Experience.Skills = _dbContext.Sp_GetUserSkill(matchingZooTrainer.ExperienceId);
 			}
 			return matchingZooTrainer;
+		}
+
+		public async Task<User> Update(User user)
+		{
+			var userUpdate = _dbContext.Users
+				.FirstOrDefault(u => u.UserId == user.UserId);
+			if (userUpdate is null) 
+			{
+				return user;
+			}
+			userUpdate.UserName = user.UserName;
+			userUpdate.Email = user.Email;
+			userUpdate.Gender = user.Gender;
+			userUpdate.PhoneNumber = user.PhoneNumber;
+			userUpdate.DateOfBirth = user.DateOfBirth;
+			userUpdate.Experience = user.Experience;
+			if (userUpdate.Experience != null && user.Experience != null)
+			{
+				userUpdate.Experience.Skills = user.Experience.Skills;
+			}
+
+			await _dbContext.SaveChangesAsync();
+			return userUpdate;
 		}
 
 		//public  List<Skill> GetUserSkill(int? experienceId = -1)

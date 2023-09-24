@@ -46,5 +46,19 @@ namespace RepositoryContracts
 		/// <param name="userName">The userName to get</param>
 		/// <returns>A matching user or null</returns>
 		Task<User?> GetUserByName(string? userName);
+
+		/// <summary>
+		/// Get a user by Id
+		/// </summary>
+		/// <param name="id">the id of a user to get</param>
+		/// <returns>A matching user or null</returns>
+		Task<User?> GetUserById(long id);
+
+		/// <summary>
+		/// Update a existed user
+		/// </summary>
+		/// <param name="user">The user to update</param>
+		/// <returns>A user after Updated</returns>
+		Task<User> Update(User user);
 	}
 }

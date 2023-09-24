@@ -38,5 +38,14 @@ namespace ServiceContracts
 		/// <param name="zooTrainerId">The zooTrainer Id to get</param>
 		/// <returns>Matching user object as UserResponse type</returns>
 		Task<UserResponse?> GetZooTrainerById(long zooTrainerId);
+
+		/// <summary>
+		/// Updates the specified user details based on the given user ID
+		/// </summary>
+		/// <param name="userUpdateRequest">User details to update</param>
+		/// <returns>Returns the person response object updated</returns>
+		/// <exception cref="ArgumentException"></exception>
+		/// <exception cref="ArgumentNullException"></exception>
+		Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest);
 	}
 }

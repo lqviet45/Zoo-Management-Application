@@ -7,6 +7,9 @@ namespace ServiceContracts.DTO
 {
 	public class UserUpdateRequest
 	{
+		[Required(ErrorMessage = "UserId can not be blank!")]
+		public long UserId { get; set; }
+
 		[Required(ErrorMessage = "UserName Can not be blank!")]
 		public string? UserName { get; set; }
 
@@ -23,19 +26,22 @@ namespace ServiceContracts.DTO
 		[StringLength(12)]
 		public string? PhoneNumber { get; set; }
 
-		[Required(ErrorMessage = "Password can not be blank!")]
-		[MaxLength(20, ErrorMessage = "Password has max lenght is 20 character!")]
-		public string? Password { get; set; }
-
-		[Required(ErrorMessage = "ConfirmPassword can not be blank!")]
-		[Compare("Password", ErrorMessage = "Password and confirm password is not match!")]
-		public string? ConfirmPassword { get; set; }
-
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
-
-		[Required(ErrorMessage = "Role can not be empty!")]
-		public int RoleId { get; set; }
 		public Experience? Experience { get; set; }
+
+		public User MapToUser()
+		{
+			return new User
+			{
+				UserId = UserId,
+				UserName = UserName,
+				Email = Email,
+				Gender = Gender,
+				PhoneNumber = PhoneNumber,
+				DateOfBirth = DateOfBirth,
+				Experience = Experience
+			};
+		}
 	}
 }
