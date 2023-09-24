@@ -32,9 +32,20 @@ namespace Services
 
 		}
 
-		public Task<bool> DeleteArea(int id)
+		public async Task<bool> DeleteArea(int? id)
 		{
-			throw new NotImplementedException();
+			if(id == null) throw new ArgumentNullException(nameof(id));
+
+			Area? area = await _areaRepositories.GetAreaById(id);
+
+			if(area == null)
+			{
+				return false;
+			}
+
+			await _areaRepositories.DeleteArea(id.Value);
+
+			return true;
 		}
 
 		public async Task<List<AreaResponse>> GetAllArea()
@@ -55,13 +66,21 @@ namespace Services
 			return area.ToAreaResponse();
 		}
 
-		public Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest)
+		public async Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest)
 		{
 			if(areaUpdateRequest == null) throw new ArgumentNullException(nameof(areaUpdateRequest));
 
 			ValidationHelper.ModelValidation(areaUpdateRequest);
 
-			throw new NotImplementedException();
+			Area? matchingArea = await _areaRepositories.GetAreaById(areaUpdateRequest.AreaId);
+
+			if(matchingArea == null) throw new ArgumentException("Given Area id doesn't exsit");
+
+			matchingArea.AreaName = areaUpdateRequest.AreaName;
+
+			await _areaRepositories.UpdateArea(matchingArea);
+
+			return matchingArea.ToAreaResponse();
 		}
 	}
 }

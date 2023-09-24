@@ -40,5 +40,26 @@ namespace Zoo_Management_Application.Controllers
 			if (area == null) return NotFound();
 			return Ok(area);
 		}
+
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<bool>> DeleteArea(int? id)
+		{
+			var result = await _areaServices.DeleteArea(id);
+			if (result == false) return NotFound();
+			return Ok(result);
+		}
+
+		[HttpPut("{id}")]
+		public async Task<ActionResult<AreaResponse>> UpdateArea(AreaUpdateRequest areaUpdateRequest)
+		{
+			if (ModelState.IsValid)
+			{
+				var areaUpdate = await _areaServices.UpdateArea(areaUpdateRequest);
+				return Ok(areaUpdate);
+			}
+
+			return NotFound("Update was failed");
+		}
 	}
 }

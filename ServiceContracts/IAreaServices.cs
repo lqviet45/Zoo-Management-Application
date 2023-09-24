@@ -31,7 +31,7 @@ namespace ServiceContracts
 		/// </summary>
 		/// <param name="id">AreaId to deelete</param>
 		/// <returns>Returns true if the deletion is successful, otherwise false</returns>
-		Task<bool> DeleteArea(int id);
+		Task<bool> DeleteArea(int? id);
 
 		/// <summary>
 		/// Updates the specified Area details based on the given areaId
