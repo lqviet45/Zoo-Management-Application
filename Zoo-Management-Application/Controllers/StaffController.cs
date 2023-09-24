@@ -27,7 +27,7 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<IActionResult> GetStaff(long Id)
 		{
 			var mathcingStaff = await _userServices.GetStaffById(Id);
-			if (mathcingStaff == null)
+			if (mathcingStaff == null || mathcingStaff.RoleId != 2)
 			{
 				return NotFound("The Staff Id dosen't exist!");
 			}
