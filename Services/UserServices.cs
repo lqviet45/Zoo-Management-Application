@@ -3,7 +3,6 @@ using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using Services.Helper;
-using System;
 
 
 namespace Services
@@ -64,6 +63,34 @@ namespace Services
 			var matchingZooTrainer = await _userRepositories.GetZooTrainerById(zooTrainerId);
 			if (matchingZooTrainer is null) return null;
 			return matchingZooTrainer.ToUserResponse();
+		}
+
+		public async Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest)
+		{
+			if(userUpdateRequest is null)
+			{
+				throw new ArgumentNullException(nameof(userUpdateRequest));
+			}
+
+			ValidationHelper.ModelValidation(userUpdateRequest);
+
+			var userUpdate = await _userRepositories.GetUserById(userUpdateRequest.UserId);
+
+			if (userUpdate is null)
+			{
+				throw new ArgumentException("Given user Id doesn't exist!");
+			}
+
+			userUpdate.UserName = userUpdateRequest.UserName;
+			userUpdate.Email = userUpdateRequest.Email;
+			userUpdate.Gender = userUpdateRequest.Gender;
+			userUpdate.PhoneNumber = userUpdateRequest.PhoneNumber;
+			userUpdate.DateOfBirth = userUpdateRequest.DateOfBirth;
+			userUpdate.Experience = userUpdateRequest.Experience;
+
+			await _userRepositories.Update(userUpdate);
+
+			return userUpdate.ToUserResponse();
 		}
 	}
 }

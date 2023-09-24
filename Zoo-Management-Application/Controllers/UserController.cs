@@ -34,5 +34,17 @@ namespace Zoo_Management_Application.Controllers
 			}
 			return NoContent();
 		}
+
+		[HttpPut]
+		public async Task<ActionResult<UserResponse>> PutUser(UserUpdateRequest userUpdateRequest)
+		{
+			if (ModelState.IsValid)
+			{
+				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
+				return Ok(userUpdate);
+			}
+
+			return NotFound("Can  not update for some error");
+		}
 	}
 }
