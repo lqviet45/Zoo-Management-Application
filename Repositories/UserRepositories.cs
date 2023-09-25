@@ -115,11 +115,6 @@ namespace Repositories
 			userUpdate.PhoneNumber = user.PhoneNumber;
 			userUpdate.DateOfBirth = user.DateOfBirth;
 			userUpdate.IsDelete = user.IsDelete;
-			userUpdate.Experience = user.Experience;
-			if (userUpdate.Experience != null && user.Experience != null)
-			{
-				userUpdate.Experience.Skills = user.Experience.Skills;
-			}
 
 			await _dbContext.SaveChangesAsync();
 			return userUpdate;

@@ -96,7 +96,6 @@ namespace Services
 			userUpdate.Gender = userUpdateRequest.Gender;
 			userUpdate.PhoneNumber = userUpdateRequest.PhoneNumber;
 			userUpdate.DateOfBirth = userUpdateRequest.DateOfBirth;
-			userUpdate.Experience = userUpdateRequest.Experience;
 
 			await _userRepositories.Update(userUpdate);
 

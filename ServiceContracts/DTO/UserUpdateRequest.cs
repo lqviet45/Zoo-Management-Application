@@ -35,7 +35,6 @@ namespace ServiceContracts.DTO
 
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
-		public Experience? Experience { get; set; }
 
 		public User MapToUser()
 		{
@@ -49,7 +48,6 @@ namespace ServiceContracts.DTO
 				PhoneNumber = PhoneNumber,
 				DateOfBirth = DateOfBirth,
 				IsDelete = IsDelete,
-				Experience = Experience
 			};
 		}
 	}
