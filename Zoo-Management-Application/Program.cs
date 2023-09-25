@@ -13,7 +13,9 @@ builder.Services.AddScoped<IUserRepositories, UserRepositories>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
 builder.Services.AddScoped<IAreaRepositories, AreaRepositories>();
-builder.Services.AddScoped<IAreaServices, AreaServices>();	
+builder.Services.AddScoped<IAreaServices, AreaServices>();
+builder.Services.AddScoped<IExperienceServices, ExperienceServices>();
+builder.Services.AddScoped<IExperienceRepositories, ExperienceRepositories>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

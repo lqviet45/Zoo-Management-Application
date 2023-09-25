@@ -18,6 +18,9 @@ namespace ServiceContracts.DTO
 		[EmailAddress(ErrorMessage = "Invalid email address!")]
 		public string? Email { get; set;}
 
+		[Required(ErrorMessage = "Full Name can not be blank!")]
+		public string? FullName { get; set; }
+
 		[Required(ErrorMessage = "Gender can not be blank!")]
 		//[JsonConverter(typeof(StringEnumConverter))]
 		public string? Gender { get; set; }
@@ -40,7 +43,7 @@ namespace ServiceContracts.DTO
 
 		[Required(ErrorMessage = "Role can not be empty!")]
 		public int RoleId { get; set; }
-		public Experience? Experience { get; set; }
+		public ExperienceAddRequest? ExperienceAddRequest { get; set; }
 
 		/// <summary>
 		/// Convert UserAddRequest to User
@@ -53,6 +56,7 @@ namespace ServiceContracts.DTO
 				UserName = UserName,
 				Email = Email,
 				PhoneNumber = PhoneNumber,
+				FullName = FullName,
 				Password = Password,
 				DateOfBirth = DateOfBirth,
 				RoleId = RoleId,

@@ -9,19 +9,24 @@ namespace Zoo_Management_Application.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
+		private readonly IExperienceServices _experienceService;
 
-		public UserController(IUserServices userServices)
+		public UserController(IUserServices userServices, IExperienceServices experienceService)
 		{
 			_userServices = userServices;
+			_experienceService = experienceService;
 		}
 
-		//[Bind(nameof(UserAddRequest.UserName), nameof(UserAddRequest.Email)
-		//	, nameof(UserAddRequest.PhoneNumber), nameof(UserAddRequest.Gender), nameof(UserAddRequest.Password), nameof(UserAddRequest.ConfirmPassword)
-		//	, nameof(UserAddRequest.RoleId), nameof(UserAddRequest.Experience))]
+		
 		[HttpPost]
 		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
 		{
 			var userResponse = await _userServices.AddUser(userAddRequest);
+			if (userAddRequest.ExperienceAddRequest != null)
+			{
+				userAddRequest.ExperienceAddRequest.UserId = userResponse.UserId;
+				await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
+			}
 
 			var routeValues = new { Id = userResponse.UserId };
 			if (userResponse.RoleId == 2)
