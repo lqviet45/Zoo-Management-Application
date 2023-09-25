@@ -62,10 +62,11 @@ namespace Repositories
 			if(matchingArea == null) { return area; }
 
 			matchingArea.AreaName = area.AreaName;
+			matchingArea.IsDelete = area.IsDelete;
 
 			int countUpdated = await _dbContext.SaveChangesAsync();
 
-			return matchingArea;
+			return countUpdated > 0 ? matchingArea : area;
 		}
 	}
 }

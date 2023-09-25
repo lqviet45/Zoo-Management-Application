@@ -22,8 +22,9 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<AreaResponse>> PostArea(AreaAddRequest areaAddRequest)
 		{
 			var areaResponse = await _areaServices.AddArea(areaAddRequest);
+			var id = new { id = areaResponse.AreaId };
 
-			return Ok(areaResponse);
+			return CreatedAtAction("GetAreaById", id, areaResponse);
 		}
 
 		[HttpGet]
@@ -50,7 +51,7 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(result);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut]
 		public async Task<ActionResult<AreaResponse>> UpdateArea(AreaUpdateRequest areaUpdateRequest)
 		{
 			if (ModelState.IsValid)

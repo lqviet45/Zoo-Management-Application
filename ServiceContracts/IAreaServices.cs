@@ -5,10 +5,10 @@ namespace ServiceContracts
 	public interface IAreaServices
 	{
 		/// <summary>
-		/// Adding the new Area in to the Area table
+		/// Adding the new Area into the Area table
 		/// </summary>
 		/// <param name="areaAddRequest">The area to add</param>
-		/// <returns>AreaResonse obj base on the area adding</returns>
+		/// <returns>AreaResponse obj base on the area adding</returns>
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="ArgumentNullException"></exception>"
 		Task<AreaResponse> AddArea(AreaAddRequest? areaAddRequest);
@@ -29,7 +29,7 @@ namespace ServiceContracts
 		/// <summary>
 		/// Deletes an Area obj based on the given AreaId
 		/// </summary>
-		/// <param name="id">AreaId to deelete</param>
+		/// <param name="id">AreaId to delete</param>
 		/// <returns>Returns true if the deletion is successful, otherwise false</returns>
 		Task<bool> DeleteArea(int? id);
 

@@ -15,9 +15,6 @@ namespace Entities.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public long MealId { get; set; }
 
-		[ForeignKey("Animal")]
-		[NotNull]
-		public long AnimalId { get; set; }
 		[NotNull]
 		[StringLength(100)]
 		public string? FoodName { get; set; }

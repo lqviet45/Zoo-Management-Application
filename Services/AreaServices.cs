@@ -77,6 +77,7 @@ namespace Services
 			if(matchingArea == null) throw new ArgumentException("Given Area id doesn't exsit");
 
 			matchingArea.AreaName = areaUpdateRequest.AreaName;
+			matchingArea.IsDelete = areaUpdateRequest.IsDelete;	
 
 			await _areaRepositories.UpdateArea(matchingArea);
 

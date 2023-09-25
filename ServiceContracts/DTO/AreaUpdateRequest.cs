@@ -12,6 +12,8 @@ namespace ServiceContracts.DTO
 		[Required(ErrorMessage = "Area Name Can not be blank!")]
 		public string? AreaName { get; set; }
 
+		public bool IsDelete { get; set; }
+
 		/// <summary>
 		/// Converts the current obj of AreaUpdateRequest to Area obj
 		/// </summary>
@@ -21,7 +23,8 @@ namespace ServiceContracts.DTO
 			return new Area
 			{
 				AreaId = AreaId,
-				AreaName = AreaName
+				AreaName = AreaName,
+				IsDelete = IsDelete
 			};
 		}
 	}

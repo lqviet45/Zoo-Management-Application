@@ -16,7 +16,7 @@ namespace RepositoryContracts
 		/// Adds a Area object to the data store
 		/// </summary>
 		/// <param name="area">The area to add</param>
-		/// <returns>User obj after adding</returns>
+		/// <returns>Area obj after adding</returns>
 		Task<Area> Add(Area area);
 
 		/// <summary>
