@@ -30,8 +30,13 @@ namespace Services
 
 			User user = userAddRequest.MapToUser();
 
-		    await _userRepositories.Add(user);
+			if (userAddRequest.ExperienceAddRequest != null)
+			{
+				Experience experience = userAddRequest.ExperienceAddRequest.MapToExperience();
+			}
 
+		    await _userRepositories.Add(user);
+			
 			return user.ToUserResponse();
 		}
 
@@ -65,6 +70,8 @@ namespace Services
 
 			if (matchingStaff is null) return null;
 
+			if (matchingStaff.RoleId != 2) return null;
+
 			return matchingStaff.ToUserResponse();
 		}
 
@@ -72,6 +79,7 @@ namespace Services
 		{
 			var matchingZooTrainer = await _userRepositories.GetZooTrainerById(zooTrainerId);
 			if (matchingZooTrainer is null) return null;
+			if (matchingZooTrainer.RoleId != 3) return null;
 			return matchingZooTrainer.ToUserResponse();
 		}
 

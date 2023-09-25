@@ -8,17 +8,14 @@ namespace ServiceContracts.DTO
 	{
 		[Required]
 		public long UserId { get; set; }
-		[Required]
-		public int ExperienceId { get; set; }
-		[Required]
-		public int YearExp { get; set; }
-		public List<Skill>? Skills { get; set; }
+		public List<Skill> Skills { get; set; } = null!;
 
 		public Experience MapToExperience()
 		{
 			return new Experience()
 			{
-				ExperienceId = ExperienceId
+				UserId = UserId,
+				Skills = Skills
 			};
 		}
 	}

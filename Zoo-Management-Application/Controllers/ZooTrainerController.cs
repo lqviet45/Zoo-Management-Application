@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using Services;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -10,10 +12,12 @@ namespace Zoo_Management_Application.Controllers
 	public class ZooTrainerController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
+		private readonly IExperienceServices _experienceServices;
 
-		public ZooTrainerController(IUserServices userServices)
+		public ZooTrainerController(IUserServices userServices, IExperienceServices experienceServices)
 		{
 			_userServices = userServices;
+			_experienceServices = experienceServices;
 		}
 
 		[HttpGet]
@@ -26,12 +30,24 @@ namespace Zoo_Management_Application.Controllers
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetZooTrainer(long Id)
 		{
-			var mathcingZooTrainer = await _userServices.GetStaffById(Id);
+			var mathcingZooTrainer = await _userServices.GetZooTrainerById(Id);
+			
 			if (mathcingZooTrainer == null || mathcingZooTrainer.RoleId != 3)
 			{
 				return NotFound("The ZooTrainer Id dosen't exist!");
 			}
+
+			mathcingZooTrainer.experienceResponses = await _experienceServices.GetExperienceByUserId(Id);
+
 			return Ok(mathcingZooTrainer);
+		}
+
+		[HttpGet("experience/{userId}")]
+		public async Task<IActionResult> GetExperience(long userId)
+		{
+			var experiences = await _experienceServices.GetExperienceByUserId(userId);
+			if (experiences.IsNullOrEmpty()) return NotFound();
+			return Ok(experiences);
 		}
 
 		//public Task<UserResponse> PutUserExperience()
