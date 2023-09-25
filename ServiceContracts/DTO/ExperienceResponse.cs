@@ -24,9 +24,7 @@ namespace ServiceContracts.DTO
 		{
 			return new ExperienceResponse()
 			{
-				ExperienceId = experience.ExperienceId,
-				YearExp = experience.YearExp,
-				Skills = experience.Skills?.ToList()
+				ExperienceId = experience.ExperienceId
 			};
 		}
 	}

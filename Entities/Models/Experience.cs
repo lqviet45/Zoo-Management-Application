@@ -11,8 +11,10 @@ namespace Entities.Models
 		public int ExperienceId { get; set; }
 
 		[NotNull]
-		public int YearExp { get; set; }
-		public virtual ICollection<Skill> Skills { get; set; } = new HashSet<Skill>();
+		[ForeignKey("User")]
+		public long UserId { get; set; }
+
+		public virtual User? User { get; set; }
 
 	}
 }

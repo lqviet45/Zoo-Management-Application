@@ -39,8 +39,6 @@ namespace Entities.AppDbContext
 
 		public virtual DbSet<Meal> Meals { get; set; }
 
-		public virtual DbSet<FeedingFood> FeedingFoods { get; set; }
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -63,12 +61,9 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<Species>().ToTable(nameof(Species));
 			modelBuilder.Entity<Animal>().ToTable(nameof(Animal));
 
-			modelBuilder.Entity<Experience>()
-				.HasMany(e => e.Skills)
-				.WithMany(e => e.Experiences);
-				
+			modelBuilder.Entity<Experience>().ToTable(nameof(Experience));
+			modelBuilder.Entity<Skill>().ToTable(nameof(Skill));
 
-			modelBuilder.Entity<FeedingFood>().ToTable(nameof(FeedingFood));
 			modelBuilder.Entity<Meal>().ToTable(nameof(Meal));
 		}
 

@@ -40,38 +40,22 @@ namespace Repositories
 		public async Task<List<User>> GetAllStaff()
 		{
 			var listStaff = await _dbContext.Users.Where(user => user.RoleId == 2 && user.IsDelete == false)
-				.Include("Experience").ToListAsync();
-
-			listStaff.ForEach( user => {
-				if (user.Experience != null)
-				{
-					user.Experience.Skills = _dbContext.Sp_GetUserSkill(user.ExperienceId);
-				}
-			});
+				.ToListAsync();
 			return listStaff;
 		}
 
 		public async Task<List<User>> GetAllZooTrainer()
 		{
 			var listZooTrainer = await _dbContext.Users.Where(user => user.RoleId == 3 && user.IsDelete == false)
-				.Include("Experience").ToListAsync();
-			listZooTrainer.ForEach(user => {
-				if (user.Experience != null)
-				{
-					user.Experience.Skills = _dbContext.Sp_GetUserSkill(user.ExperienceId);
-				}
-			});
+				.ToListAsync();
 			return listZooTrainer;
 		}
 
 		public async Task<User?> GetStaffById(long staffId)
 		{
 			var matchingStaff = await _dbContext.Users
-				.Include("Experience")
 				.FirstOrDefaultAsync(staff => staff.UserId == staffId && staff.IsDelete == false);
-			if (matchingStaff?.Experience != null) { 
-				matchingStaff.Experience.Skills = _dbContext.Sp_GetUserSkill(matchingStaff.ExperienceId);
-			}
+			
 			return matchingStaff;
 		}
 
@@ -91,12 +75,7 @@ namespace Repositories
 		public async Task<User?> GetZooTrainerById(long zooTrainerId)
 		{
 			var matchingZooTrainer = await _dbContext.Users
-				.Include("Experience")
 				.FirstOrDefaultAsync(zooTrainer => zooTrainer.UserId == zooTrainerId && zooTrainer.IsDelete == false);
-			if (matchingZooTrainer?.Experience != null)
-			{
-				matchingZooTrainer.Experience.Skills = _dbContext.Sp_GetUserSkill(matchingZooTrainer.ExperienceId);
-			}
 			return matchingZooTrainer;
 		}
 

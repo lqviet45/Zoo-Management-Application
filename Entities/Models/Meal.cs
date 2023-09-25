@@ -18,16 +18,12 @@ namespace Entities.Models
 		[ForeignKey("Animal")]
 		[NotNull]
 		public long AnimalId { get; set; }
-
-		[ForeignKey("FeedingFood")]
 		[NotNull]
-		public int FoodId { get; set; }
+		[StringLength(100)]
+		public string? FoodName { get; set; }
 		public string? Note { get; set; }
 		[NotNull]
 		public DateTime FeedingTime { get; set; }
-
-		public virtual Animal? Animal { get; set; }
-
-		public virtual FeedingFood? FeedingFood { get; set; }
+		public virtual ICollection<Animal> Animal { get; set; } = null!;
 	}
 }

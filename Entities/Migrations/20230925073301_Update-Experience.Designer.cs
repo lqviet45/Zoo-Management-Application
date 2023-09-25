@@ -4,6 +4,7 @@ using Entities.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230925073301_Update-Experience")]
+    partial class UpdateExperience
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Entities.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AnimalMeal", b =>
-                {
-                    b.Property<long>("AnimalId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("MealsMealId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AnimalId", "MealsMealId");
-
-                    b.HasIndex("MealsMealId");
-
-                    b.ToTable("AnimalMeal");
-                });
 
             modelBuilder.Entity("AnimalUser", b =>
                 {
@@ -187,6 +175,24 @@ namespace Entities.Migrations
                     b.ToTable("Experience", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Models.FeedingFood", b =>
+                {
+                    b.Property<int>("FoodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FoodId"));
+
+                    b.Property<string>("FoodName")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.HasKey("FoodId");
+
+                    b.ToTable("FeedingFood", (string)null);
+                });
+
             modelBuilder.Entity("Entities.Models.Meal", b =>
                 {
                     b.Property<long>("MealId")
@@ -201,15 +207,17 @@ namespace Entities.Migrations
                     b.Property<DateTime>("FeedingTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FoodName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MealId");
+
+                    b.HasIndex("AnimalId");
+
+                    b.HasIndex("FoodId");
 
                     b.ToTable("Meal", (string)null);
                 });
@@ -392,21 +400,6 @@ namespace Entities.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("AnimalMeal", b =>
-                {
-                    b.HasOne("Entities.Models.Animal", null)
-                        .WithMany()
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Meal", null)
-                        .WithMany()
-                        .HasForeignKey("MealsMealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AnimalUser", b =>
                 {
                     b.HasOne("Entities.Models.Animal", null)
@@ -461,6 +454,25 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.Meal", b =>
+                {
+                    b.HasOne("Entities.Models.Animal", "Animal")
+                        .WithMany()
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.FeedingFood", "FeedingFood")
+                        .WithMany()
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Animal");
+
+                    b.Navigation("FeedingFood");
                 });
 
             modelBuilder.Entity("Entities.Models.Order", b =>

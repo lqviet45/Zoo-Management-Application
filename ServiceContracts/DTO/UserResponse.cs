@@ -28,7 +28,6 @@ namespace ServiceContracts.DTO
 		public DateTime DateOfBirth { get; set; }
 		public int RoleId { get; set; }
 		public virtual Role? Role { get; set; }
-		public virtual Experience? Experience { get; set; }
 	}
 
 	public static class UserExtension
@@ -48,7 +47,6 @@ namespace ServiceContracts.DTO
 				PhoneNumber = user.PhoneNumber,
 				DateOfBirth = user.DateOfBirth,
 				RoleId = user.RoleId,
-				Experience = user.Experience,
 				Gender = user.Gender
 			};
 		}

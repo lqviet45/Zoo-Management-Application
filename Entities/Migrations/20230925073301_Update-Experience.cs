@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Entities.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class UpdateExperience : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,8 @@ namespace Entities.Migrations
                 {
                     AreaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AreaName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    AreaName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,19 +67,6 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    SkillId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SkillName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.SkillId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Species",
                 columns: table => new
                 {
@@ -114,6 +102,7 @@ namespace Entities.Migrations
                     CageId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CageName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     AreaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -154,7 +143,9 @@ namespace Entities.Migrations
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
@@ -183,6 +174,7 @@ namespace Entities.Migrations
                     AnimalName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     DateArrive = table.Column<DateTime>(type: "DateTime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     CageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -228,20 +220,19 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Experiences",
+                name: "Experience",
                 columns: table => new
                 {
                     ExperienceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ZooTrainerId = table.Column<long>(type: "bigint", nullable: false),
-                    YearExp = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Experiences", x => x.ExperienceId);
+                    table.PrimaryKey("PK_Experience", x => x.ExperienceId);
                     table.ForeignKey(
-                        name: "FK_Experiences_User_ZooTrainerId",
-                        column: x => x.ZooTrainerId,
+                        name: "FK_Experience_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -300,26 +291,22 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExperienceSkill",
+                name: "Skill",
                 columns: table => new
                 {
-                    ExperiencesExperienceId = table.Column<int>(type: "int", nullable: false),
-                    SkillsSkillId = table.Column<int>(type: "int", nullable: false)
+                    SkillId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SkillName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    ExperienceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExperienceSkill", x => new { x.ExperiencesExperienceId, x.SkillsSkillId });
+                    table.PrimaryKey("PK_Skill", x => x.SkillId);
                     table.ForeignKey(
-                        name: "FK_ExperienceSkill_Experiences_ExperiencesExperienceId",
-                        column: x => x.ExperiencesExperienceId,
-                        principalTable: "Experiences",
+                        name: "FK_Skill_Experience_ExperienceId",
+                        column: x => x.ExperienceId,
+                        principalTable: "Experience",
                         principalColumn: "ExperienceId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExperienceSkill_Skills_SkillsSkillId",
-                        column: x => x.SkillsSkillId,
-                        principalTable: "Skills",
-                        principalColumn: "SkillId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -344,15 +331,9 @@ namespace Entities.Migrations
                 column: "AreaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Experiences_ZooTrainerId",
-                table: "Experiences",
-                column: "ZooTrainerId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ExperienceSkill_SkillsSkillId",
-                table: "ExperienceSkill",
-                column: "SkillsSkillId");
+                name: "IX_Experience_UserId",
+                table: "Experience",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Meal_AnimalId",
@@ -375,6 +356,11 @@ namespace Entities.Migrations
                 column: "TicketId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Skill_ExperienceId",
+                table: "Skill",
+                column: "ExperienceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
                 table: "User",
                 column: "RoleId");
@@ -387,19 +373,13 @@ namespace Entities.Migrations
                 name: "AnimalUser");
 
             migrationBuilder.DropTable(
-                name: "ExperienceSkill");
-
-            migrationBuilder.DropTable(
                 name: "Meal");
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
 
             migrationBuilder.DropTable(
-                name: "Experiences");
-
-            migrationBuilder.DropTable(
-                name: "Skills");
+                name: "Skill");
 
             migrationBuilder.DropTable(
                 name: "Animal");
@@ -414,7 +394,7 @@ namespace Entities.Migrations
                 name: "Ticket");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Experience");
 
             migrationBuilder.DropTable(
                 name: "Cage");
@@ -426,10 +406,13 @@ namespace Entities.Migrations
                 name: "Custommer");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Area");
+
+            migrationBuilder.DropTable(
+                name: "Role");
         }
     }
 }

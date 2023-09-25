@@ -18,9 +18,7 @@ namespace ServiceContracts.DTO
 		{
 			return new Experience()
 			{
-				ExperienceId = ExperienceId,
-				YearExp = YearExp,
-				Skills = Skills
+				ExperienceId = ExperienceId
 			};
 		}
 	}

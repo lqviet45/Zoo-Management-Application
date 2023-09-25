@@ -56,7 +56,6 @@ namespace ServiceContracts.DTO
 				Password = Password,
 				DateOfBirth = DateOfBirth,
 				RoleId = RoleId,
-				Experience = Experience,
 				Gender = Gender
 			};
 		}

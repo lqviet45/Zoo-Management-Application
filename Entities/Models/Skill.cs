@@ -19,7 +19,10 @@ namespace Entities.Models
 		[NotNull]
 		public string? SkillName { get; set; }
 
-		public virtual ICollection<Experience> Experiences { get; set; } = new HashSet<Experience>();
+		[NotNull]
+		[ForeignKey("Experience")]
+		public int ExperienceId { get; set; }
+		public virtual Experience? Experience { get; set; }
 
 	}
 }
