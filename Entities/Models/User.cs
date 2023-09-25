@@ -15,8 +15,15 @@ namespace Entities.Models
 		public string? UserName { get; set; }
 
 		[NotNull]
+		[StringLength(80)]
+		public string? FullName { get; set; }
+
+		[NotNull]
 		[StringLength(20)]
 		public string? Password { get; set; }
+
+		[NotNull]
+		public bool IsDelete { get; set; }
 
 		[NotNull]
 		[StringLength(20)]

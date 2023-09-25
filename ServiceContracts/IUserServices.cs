@@ -47,5 +47,12 @@ namespace ServiceContracts
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="ArgumentNullException"></exception>
 		Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest);
+
+		/// <summary>
+		/// Delete by User id
+		/// </summary>
+		/// <param name="userId">The user id to delete</param>
+		/// <returns>True if delete success, else False</returns>
+		Task<bool> DeleteUser(long userId);
 	}
 }

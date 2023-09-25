@@ -35,6 +35,16 @@ namespace Services
 			return user.ToUserResponse();
 		}
 
+		public async Task<bool> DeleteUser(long userId)
+		{
+			var userExist = await _userRepositories.GetUserById(userId);
+			if (userExist is null) return false;
+
+			var isDeleted = await _userRepositories.Delete(userId);
+
+			return isDeleted;
+		}
+
 		public async Task<List<UserResponse>> GetAllStaff()
 		{
 		 	var listStaff = await _userRepositories.GetAllStaff();

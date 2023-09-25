@@ -60,5 +60,12 @@ namespace RepositoryContracts
 		/// <param name="user">The user to update</param>
 		/// <returns>A user after Updated</returns>
 		Task<User> Update(User user);
+
+		/// <summary>
+		/// Detele a existed user by id
+		/// </summary>
+		/// <param name="userId">The id to delete</param>
+		/// <returns>True if delete is success, else False</returns>
+		Task<bool> Delete(long userId);
 	}
 }

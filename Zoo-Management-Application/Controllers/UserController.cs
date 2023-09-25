@@ -44,7 +44,16 @@ namespace Zoo_Management_Application.Controllers
 				return Ok(userUpdate);
 			}
 
-			return NotFound("Can  not update for some error");
+			return NotFound("Can not update for some error");
+		}
+
+		[HttpDelete("{userId}")]
+		public async Task<IActionResult> DeleteUser(long userId)
+		{
+			var isDeleted = await _userServices.DeleteUser(userId);
+			if (!isDeleted) return NotFound("Delete Fail by some error!!");
+
+			return NoContent();
 		}
 	}
 }

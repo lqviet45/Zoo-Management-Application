@@ -13,5 +13,8 @@ namespace Entities.Models
 		[StringLength(20)]
 		[NotNull]
 		public string AreaName { get; set; } = string.Empty;
+
+		[NotNull]
+		public bool IsDelete { get; set; }
 	}
 }

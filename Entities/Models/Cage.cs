@@ -14,6 +14,9 @@ namespace Entities.Models
 		[NotNull]
 		public string CageName { get; set; } = string.Empty;
 
+		[NotNull]
+		public bool IsDelete { get; set; }
+
 		[ForeignKey("Area")]
 		[NotNull]
 		public int AreaId { get; set; }

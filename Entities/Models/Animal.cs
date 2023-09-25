@@ -30,6 +30,9 @@ namespace Entities.Models
 		[NotNull]
 		public string? Status { get; set; }
 
+		[NotNull]
+		public bool IsDelete { get; set; }
+
 		[ForeignKey("Cage")]
 		[NotNull]
 		public int CageId { get; set; }
