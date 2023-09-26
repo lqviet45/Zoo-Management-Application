@@ -25,7 +25,8 @@ namespace Zoo_Management_Application.Controllers
 			if (userAddRequest.ExperienceAddRequest != null)
 			{
 				userAddRequest.ExperienceAddRequest.UserId = userResponse.UserId;
-				await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
+				var experienceResponse = await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
+				userResponse.ExperienceResponses = new List<ExperienceResponse>() { experienceResponse };
 			}
 
 			var routeValues = new { Id = userResponse.UserId };

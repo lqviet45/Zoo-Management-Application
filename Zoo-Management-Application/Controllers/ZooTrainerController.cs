@@ -24,6 +24,7 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<UserResponse>> GetAllZooTrainer()
 		{
 			var listZooTrainer = await _userServices.GetAllZooTrainer();
+
 			return Ok(listZooTrainer);
 		}
 
@@ -37,7 +38,7 @@ namespace Zoo_Management_Application.Controllers
 				return NotFound("The ZooTrainer Id dosen't exist!");
 			}
 
-			mathcingZooTrainer.experienceResponses = await _experienceServices.GetExperienceByUserId(Id);
+			mathcingZooTrainer.ExperienceResponses = await _experienceServices.GetExperienceByUserId(Id);
 
 			return Ok(mathcingZooTrainer);
 		}

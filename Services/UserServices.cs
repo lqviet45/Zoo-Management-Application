@@ -10,10 +10,12 @@ namespace Services
 	public class UserServices : IUserServices
 	{
 		private readonly IUserRepositories _userRepositories;
+		private readonly IExperienceRepositories _experienceRepositories;
 
-		public UserServices(IUserRepositories userRepositories)
+		public UserServices(IUserRepositories userRepositories, IExperienceRepositories experienceRepositories)
 		{
 			_userRepositories = userRepositories;
+			_experienceRepositories = experienceRepositories;
 		}
 
 		public async Task<UserResponse> AddUser(UserAddRequest? userAddRequest)
@@ -29,14 +31,8 @@ namespace Services
 			ValidationHelper.ModelValidation(userAddRequest);
 
 			User user = userAddRequest.MapToUser();
+			await _userRepositories.Add(user);
 
-			if (userAddRequest.ExperienceAddRequest != null)
-			{
-				Experience experience = userAddRequest.ExperienceAddRequest.MapToExperience();
-			}
-
-		    await _userRepositories.Add(user);
-			
 			return user.ToUserResponse();
 		}
 
@@ -61,6 +57,10 @@ namespace Services
 		{
 			var listZooTrainer = await _userRepositories.GetAllZooTrainer();
 			var listZooTrainerresponse = listZooTrainer.Select(user => user.ToUserResponse()).ToList();
+			listZooTrainerresponse.ForEach(user => { 
+				var experiences = _experienceRepositories.GetExperienceByUserId(user.UserId);
+				user.ExperienceResponses = experiences.Result.Select(ex => ex.ToExperienceResponse()).ToList();
+			});
 			return listZooTrainerresponse;
 		}
 
