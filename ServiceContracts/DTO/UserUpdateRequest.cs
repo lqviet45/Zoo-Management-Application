@@ -36,6 +36,8 @@ namespace ServiceContracts.DTO
 		[Required(ErrorMessage = "Date of birth can not be blank!")]
 		public DateTime DateOfBirth { get; set; }
 
+		public ExperienceAddRequest? ExperienceAddRequest { get; set; }
+
 		public User MapToUser()
 		{
 			return new User

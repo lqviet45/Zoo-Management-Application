@@ -33,5 +33,25 @@ namespace Repositories
 				.Where(e => e.UserId == userId).ToListAsync();
 			return experience;
 		}
+
+		public async Task<bool> Delete(int experienceId)
+		{
+			var experience = await _context.Experiences.FindAsync(experienceId);
+			if (experience == null) return false;
+
+			_context.Experiences.Remove(experience);
+
+			var isDeleted = await _context.SaveChangesAsync();
+
+			return isDeleted > 0;
+		}
+
+		public async Task<Experience?> GetExperienceById(int ExperienceId)
+		{
+			var experience = await _context.Experiences
+				.Include(c => c.Skills)
+				.FirstOrDefaultAsync(experience => experience.ExperienceId == ExperienceId);
+			return experience; 
+		}
 	}
 }

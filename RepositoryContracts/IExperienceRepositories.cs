@@ -22,5 +22,19 @@ namespace RepositoryContracts
 		/// <param name="userId">The user Id to get</param>
 		/// <returns>List of Experiences</returns>
 		Task<List<Experience>> GetExperienceByUserId(long userId);
+
+		/// <summary>
+		/// Delete a experience by id
+		/// </summary>
+		/// <param name="experienceId">The id to delete</param>
+		/// <returns>True if delete success, else false</returns>
+		Task<bool> Delete(int experienceId);
+
+		/// <summary>
+		/// Get a experience by id
+		/// </summary>
+		/// <param name="ExperienceId">the id to get</param>
+		/// <returns>A experience or null</returns>
+		Task<Experience?> GetExperienceById(int ExperienceId);
 	}
 }

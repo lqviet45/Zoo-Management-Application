@@ -34,5 +34,14 @@ namespace Services
 
 			return listExperienceResponse;
 		}
+
+		public async Task<bool> DeleteExperience(int experienceId)
+		{
+			var experience = _experienceRepositories.GetExperienceById(experienceId);
+			if (experience is null) return false;
+
+			var isDelete = await _experienceRepositories.Delete(experienceId);
+			return isDelete;
+		}
 	}
 }

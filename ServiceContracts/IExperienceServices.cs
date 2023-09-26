@@ -22,5 +22,12 @@ namespace ServiceContracts
 		/// <param name="userId">the user id to get</param>
 		/// <returns>A list of Experiences as ExperienceResponse</returns>
 		Task<List<ExperienceResponse>> GetExperienceByUserId(long userId);
+
+		/// <summary>
+		/// Delete a Experience by Id
+		/// </summary>
+		/// <param name="experienceId">The experience id to delete</param>
+		/// <returns>True if delete success, else false</returns>
+		Task<bool> DeleteExperience(int experienceId);
 	}
 }

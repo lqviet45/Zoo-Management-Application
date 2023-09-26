@@ -51,9 +51,13 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(experiences);
 		}
 
-		//public Task<UserResponse> PutUserExperience()
-		//{
-		//	throw new NotImplementedException();
-		//}
+		[HttpDelete("experience/{experienceId}")]
+		public async Task<IActionResult> DeleteExperience(int experienceId)
+		{
+			var isDelete = await _experienceServices.DeleteExperience(experienceId);
+			if (isDelete) return NoContent();
+
+			return NotFound("Can not delete experience by some error!");
+		}
 	}
 }
