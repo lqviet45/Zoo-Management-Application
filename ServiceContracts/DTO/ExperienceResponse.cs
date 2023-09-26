@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO
 	{
 		public int ExperienceId { get; set; }
 		[Required]
-		public List<Skill> Skills { get; set; } = null!;
+		public List<SkillResponse> Skills { get; set; } = null!;
 	}
 
 	public static class ExperienceExtension
@@ -22,7 +22,7 @@ namespace ServiceContracts.DTO
 			return new ExperienceResponse()
 			{
 				ExperienceId = experience.ExperienceId,
-				Skills = experience.Skills
+				Skills = experience.Skills.Select(s => s.ToSkillResponse()).ToList()
 			};
 		}
 	}
