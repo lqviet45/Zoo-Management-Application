@@ -21,6 +21,8 @@ namespace Services
 		{
 			ArgumentNullException.ThrowIfNull(cageAddRequest);
 
+			if(cageAddRequest.Area.IsDelete == true) throw new ArgumentException("The Area is deleted!");
+
 			// Check Duplicate CageName
 			var cageExist = await _cageRepositories.GetCageByName(cageAddRequest.CageName);
 			if (cageExist != null)

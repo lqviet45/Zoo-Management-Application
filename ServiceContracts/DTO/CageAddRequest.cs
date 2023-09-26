@@ -15,6 +15,8 @@ namespace ServiceContracts.DTO
 		[Required(ErrorMessage = "Area Id can not be blank!")]
 		public int AreaId { get; set; }
 
+		public virtual Area Area { get; set; } = null!;
+
 		/// <summary>
 		/// Convert CageAddRequest to Cage
 		/// </summary>
