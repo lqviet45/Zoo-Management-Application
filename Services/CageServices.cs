@@ -21,6 +21,13 @@ namespace Services
 		{
 			ArgumentNullException.ThrowIfNull(cageAddRequest);
 
+			// Check Duplicate CageName
+			var cageExist = await _cageRepositories.GetCageByName(cageAddRequest.CageName);
+			if (cageExist != null)
+			{
+				throw new ArgumentException("The CageName is exist!");
+			}
+
 			ValidationHelper.ModelValidation(cageAddRequest);
 
 			Cage cage = cageAddRequest.MapToCage();

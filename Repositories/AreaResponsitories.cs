@@ -23,6 +23,7 @@ namespace Repositories
 
 		public async Task<Area> Add(Area area)
 		{
+			area.IsDelete = false;
 			_dbContext.Areas.Add(area);
 			await _dbContext.SaveChangesAsync();
 			return area;
@@ -30,11 +31,16 @@ namespace Repositories
 
 		public async Task<bool> DeleteArea(int AreaId)
 		{
-			_dbContext.Areas.RemoveRange(_dbContext.Areas.Where(temp => temp.AreaId == AreaId));
-			int rowDeleted = await _dbContext.SaveChangesAsync();
+			var areaDelete = await GetAreaById(AreaId);
+            if (areaDelete is null)
+            {
+				return false;
+            }
+			areaDelete.IsDelete = true;
+			await _dbContext.SaveChangesAsync();
 
-			return rowDeleted > 0;
-		}
+			return areaDelete.IsDelete;
+        }
 
 		public Task<List<Area>> GetAllArea()
 		{
@@ -52,7 +58,7 @@ namespace Repositories
 
 		public Task<Area?> GetAreaByName(string areaName)
 		{
-			throw new NotImplementedException();
+			return _dbContext.Areas.Where(area => area.AreaName == areaName).FirstOrDefaultAsync();
 		}
 
 		public async Task<Area> UpdateArea(Area area)

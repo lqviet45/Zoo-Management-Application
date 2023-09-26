@@ -22,6 +22,14 @@ namespace Services
 		{
 			ArgumentNullException.ThrowIfNull(areaAddRequest);
 
+			// Check duplicate AreaName
+			var areaExist = await _areaRepositories.GetAreaByName(areaAddRequest.AreaName);
+
+			if(areaExist != null)
+			{
+				throw new ArgumentException("The AreaName is exist!");
+			}
+
 			ValidationHelper.ModelValidation(areaAddRequest);
 
 			Area area = areaAddRequest.MapToArea();

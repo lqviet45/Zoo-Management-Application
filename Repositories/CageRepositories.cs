@@ -18,6 +18,7 @@ namespace Repositories
 		}
 		public async Task<Cage> Add(Cage cage)
 		{
+			cage.IsDelete = false;
 			_dbContext.Cages.Add(cage);
 			await _dbContext.SaveChangesAsync();
 			// Dirty code
@@ -25,12 +26,17 @@ namespace Repositories
 			return cage;
 		}
 
-		public async Task<bool> DeleteCage(int AreaId)
+		public async Task<bool> DeleteCage(int cageId)
 		{
-			_dbContext.Cages.RemoveRange(_dbContext.Cages.Where(temp => temp.CageId == AreaId));
-			int rowDeleted = await _dbContext.SaveChangesAsync();
+			var cageDelete = await GetCageById(cageId);
+			if (cageDelete is null)
+			{
+				return false;
+			}
+			cageDelete.IsDelete = true;
+			await _dbContext.SaveChangesAsync();
 
-			return rowDeleted > 0;
+			return true;
 		}
 
 		public Task<List<Cage>> GetAllCage()
@@ -50,7 +56,7 @@ namespace Repositories
 
 		public Task<Cage?> GetCageByName(string cageName)
 		{
-			throw new NotImplementedException();
+			return _dbContext.Cages.FirstOrDefaultAsync(cage => cage.CageName == cageName);
 		}
 
 		public async Task<Cage> UpdateCage(Cage cage)
