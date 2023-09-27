@@ -36,5 +36,12 @@ namespace RepositoryContracts
 		/// <param name="ExperienceId">the id to get</param>
 		/// <returns>A experience or null</returns>
 		Task<Experience?> GetExperienceById(int ExperienceId);
+
+		/// <summary>
+		/// Update a experience
+		/// </summary>
+		/// <param name="experience">The update experience</param>
+		/// <returns>A experience after updated</returns>
+		Task<Experience> Update(Experience experience);
 	}
 }

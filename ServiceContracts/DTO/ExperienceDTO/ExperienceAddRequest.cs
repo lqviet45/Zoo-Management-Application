@@ -1,6 +1,5 @@
 ﻿using Entities.Models;
 using ServiceContracts.DTO.SkillDTO;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.ExperienceDTO

@@ -1,6 +1,8 @@
 ﻿using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.ExperienceDTO;
+using ServiceContracts.DTO.UserDTO;
+using Services.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,23 @@ namespace Services
 
 			var isDelete = await _experienceRepositories.Delete(experienceId);
 			return isDelete;
+		}
+
+		public async Task<ExperienceResponse> UpdateExperience(ExperienceUpdateRequest? experienceUpdateRequest)
+		{
+			if (experienceUpdateRequest == null) throw new ArgumentNullException("The update request is empty!");
+
+			ValidationHelper.ModelValidation(experienceUpdateRequest);
+
+			var experienceExist = await _experienceRepositories.GetExperienceById(experienceUpdateRequest.ExperienceId);
+
+			if (experienceExist is null) throw new ArgumentException("The given experience id doesn't exist!");
+
+			experienceExist.Skills = experienceUpdateRequest.Skills.Select(s => s.MapToSkill()).ToList();
+
+			var experienceResponse = await _experienceRepositories.Update(experienceExist);
+
+			return experienceResponse.ToExperienceResponse();
 		}
 	}
 }

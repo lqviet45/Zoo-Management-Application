@@ -53,5 +53,19 @@ namespace Repositories
 				.FirstOrDefaultAsync(experience => experience.ExperienceId == ExperienceId);
 			return experience; 
 		}
+
+		public async Task<Experience> Update(Experience experience)
+		{
+			var experienceExist = await GetExperienceById(experience.ExperienceId);
+			if (experienceExist == null) return experience;
+
+			//_context.Skills.UpdateRange(experience.Skills);
+			experienceExist.Skills = experience.Skills;
+
+			await _context.SaveChangesAsync();
+
+
+			return experienceExist;
+		}
 	}
 }

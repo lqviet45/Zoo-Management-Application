@@ -29,5 +29,12 @@ namespace ServiceContracts
 		/// <param name="experienceId">The experience id to delete</param>
 		/// <returns>True if delete success, else false</returns>
 		Task<bool> DeleteExperience(int experienceId);
+
+		/// <summary>
+		/// Update a existed experience
+		/// </summary>
+		/// <param name="experienceUpdateRequest">The experience update</param>
+		/// <returns>A experience after updated</returns>
+		Task<ExperienceResponse> UpdateExperience(ExperienceUpdateRequest? experienceUpdateRequest);
 	}
 }

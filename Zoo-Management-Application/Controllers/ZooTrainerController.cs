@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
+using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -58,6 +60,19 @@ namespace Zoo_Management_Application.Controllers
 			if (isDelete) return NoContent();
 
 			return NotFound("Can not delete experience by some error!");
+		}
+
+		[HttpPut("experience")]
+		public async Task<IActionResult> PutExperience(ExperienceUpdateRequest experienceUpdateRequest)
+		{
+			if (ModelState.IsValid)
+			{
+				var experienceUpdate = await _experienceServices.UpdateExperience(experienceUpdateRequest);
+				return Ok(experienceUpdate);
+			}
+
+			return NotFound("Can not update for some error!");
+
 		}
 	}
 }
