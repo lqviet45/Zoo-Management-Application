@@ -1,10 +1,11 @@
-﻿
-
-using Entities.Models;
+﻿using Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO
 {
+	/// <summary>
+	/// Represents the DTO class that contains the cage details to update
+	/// </summary>
 	public class CageUpdateRequest
 	{
 		[Required(ErrorMessage = "Cage ID can not be blank!")]
@@ -21,6 +22,10 @@ namespace ServiceContracts.DTO
 		[Required]
 		public bool IsDelete { get; set; }
 
+		/// <summary>
+		/// Converts the current object of CageAddRequest into a new object of Cage type
+		/// </summary>
+		/// <returns>Returns Cage object</returns>
 		public Cage MapToCage()
 		{
 			return new Cage

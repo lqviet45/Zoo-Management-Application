@@ -2,11 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Repositories
 {
@@ -42,23 +38,23 @@ namespace Repositories
 			return areaDelete.IsDelete;
         }
 
-		public Task<List<Area>> GetAllArea()
+		public async Task<List<Area>> GetAllArea()
 		{
-			var listArea = _dbContext.Areas.ToListAsync();
+			var listArea = await _dbContext.Areas.Where(temp => temp.IsDelete == false).ToListAsync();
 
 			return listArea;
 		}
 
-		public Task<Area?> GetAreaById(int? areaId)
+		public async Task<Area?> GetAreaById(int? areaId)
 		{
-			var area = _dbContext.Areas.Where(area => area.AreaId == areaId).FirstOrDefaultAsync();
+			var area = await _dbContext.Areas.Where(area => area.AreaId == areaId && area.IsDelete == false).FirstOrDefaultAsync();
 
 			return area;
 		}
 
-		public Task<Area?> GetAreaByName(string areaName)
+		public async Task<Area?> GetAreaByName(string areaName)
 		{
-			return _dbContext.Areas.Where(area => area.AreaName == areaName).FirstOrDefaultAsync();
+			return await _dbContext.Areas.Where(area => area.AreaName == areaName && area.IsDelete == false).FirstOrDefaultAsync();
 		}
 
 		public async Task<Area> UpdateArea(Area area)

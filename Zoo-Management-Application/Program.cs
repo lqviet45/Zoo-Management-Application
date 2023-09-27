@@ -14,11 +14,15 @@ builder.Services.AddScoped<IUserServices, UserServices>();
 
 builder.Services.AddScoped<IAreaRepositories, AreaRepositories>();
 builder.Services.AddScoped<IAreaServices, AreaServices>();
+
 builder.Services.AddScoped<IExperienceServices, ExperienceServices>();
 builder.Services.AddScoped<IExperienceRepositories, ExperienceRepositories>();
 
 builder.Services.AddScoped<ICageRepositories, CageRepositories>();
 builder.Services.AddScoped<ICageServices, CageServices>();
+
+builder.Services.AddScoped<ISpeciesRepositories, SpeciesRepositories>();
+builder.Services.AddScoped<ISpeciesServices, SpeciesServices>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

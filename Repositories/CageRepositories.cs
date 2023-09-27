@@ -10,19 +10,22 @@ namespace Repositories
 	{
 		// private field
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IAreaRepositories _areaRepositories;
 
 		// constructor
-		public CageRepositories(ApplicationDbContext dbContext)
+		public CageRepositories(ApplicationDbContext dbContext, IAreaRepositories areaRepositories)
 		{
 			_dbContext = dbContext;
+			_areaRepositories = areaRepositories;
 		}
 		public async Task<Cage> Add(Cage cage)
-		{
+		{	var Area =  await _areaRepositories.GetAreaById(cage.AreaId);
+			if(Area is null) throw new ArgumentException("The Area is deleted!");
 			cage.IsDelete = false;
 			_dbContext.Cages.Add(cage);
 			await _dbContext.SaveChangesAsync();
 			// Dirty code
-			cage = await GetCageById(cage.CageId);
+			cage.Area = Area;
 			return cage;
 		}
 
@@ -39,24 +42,28 @@ namespace Repositories
 			return true;
 		}
 
-		public Task<List<Cage>> GetAllCage()
+		public async Task<List<Cage>> GetAllCage()
 		{
-			var listCage = _dbContext.Cages.Include(cage => cage.Area)
-										   .ToListAsync();
+			var listCage = await _dbContext.Cages.Include(cage => cage.Area)
+									.Where(cage => cage.IsDelete == false)
+									.ToListAsync();
+										   
 			return listCage;
 		}
 
-		public Task<Cage?> GetCageById(int? cageId)
+		public async Task<Cage?> GetCageById(int? cageId)
 		{
-			var cage = _dbContext.Cages.Include(cage => cage.Area)
-				.Where(cage => cage.CageId == cageId).FirstOrDefaultAsync();
+			var cage = await _dbContext.Cages.Include(cage => cage.Area)
+				.Where(cage => cage.CageId == cageId && cage.IsDelete == false)
+				.FirstOrDefaultAsync();
 
 			return cage;
 		}
 
-		public Task<Cage?> GetCageByName(string cageName)
+		public async Task<Cage?> GetCageByName(string cageName)
 		{
-			return _dbContext.Cages.FirstOrDefaultAsync(cage => cage.CageName == cageName);
+			return await _dbContext.Cages.FirstOrDefaultAsync(cage => 
+						cage.CageName == cageName && cage.IsDelete == false);
 		}
 
 		public async Task<Cage> UpdateCage(Cage cage)

@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO
 		public string AreaName { get; set; } = string.Empty;
 
 		/// <summary>
-		/// Convert AreaAddRequest to Area
+		/// Converts the current object of AreaAddRequest into a new object of Area type
 		/// </summary>
 		/// <returns></returns>
 		public Area MapToArea()

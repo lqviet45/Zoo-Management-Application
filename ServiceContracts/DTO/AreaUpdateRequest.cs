@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO
 {
+	/// <summary>
+	/// Represents the DTO class that contains the Area details to update
+	/// </summary>
 	public class AreaUpdateRequest
 	{
 		[Required(ErrorMessage = "AreaId can not be blank!")]
@@ -15,9 +18,9 @@ namespace ServiceContracts.DTO
 		public bool IsDelete { get; set; }
 
 		/// <summary>
-		/// Converts the current obj of AreaUpdateRequest to Area obj
+		/// Converts the current object of AreaAddRequest into a new object of Cage type
 		/// </summary>
-		/// <returns>Returns Area obj</returns>
+		/// <returns>Returns Area object</returns>
 		public Area MapToArea()
 		{
 			return new Area

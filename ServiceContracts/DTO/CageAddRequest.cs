@@ -7,6 +7,9 @@ using Entities.Models;
 
 namespace ServiceContracts.DTO
 {
+	/// <summary>
+	/// Act as a DTO class for adding new Cage
+	/// </summary>
 	public class CageAddRequest
 	{
 		[Required(ErrorMessage = "Cage Name can not be blank!")]
@@ -15,10 +18,8 @@ namespace ServiceContracts.DTO
 		[Required(ErrorMessage = "Area Id can not be blank!")]
 		public int AreaId { get; set; }
 
-		public virtual Area Area { get; set; } = null!;
-
 		/// <summary>
-		/// Convert CageAddRequest to Cage
+		/// Converts the current object of CageAddRequest into a new object of Cage type
 		/// </summary>
 		/// <returns></returns>
 		public Cage MapToCage()

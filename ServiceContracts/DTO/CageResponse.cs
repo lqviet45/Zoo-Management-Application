@@ -1,11 +1,12 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
 namespace ServiceContracts.DTO
 {
 	/// <summary>
-	/// Represents DTO class that is used as return type of most methods of Area service
+	/// Represents DTO class that is used as return type of most methods of Cage service
 	/// </summary>
 	public class CageResponse
 	{
@@ -14,16 +15,16 @@ namespace ServiceContracts.DTO
 		public string CageName { get; set; } = string.Empty;
 		public int AreaId { get; set; }
 
-		public virtual Area? Area { get; set; }
+		public AreaResponse? Area { get; set; }
 	}
 
 	public static class CageExtension
 	{
 		/// <summary>
-		/// A method to convert Cage to CageResponse
+		/// An extension method to convert an object of Cage class into CageResponse class
 		/// </summary>
-		/// <param name="cage">Cage to convert</param>
-		/// <returns>CageResponse obj base on the cage</returns>
+		/// <param name="person">The Cage object to convert</param>
+		/// /// <returns>Returns the converted CageResponse object</returns>
 		public static CageResponse ToCageResponse(this Cage cage)
 		{
 			return new CageResponse()
@@ -31,7 +32,7 @@ namespace ServiceContracts.DTO
 				CageId = cage.Area.AreaName + cage.CageId.ToString(),
 				CageName = cage.CageName,
 				AreaId = cage.AreaId,
-				Area = cage.Area
+				Area = cage.Area.ToAreaResponse()
 			};
 		}
 	}
