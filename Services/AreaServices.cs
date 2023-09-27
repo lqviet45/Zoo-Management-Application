@@ -2,12 +2,12 @@
 using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.AreaDTO;
 using Services.Helper;
 
 namespace Services
 {
-	public class AreaServices : IAreaServices
+    public class AreaServices : IAreaServices
 	{
 		// private field
 		private readonly IAreaRepositories _areaRepositories;

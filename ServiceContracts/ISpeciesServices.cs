@@ -1,8 +1,8 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.SpeciesDTO;
 
 namespace ServiceContracts
 {
-	public interface ISpeciesServices
+    public interface ISpeciesServices
 	{
 		/// <summary>
 		/// Adding the new Species into the Species table

@@ -1,6 +1,6 @@
 ﻿using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.ExperienceDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-	public class ExperienceServices : IExperienceServices
+    public class ExperienceServices : IExperienceServices
 	{
 		private readonly IExperienceRepositories _experienceRepositories;
 

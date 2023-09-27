@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.SpeciesDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class SpeciesController : ControllerBase
 	{

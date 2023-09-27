@@ -1,8 +1,8 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.AreaDTO;
 
 namespace ServiceContracts
 {
-	public interface IAreaServices
+    public interface IAreaServices
 	{
 		/// <summary>
 		/// Adding the new Area into the Area table

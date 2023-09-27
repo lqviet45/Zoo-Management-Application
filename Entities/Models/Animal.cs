@@ -14,10 +14,6 @@ namespace Entities.Models
 		[NotNull]
 		public int SpeciesId { get; set; }
 
-		[ForeignKey("User")]
-		[NotNull]
-		public long ZooTrainerId { get; set; }
-
 		[StringLength(80)]
 		[NotNull]
 		public string? AnimalName { get; set;}

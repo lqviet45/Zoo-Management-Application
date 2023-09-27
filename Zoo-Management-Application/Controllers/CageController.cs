@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using ServiceContracts.DTO.AreaDTO;
+using ServiceContracts.DTO.CageDTO;
 
 namespace Zoo_Management_Application.Controllers
 {

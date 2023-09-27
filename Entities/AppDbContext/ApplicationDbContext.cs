@@ -66,19 +66,5 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<Meal>().ToTable(nameof(Meal));
 		}
-
-		public List<Skill> Sp_GetUserSkill(int? experienceId)
-		{
-			SqlParameter[] parameters = new SqlParameter[]
-			{
-				new SqlParameter("@experienceId", experienceId),
-
-			};
-
-			return Skills.FromSqlRaw("select SkillId ,SkillName from Skills sk join ExperienceSkill es " +
-				"on sk.SkillId = es.SkillsSkillId" +
-				" join Experiences ex on es.ExperiencesExperienceId = ex.ExperienceId " +
-				"where ex.ExperienceId = @experienceId", parameters).ToList();
-		}
 	}
 }

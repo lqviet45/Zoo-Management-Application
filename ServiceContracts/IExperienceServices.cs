@@ -1,4 +1,4 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.ExperienceDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceContracts
 {
-	public interface IExperienceServices
+    public interface IExperienceServices
 	{
 		/// <summary>
 		/// Add Experience to database

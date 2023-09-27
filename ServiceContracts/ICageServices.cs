@@ -1,4 +1,6 @@
 ﻿using ServiceContracts.DTO;
+using ServiceContracts.DTO.AreaDTO;
+using ServiceContracts.DTO.CageDTO;
 
 namespace ServiceContracts
 {

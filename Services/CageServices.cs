@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using ServiceContracts.DTO.AreaDTO;
+using ServiceContracts.DTO.CageDTO;
 using Services.Helper;
 
 namespace Services

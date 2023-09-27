@@ -1,7 +1,7 @@
 ﻿using Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ServiceContracts.DTO
+namespace ServiceContracts.DTO.CageDTO
 {
 	/// <summary>
 	/// Represents the DTO class that contains the cage details to update

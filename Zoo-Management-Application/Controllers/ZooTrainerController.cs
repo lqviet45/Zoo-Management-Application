@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.UserDTO;
 using Services;
 
 namespace Zoo_Management_Application.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class ZooTrainerController : ControllerBase
 	{

@@ -1,13 +1,14 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.ExperienceDTO;
+using ServiceContracts.DTO.UserDTO;
 using Services.Helper;
 
 
 namespace Services
 {
-	public class UserServices : IUserServices
+    public class UserServices : IUserServices
 	{
 		private readonly IUserRepositories _userRepositories;
 		private readonly IExperienceRepositories _experienceRepositories;
@@ -102,6 +103,7 @@ namespace Services
 			userUpdate.UserName = userUpdateRequest.UserName;
 			userUpdate.Email = userUpdateRequest.Email;
 			userUpdate.Gender = userUpdateRequest.Gender;
+			userUpdate.FullName = userUpdateRequest.FullName;
 			userUpdate.PhoneNumber = userUpdateRequest.PhoneNumber;
 			userUpdate.DateOfBirth = userUpdateRequest.DateOfBirth;
 

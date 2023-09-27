@@ -1,9 +1,10 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using ServiceContracts.DTO.AreaDTO;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace ServiceContracts.DTO
+namespace ServiceContracts.DTO.CageDTO
 {
 	/// <summary>
 	/// Represents DTO class that is used as return type of most methods of Cage service

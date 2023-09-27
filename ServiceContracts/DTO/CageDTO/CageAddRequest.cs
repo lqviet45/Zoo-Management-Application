@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Entities.Models;
 
-namespace ServiceContracts.DTO
+namespace ServiceContracts.DTO.CageDTO
 {
 	/// <summary>
 	/// Act as a DTO class for adding new Cage

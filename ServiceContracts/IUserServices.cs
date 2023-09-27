@@ -1,8 +1,8 @@
-﻿using ServiceContracts.DTO;
+﻿using ServiceContracts.DTO.UserDTO;
 
 namespace ServiceContracts
 {
-	public interface IUserServices
+    public interface IUserServices
 	{
 		/// <summary>
 		/// Adding the new User in to the User table

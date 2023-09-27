@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.ExperienceDTO;
+using ServiceContracts.DTO.UserDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class UserController : ControllerBase
 	{

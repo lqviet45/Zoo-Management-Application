@@ -1,12 +1,12 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO;
+using ServiceContracts.DTO.SpeciesDTO;
 using Services.Helper;
 
 namespace Services
 {
-	public class SpeciesServices : ISpeciesServices
+    public class SpeciesServices : ISpeciesServices
 	{
 		// private field
 		private readonly ISpeciesRepositories _speciesRepositories;
