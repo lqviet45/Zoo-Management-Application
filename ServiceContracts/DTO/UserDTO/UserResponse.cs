@@ -32,7 +32,7 @@ namespace ServiceContracts.DTO.UserDTO
         public int RoleId { get; set; }
         public virtual Role? Role { get; set; }
 
-        public List<ExperienceResponse> ExperienceResponses { get; set; } = null!;
+        public List<ExperienceResponse> ExperienceResponses { get; set; } = new List<ExperienceResponse>();
     }
 
     public static class UserExtension

@@ -48,6 +48,8 @@ namespace Zoo_Management_Application.Controllers
 			if (ModelState.IsValid)
 			{
 				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
+				var experience = await _experienceService.AddExperience(userUpdateRequest.ExperienceAddRequest);
+				userUpdate.ExperienceResponses.Add(experience);
 				return Ok(userUpdate);
 			}
 
