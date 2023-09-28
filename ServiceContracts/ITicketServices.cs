@@ -18,5 +18,26 @@ namespace ServiceContracts
 		/// </summary>
 		/// <returns>A list of ticket as ticketResponse type</returns>
 		Task<List<TicketResponse>> GetAllTicket();
+
+		/// <summary>
+		/// Update an existing ticket
+		/// </summary>
+		/// <param name="ticketUpdateRequest">the ticket to update</param>
+		/// <returns>A ticketResponse object after updated</returns>
+		Task<TicketResponse> UpdateTicket(TicketUpdateRequest? ticketUpdateRequest);
+
+		/// <summary>
+		/// Get a ticket by Id
+		/// </summary>
+		/// <param name="ticketId">The ticket Id to get</param>
+		/// <returns>A ticket or null</returns>
+		Task<TicketResponse?> GetTicketById(int ticketId);
+
+		/// <summary>
+		/// Delete a ticket by id
+		/// </summary>
+		/// <param name="ticketId">The ticket Id to delete</param>
+		/// <returns>True if delete success, else false</returns>
+		Task<bool> DeleteTicket(int ticketId);
 	}
 }

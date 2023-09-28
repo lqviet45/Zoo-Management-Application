@@ -30,5 +30,12 @@ namespace RepositoryContracts
 		/// <param name="ticketId">The ticket Id to delete</param>
 		/// <returns>True if delete success, else false</returns>
 		Task<bool> Delete(int ticketId);
+
+		/// <summary>
+		/// Update an existed ticket in the database
+		/// </summary>
+		/// <param name="ticket">the ticket updated</param>
+		/// <returns>A ticket after updated</returns>
+		Task<Ticket> Update(Ticket ticket);
 	}
 }

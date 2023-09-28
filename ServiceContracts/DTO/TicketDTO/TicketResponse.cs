@@ -20,6 +20,11 @@ namespace ServiceContracts.DTO.TicketDTO
 
 	public static class TicketExtension
 	{
+		/// <summary>
+		/// Convert a ticket to ticketResponse
+		/// </summary>
+		/// <param name="ticket">The ticket to convert</param>
+		/// <returns>A ticketResopnse base on the ticket</returns>
 		public static TicketResponse ToTicketResponse(this Ticket ticket)
 		{
 			return new TicketResponse()

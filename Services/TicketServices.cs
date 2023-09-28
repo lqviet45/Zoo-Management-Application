@@ -30,11 +30,57 @@ namespace Services
 			return ticket.ToTicketResponse();
 		}
 
+		public async Task<bool> DeleteTicket(int ticketId)
+		{
+			var existTicket = await _ticketReponsitories.GetTicketById(ticketId);
+			if (existTicket is null)
+			{
+				throw new ArgumentNullException($"{ticketId} does not exist");
+			}
+
+			var isDelete = await _ticketReponsitories.Delete(existTicket.TicketId);
+
+			return isDelete;
+		}
+
 		public async Task<List<TicketResponse>> GetAllTicket()
 		{
 			var listTicket = await _ticketReponsitories.GetAllTicket();
 
 			return listTicket.Select(t => t.ToTicketResponse()).ToList();
+		}
+
+		public async Task<TicketResponse?> GetTicketById(int ticketId)
+		{
+			var existTicket = await _ticketReponsitories.GetTicketById(ticketId);
+
+			if (existTicket is null) return null;
+
+			return existTicket.ToTicketResponse();
+		}
+
+		public async Task<TicketResponse> UpdateTicket(TicketUpdateRequest? ticketUpdateRequest)
+		{
+			if (ticketUpdateRequest is null)
+			{
+				throw new ArgumentNullException("The ticket update is empty!");
+			}
+
+			ValidationHelper.ModelValidation(ticketUpdateRequest);
+
+			var existTicket = await _ticketReponsitories.GetTicketById(ticketUpdateRequest.TicketId);
+
+			if (existTicket is null)
+			{
+				throw new ArgumentException($"The Ticket Id: {ticketUpdateRequest.TicketId} doesn't exist!");
+			}
+
+			existTicket.TicketName = ticketUpdateRequest.TicketName;
+			existTicket.Price = ticketUpdateRequest.Price;
+
+			await _ticketReponsitories.Update(existTicket);
+
+			return existTicket.ToTicketResponse();
 		}
 	}
 }

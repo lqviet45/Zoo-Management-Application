@@ -15,6 +15,10 @@ namespace ServiceContracts.DTO.TicketDTO
 		[Required(ErrorMessage = "Release date can not be blank!")]
 		public DateTime ReleaseDate { get; set; } = DateTime.Now;
 
+		/// <summary>
+		/// Convert a TicketAddRequest to Ticket object
+		/// </summary>
+		/// <returns>A ticket object base on ticketAddRequest</returns>
 		public Ticket MapToTicket()
 		{
 			return new Ticket()

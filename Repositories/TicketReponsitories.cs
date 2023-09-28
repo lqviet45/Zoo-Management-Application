@@ -22,9 +22,15 @@ namespace RepositoryContracts
 			return ticket;
 		}
 
-		public Task<bool> Delete(int ticketId)
+		public async Task<bool> Delete(int ticketId)
 		{
-			throw new NotImplementedException();
+			var ticketExist = await GetTicketById(ticketId);
+			if (ticketExist is null) return false;
+
+			_context.Tickets.Remove(ticketExist);
+			await _context.SaveChangesAsync();
+
+			return true;
 		}
 
 		public async Task<List<Ticket>> GetAllTicket()
@@ -34,9 +40,24 @@ namespace RepositoryContracts
 			return ticketList;
 		}
 
-		public Task<Ticket?> GetTicketById(int ticketId)
+		public async Task<Ticket?> GetTicketById(int ticketId)
 		{
-			throw new NotImplementedException();
+			var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.TicketId == ticketId);
+
+			return ticket;
+		}
+
+		public async Task<Ticket> Update(Ticket ticket)
+		{
+			var ticketExist = await GetTicketById(ticket.TicketId);
+			if (ticketExist is null) return ticket;
+
+			ticketExist.TicketName = ticket.TicketName;
+			ticketExist.Price = ticket.Price;
+
+			await _context.SaveChangesAsync();
+
+			return ticketExist;
 		}
 	}
 }
