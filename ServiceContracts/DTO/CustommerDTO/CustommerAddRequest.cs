@@ -1,6 +1,6 @@
-﻿using ServiceContracts.DTO.OrderDTO;
+﻿using Entities.Models;
+using ServiceContracts.DTO.OrderDTO;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ServiceContracts.DTO.CustommerDTO
 {
@@ -20,6 +20,16 @@ namespace ServiceContracts.DTO.CustommerDTO
 		[Phone(ErrorMessage = "Plese input a valid phone number!")]
 		public string? PhoneNumber { get; set; }
 
-		public OrderAddRequest? OrderAddRequest { get; set; }
+		public List<int> TicketIdList { get; set; } = new List<int>();
+
+		public Custommer MapToCustommer()
+		{
+			return new Custommer()
+			{
+				Name = Name,
+				Email = Email,
+				PhoneNumber = PhoneNumber
+			};
+		}
 	}
 }

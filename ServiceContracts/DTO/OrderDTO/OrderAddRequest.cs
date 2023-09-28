@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ServiceContracts.DTO.OrderDTO
@@ -10,5 +11,14 @@ namespace ServiceContracts.DTO.OrderDTO
 
 		[Required]
 		public long CustommerId { get; set; }
+
+		public Order MaptoOrder() 
+		{
+			return new Order()
+			{
+				PurchaseDate = PurchaseDate,
+				CustommerId = CustommerId
+			};
+		}
 	}
 }
