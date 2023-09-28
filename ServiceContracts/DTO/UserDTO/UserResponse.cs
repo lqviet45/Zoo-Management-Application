@@ -14,6 +14,7 @@ namespace ServiceContracts.DTO.UserDTO
 
         [Required(ErrorMessage = "UserName Can not be blank!")]
         public string? UserName { get; set; }
+
         [Required(ErrorMessage = "Email can not be blank!")]
         [EmailAddress(ErrorMessage = "Invalid email address!")]
         public string? Email { get; set; }
@@ -53,6 +54,7 @@ namespace ServiceContracts.DTO.UserDTO
                 PhoneNumber = user.PhoneNumber,
                 DateOfBirth = user.DateOfBirth,
                 RoleId = user.RoleId,
+                Role = user.Role,
                 Gender = user.Gender
             };
         }

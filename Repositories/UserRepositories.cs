@@ -40,6 +40,7 @@ namespace Repositories
 		public async Task<List<User>> GetAllStaff()
 		{
 			var listStaff = await _dbContext.Users.Where(user => user.RoleId == 2 && user.IsDelete == false)
+				.Include(u => u.Role)
 				.ToListAsync();
 			return listStaff;
 		}
@@ -47,13 +48,14 @@ namespace Repositories
 		public async Task<List<User>> GetAllZooTrainer()
 		{
 			var listZooTrainer = await _dbContext.Users.Where(user => user.RoleId == 3 && user.IsDelete == false)
+				.Include(u => u.Role)
 				.ToListAsync();
 			return listZooTrainer;
 		}
 
 		public async Task<User?> GetStaffById(long staffId)
 		{
-			var matchingStaff = await _dbContext.Users
+			var matchingStaff = await _dbContext.Users.Include(u => u.Role)
 				.FirstOrDefaultAsync(staff => staff.UserId == staffId && staff.IsDelete == false);
 			
 			return matchingStaff;
@@ -61,21 +63,26 @@ namespace Repositories
 
 		public async Task<User?> GetUserById(long id)
 		{
-			var matchingUser = await _dbContext.Users.
-				FirstOrDefaultAsync(user => user.UserId == id && user.IsDelete == false);
+			var matchingUser = await _dbContext.Users
+				.Include(u => u.Role)
+				.FirstOrDefaultAsync(user => user.UserId == id && user.IsDelete == false);
 
 			return matchingUser;
 		}
 
 		public Task<User?> GetUserByName(string? userName)
 		{
-		    return _dbContext.Users.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
+		    return _dbContext.Users
+				.Include(u => u.Role)
+				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}
 
 		public async Task<User?> GetZooTrainerById(long zooTrainerId)
 		{
 			var matchingZooTrainer = await _dbContext.Users
+				.Include(u => u.Role)
 				.FirstOrDefaultAsync(zooTrainer => zooTrainer.UserId == zooTrainerId && zooTrainer.IsDelete == false);
+
 			return matchingZooTrainer;
 		}
 
