@@ -21,6 +21,9 @@ builder.Services.AddScoped<IExperienceRepositories, ExperienceRepositories>();
 builder.Services.AddScoped<ICageRepositories, CageRepositories>();
 builder.Services.AddScoped<ICageServices, CageServices>();
 
+builder.Services.AddScoped<ITicketReponsitories, TicketReponsitories>();
+builder.Services.AddScoped<ITicketServices, TicketServices>();
+
 builder.Services.AddScoped<ISpeciesRepositories, SpeciesRepositories>();
 builder.Services.AddScoped<ISpeciesServices, SpeciesServices>();
 

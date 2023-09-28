@@ -1,0 +1,34 @@
+﻿
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using Entities.Models;
+
+namespace ServiceContracts.DTO.TicketDTO
+{
+	public class TicketResponse
+	{
+		public int TicketId { get; set; }
+
+		public string? TicketName { get; set; }
+
+		public double Price { get; set; }
+
+		public DateTime ReleaseDate { get; set; }
+	}
+
+	public static class TicketExtension
+	{
+		public static TicketResponse ToTicketResponse(this Ticket ticket)
+		{
+			return new TicketResponse()
+			{
+				TicketId = ticket.TicketId,
+				TicketName = ticket.TicketName,
+				Price = ticket.Price,
+				ReleaseDate = ticket.ReleaseDate
+			};
+		}
+	}
+}
