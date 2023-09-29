@@ -27,6 +27,8 @@ builder.Services.AddScoped<ITicketServices, TicketServices>();
 builder.Services.AddScoped<ISpeciesRepositories, SpeciesRepositories>();
 builder.Services.AddScoped<ISpeciesServices, SpeciesServices>();
 
+builder.Services.AddScoped<ICustommerReponsitories, CustommerReponsitories>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
