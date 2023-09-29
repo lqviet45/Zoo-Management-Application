@@ -1,6 +1,4 @@
-﻿
-
-using Entities.Models;
+﻿using Entities.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.SpeciesDTO

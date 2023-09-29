@@ -8,7 +8,7 @@ namespace ServiceContracts
 		/// Adding the new User in to the User table
 		/// </summary>
 		/// <param name="userAddRequest">The user to add</param>
-		/// <returns>UserRespon object base on the user adding</returns>
+		/// <returns>UserResponse object base on the user adding</returns>
 		/// <exception cref="ArgumentNullException"></exception>
 		/// <exception cref="ArgumentException"></exception>
 		Task<UserResponse> AddUser(UserAddRequest? userAddRequest);

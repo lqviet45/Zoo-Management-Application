@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Entities.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateExperience : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,16 +41,16 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedingFood",
+                name: "Food",
                 columns: table => new
                 {
                     FoodId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FoodName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false)
+                    FoodName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedingFood", x => x.FoodId);
+                    table.PrimaryKey("PK_Food", x => x.FoodId);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,7 +170,6 @@ namespace Entities.Migrations
                     AnimalId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SpeciesId = table.Column<int>(type: "int", nullable: false),
-                    ZooTrainerId = table.Column<long>(type: "bigint", nullable: false),
                     AnimalName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     DateArrive = table.Column<DateTime>(type: "DateTime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
@@ -239,6 +238,32 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnimalFood",
+                columns: table => new
+                {
+                    AnimalId = table.Column<long>(type: "bigint", nullable: false),
+                    FoodId = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FeedingTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimalFood", x => new { x.AnimalId, x.FoodId });
+                    table.ForeignKey(
+                        name: "FK_AnimalFood_Animal_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animal",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnimalFood_Food_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Food",
+                        principalColumn: "FoodId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AnimalUser",
                 columns: table => new
                 {
@@ -259,34 +284,6 @@ namespace Entities.Migrations
                         column: x => x.ZooTrainersUserId,
                         principalTable: "User",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Meal",
-                columns: table => new
-                {
-                    MealId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AnimalId = table.Column<long>(type: "bigint", nullable: false),
-                    FoodId = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FeedingTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meal", x => x.MealId);
-                    table.ForeignKey(
-                        name: "FK_Meal_Animal_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animal",
-                        principalColumn: "AnimalId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Meal_FeedingFood_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "FeedingFood",
-                        principalColumn: "FoodId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -321,6 +318,11 @@ namespace Entities.Migrations
                 column: "SpeciesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnimalFood_FoodId",
+                table: "AnimalFood",
+                column: "FoodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AnimalUser_ZooTrainersUserId",
                 table: "AnimalUser",
                 column: "ZooTrainersUserId");
@@ -334,16 +336,6 @@ namespace Entities.Migrations
                 name: "IX_Experience_UserId",
                 table: "Experience",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Meal_AnimalId",
-                table: "Meal",
-                column: "AnimalId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Meal_FoodId",
-                table: "Meal",
-                column: "FoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustommerId",
@@ -370,10 +362,10 @@ namespace Entities.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnimalUser");
+                name: "AnimalFood");
 
             migrationBuilder.DropTable(
-                name: "Meal");
+                name: "AnimalUser");
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
@@ -382,10 +374,10 @@ namespace Entities.Migrations
                 name: "Skill");
 
             migrationBuilder.DropTable(
-                name: "Animal");
+                name: "Food");
 
             migrationBuilder.DropTable(
-                name: "FeedingFood");
+                name: "Animal");
 
             migrationBuilder.DropTable(
                 name: "Order");
