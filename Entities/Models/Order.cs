@@ -16,5 +16,7 @@ namespace Entities.Models
 		[NotNull]
 		public long CustommerId { get; set; }
 		public virtual Custommer? Custommer { get; set; }
+
+		public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 	}
 }

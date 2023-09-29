@@ -70,7 +70,7 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<AnimalFood>(entity =>
 			{
-				entity.HasKey(e => new { e.AnimalId, e.FoodId });
+				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
 				entity.ToTable(nameof(AnimalFood));
 			});
 		}

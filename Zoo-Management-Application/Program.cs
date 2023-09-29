@@ -34,6 +34,7 @@ builder.Services.AddScoped<IMealRepositories, MealRepositories>();
 builder.Services.AddScoped<IMealServices, MealServices>();
 
 builder.Services.AddScoped<ICustommerReponsitories, CustommerReponsitories>();
+builder.Services.AddScoped<ICustommerSevices, CustommerSevices>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

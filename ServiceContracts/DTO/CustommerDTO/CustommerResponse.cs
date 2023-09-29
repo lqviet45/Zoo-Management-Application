@@ -1,4 +1,5 @@
-﻿using ServiceContracts.DTO.OrderDTO;
+﻿using Entities.Models;
+using ServiceContracts.DTO.OrderDTO;
 
 namespace ServiceContracts.DTO.CustommerDTO
 {
@@ -12,5 +13,19 @@ namespace ServiceContracts.DTO.CustommerDTO
 		public string? PhoneNumber { get; set; }
 
 		public OrderResponse? OrderResponse { get; set; }
+	}
+
+	public static class CustommerExtension
+	{
+		public static CustommerResponse ToCustommerResponse(this Custommer custommer)
+		{
+			return new CustommerResponse()
+			{
+				CustommerId = custommer.CustommerId,
+				Name = custommer.Name,
+				Email = custommer.Email,
+				PhoneNumber = custommer.PhoneNumber
+			};
+		}
 	}
 }

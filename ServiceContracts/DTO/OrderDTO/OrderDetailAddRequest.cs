@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.OrderDTO
 {
@@ -12,5 +13,15 @@ namespace ServiceContracts.DTO.OrderDTO
 
 		[Required]
 		public int Quantity { get; set; }
+
+		public OrderDetail MapToOrderDetail()
+		{
+			return new OrderDetail()
+			{
+				TicketId = TicketId,
+				OrderID = OrderId,
+				Quantity = Quantity
+			};
+		}
 	}
 }

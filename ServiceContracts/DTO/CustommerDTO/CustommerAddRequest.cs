@@ -19,7 +19,7 @@ namespace ServiceContracts.DTO.CustommerDTO
 		[StringLength(15)]
 		[Phone(ErrorMessage = "Plese input a valid phone number!")]
 		public string? PhoneNumber { get; set; }
-
+		[Required(ErrorMessage = "Ticket Can't not be empty!")]
 		public List<int> TicketIdList { get; set; } = new List<int>();
 
 		public Custommer MapToCustommer()
