@@ -17,5 +17,12 @@ namespace RepositoryContracts
 		/// <param name="id">The order Id to get</param>
 		/// <returns>A matching order or null</returns>
 		Task<Order?> GetOrderById(long id);
+
+		/// <summary>
+		/// Adding list of orderDetail to database
+		/// </summary>
+		/// <param name="orderDetails">The list of orderDetail to add</param>
+		/// <returns>A list of OrderDetail</returns>
+		Task<List<OrderDetail>> AddOrderDetail(List<OrderDetail> orderDetails);
 	}
 }

@@ -17,5 +17,12 @@ namespace ServiceContracts
 		/// <param name="orderId">The order Id to get</param>
 		/// <returns>A matching Order as OrderResponse or null</returns>
 		Task<OrderResponse?> GetOrderById(long orderId);
+
+		/// <summary>
+		/// Adding list of orderDetail to database
+		/// </summary>
+		/// <param name="orderDetailAddRequests">The list of orderDetail to add</param>
+		/// <returns>A list of OrderResponse</returns>
+		Task<List<OrderDetailResponse>> AddOrderDetail(List<OrderDetailAddRequest> orderDetailAddRequests);
 	}
 }

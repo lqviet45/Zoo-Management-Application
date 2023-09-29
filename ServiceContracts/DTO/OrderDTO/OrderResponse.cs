@@ -20,7 +20,8 @@ namespace ServiceContracts.DTO.OrderDTO
 			{
 				OrderId = order.OrderId,
 				PurchaseDate = order.PurchaseDate,
-				Custommer = order.Custommer
+				Custommer = order.Custommer,
+				OrderDetailResponses = order.OrderDetails.Select(od => od.ToOrderDetailResopnse()).ToList()
 			};
 		}
 	}

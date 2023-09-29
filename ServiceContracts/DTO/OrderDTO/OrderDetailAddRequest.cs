@@ -9,7 +9,7 @@ namespace ServiceContracts.DTO.OrderDTO
 		public int TicketId { get; set; }
 
 		[Required]
-		public int OrderId { get; set; }
+		public long OrderId { get; set; }
 
 		[Required]
 		public int Quantity { get; set; }
