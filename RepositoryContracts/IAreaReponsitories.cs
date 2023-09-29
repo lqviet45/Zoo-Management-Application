@@ -1,9 +1,5 @@
 ﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace RepositoryContracts
 {
@@ -29,7 +25,7 @@ namespace RepositoryContracts
 		/// Get area by id in the dataset
 		/// </summary>
 		/// <param name="areaId">The id of the area</param>
-		/// <returns>Matched Area</returns>
+		/// <returns>Matching Area</returns>
 		Task<Area?> GetAreaById(int? areaId);
 
 		/// <summary>

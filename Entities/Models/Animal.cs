@@ -8,6 +8,7 @@ namespace Entities.Models
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		
 		public long AnimalId { get; set; }
 
 		[ForeignKey("Species")]
@@ -34,7 +35,8 @@ namespace Entities.Models
 		public int CageId { get; set; }
 		public virtual Cage? Cage { get; set; }
 		public virtual Species? Species { get; set; }
-		public virtual ICollection<Meal> Meals { get; set; } = null!;
+		public virtual ICollection<AnimalFood> AnimalLink { get; set; } = null!;
+
 		public virtual ICollection<User> ZooTrainers { get; set; } = null!;
 	}
 }

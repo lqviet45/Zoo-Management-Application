@@ -1,5 +1,4 @@
 ﻿using Entities.Models;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.AreaDTO
@@ -18,7 +17,7 @@ namespace ServiceContracts.DTO.AreaDTO
         public bool IsDelete { get; set; }
 
         /// <summary>
-        /// Converts the current object of AreaAddRequest into a new object of Cage type
+        /// Converts the current object of AreaAddRequest into a new object of Area type
         /// </summary>
         /// <returns>Returns Area object</returns>
         public Area MapToArea()

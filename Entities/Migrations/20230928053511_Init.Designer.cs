@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230925124843_UpdateAnimalAndMeal")]
-    partial class UpdateAnimalAndMeal
+    [Migration("20230928053511_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Entities.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AnimalMeal", b =>
-                {
-                    b.Property<long>("AnimalId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("MealsMealId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AnimalId", "MealsMealId");
-
-                    b.HasIndex("MealsMealId");
-
-                    b.ToTable("AnimalMeal");
-                });
 
             modelBuilder.Entity("AnimalUser", b =>
                 {
@@ -85,9 +70,6 @@ namespace Entities.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<long>("ZooTrainerId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("AnimalId");
 
                     b.HasIndex("CageId");
@@ -95,6 +77,27 @@ namespace Entities.Migrations
                     b.HasIndex("SpeciesId");
 
                     b.ToTable("Animal", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.AnimalFood", b =>
+                {
+                    b.Property<long>("AnimalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FeedingTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AnimalId", "FoodId");
+
+                    b.HasIndex("FoodId");
+
+                    b.ToTable("AnimalFood", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Area", b =>
@@ -190,7 +193,7 @@ namespace Entities.Migrations
                     b.ToTable("Experience", (string)null);
                 });
 
-            modelBuilder.Entity("Entities.Models.FeedingFood", b =>
+            modelBuilder.Entity("Entities.Models.Food", b =>
                 {
                     b.Property<int>("FoodId")
                         .ValueGeneratedOnAdd()
@@ -200,39 +203,12 @@ namespace Entities.Migrations
 
                     b.Property<string>("FoodName")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("FoodId");
 
-                    b.ToTable("FeedingFood", (string)null);
-                });
-
-            modelBuilder.Entity("Entities.Models.Meal", b =>
-                {
-                    b.Property<long>("MealId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("MealId"));
-
-                    b.Property<long>("AnimalId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("FeedingTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MealId");
-
-                    b.HasIndex("FoodId");
-
-                    b.ToTable("Meal", (string)null);
+                    b.ToTable("Food", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Order", b =>
@@ -413,21 +389,6 @@ namespace Entities.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("AnimalMeal", b =>
-                {
-                    b.HasOne("Entities.Models.Animal", null)
-                        .WithMany()
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Meal", null)
-                        .WithMany()
-                        .HasForeignKey("MealsMealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AnimalUser", b =>
                 {
                     b.HasOne("Entities.Models.Animal", null)
@@ -462,6 +423,25 @@ namespace Entities.Migrations
                     b.Navigation("Species");
                 });
 
+            modelBuilder.Entity("Entities.Models.AnimalFood", b =>
+                {
+                    b.HasOne("Entities.Models.Animal", "Animal")
+                        .WithMany("AnimalLink")
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Food", "Food")
+                        .WithMany("FoodLink")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Animal");
+
+                    b.Navigation("Food");
+                });
+
             modelBuilder.Entity("Entities.Models.Cage", b =>
                 {
                     b.HasOne("Entities.Models.Area", "Area")
@@ -482,17 +462,6 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Entities.Models.Meal", b =>
-                {
-                    b.HasOne("Entities.Models.FeedingFood", "FeedingFood")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FeedingFood");
                 });
 
             modelBuilder.Entity("Entities.Models.Order", b =>
@@ -528,7 +497,7 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.Skill", b =>
                 {
                     b.HasOne("Entities.Models.Experience", "Experience")
-                        .WithMany()
+                        .WithMany("Skills")
                         .HasForeignKey("ExperienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -545,6 +514,21 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Entities.Models.Animal", b =>
+                {
+                    b.Navigation("AnimalLink");
+                });
+
+            modelBuilder.Entity("Entities.Models.Experience", b =>
+                {
+                    b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("Entities.Models.Food", b =>
+                {
+                    b.Navigation("FoodLink");
                 });
 #pragma warning restore 612, 618
         }

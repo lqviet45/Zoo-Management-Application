@@ -27,6 +27,12 @@ builder.Services.AddScoped<ITicketServices, TicketServices>();
 builder.Services.AddScoped<ISpeciesRepositories, SpeciesRepositories>();
 builder.Services.AddScoped<ISpeciesServices, SpeciesServices>();
 
+builder.Services.AddScoped<IFoodRepositories, FoodRepositories>();	
+builder.Services.AddScoped<IFoodServices, FoodServices>();
+
+builder.Services.AddScoped<IMealRepositories, MealRepositories>();
+builder.Services.AddScoped<IMealServices, MealServices>();
+
 builder.Services.AddScoped<ICustommerReponsitories, CustommerReponsitories>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
