@@ -9,6 +9,8 @@ namespace ServiceContracts.DTO.OrderDTO
 		public DateTime PurchaseDate { get; set; }
 		public virtual Custommer? Custommer { get; set; }
 
+		public double TotalPrice { get; set; }
+
 		public List<OrderDetailResponse> OrderDetailResponses { get; set; } = new List<OrderDetailResponse>();
 	}
 
