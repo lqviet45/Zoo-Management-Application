@@ -57,6 +57,8 @@ namespace Zoo_Management_Application.Controllers
 
 			order.TotalPrice = total;
 
+			await SendMail(order);
+
 			return Ok(order);
 		}
 
@@ -78,20 +80,41 @@ namespace Zoo_Management_Application.Controllers
 
 		private async Task SendMail(OrderResponse order)
 		{
-			string emailBodySend = string.Empty;
+			string orderBody = string.Empty;
+			foreach (var orderDetail in order.OrderDetailResponses)
+			{
+				if (orderDetail.Ticket != null)
+				{
+					orderBody += "<tr>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.TicketName}</td>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.Price}</td>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Quantity}</td>\r\n" +
+						"        </tr>";
+				}
+			}
 			EmailDto email = new EmailDto();
 			if (order.Custommer != null)
 			{
 				email.To = order.Custommer.Email;
 				email.Subject = "Thảo cầm viên";
-				emailBodySend = emailBody.Replace("custommerName", order.Custommer.Name)
-					.Replace("custommerPhone", order.Custommer.PhoneNumber).Replace("custommerEmail", order.Custommer.Email);
+
+				string emailBodySend = emailBody.Replace("orderId", order.OrderId.ToString())
+					.Replace("custommerName", order.Custommer.Name)
+					.Replace("custommerPhone", order.Custommer.PhoneNumber)
+					.Replace("custommerEmail", order.Custommer.Email)
+					.Replace("orderBody", orderBody)
+					.Replace("allTotal", order.TotalPrice.ToString());
+
+				email.Body = emailBodySend;
 			}
+
+			await _emailServices.SendEmail(email);
 		}
 
 		private string emailBody = $"<div>\r\n" +
 			"        <p>Cảm ơn quý khách đã mau vé</p>\r\n" +
-			"        <p style=\"color: #02ACEA;\">Thông tin đơn hàng </p>\r\n" +
+			"        <p style=\"color: #02ACEA;\">Thông tin đơn hàng Order ID: orderId</p>\r\n" +
+			"		 <p>Bạn có thể dùng order Id để lên web tìm kiếm thông tin đơn hàng của bạn ở trên đó</p>" +
 			"        <div>\r\n" +
 			"            <p>Thông tin khách hàng</p>\r\n" +
 			"            <p>Họ tên: custommerName</p>\r\n" +
@@ -107,22 +130,16 @@ namespace Zoo_Management_Application.Controllers
 			"                            <th style=\"text-align: start;\">Tên sản phẩm</th>\r\n" +
 			"                            <th style=\"text-align: start;\">Giá</th>\r\n" +
 			"                            <th style=\"text-align: start;\">Số lượng</th>\r\n" +
-			"                            <th style=\"text-align: start;\">Tổng tiền</th>\r\n" +
 			"                        </tr>\r\n" +
 			"                    </thead>\r\n" +
 			"                    <tbody>\r\n" +
-			"                        <tr>\r\n" +
-			"                            <td style=\"padding-right: 50px;\">Áo thun nam</td>\r\n" +
-			"                            <td style=\"padding-right: 50px;\">100.000</td>\r\n" +
-			"                            <td style=\"padding-right: 50px;\">1</td>\r\n" +
-			"                            <td style=\"padding-right: 50px;\">100.000</td>\r\n" +
-			"                        </tr>\r\n" +
+			"							orderBody" +
 			"                    </tbody>\r\n" +
 			"                    <tfoot>\r\n" +
 			"                        <tr>\r\n" +
 			"                            <td colspan=\"2\"></td>\r\n" +
 			"                            <td style=\"padding-right: 20px;\">Tổng giá trị đơn hàng</td>\r\n" +
-			"                            <td>300.000</td>\r\n" +
+			"                            <td>allTotal</td>\r\n" +
 			"                        </tr>\r\n" +
 			"                    </tfoot>\r\n" +
 			"                </table>\r\n" +
