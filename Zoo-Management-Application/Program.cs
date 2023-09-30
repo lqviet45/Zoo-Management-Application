@@ -39,6 +39,8 @@ builder.Services.AddScoped<ICustommerSevices, CustommerSevices>();
 builder.Services.AddScoped<IOrderReponsitories, OrderReponsitories>();
 builder.Services.AddScoped<IOrderSevices, OrderSevices>();
 
+builder.Services.AddScoped<IEmailServices, EmailServices>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
