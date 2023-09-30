@@ -29,9 +29,15 @@ namespace Services
 			return meal.MapToResponse();
  		}
 
-		public Task<List<MealResponse>> GetAnimalMealById(long id)
+		public async Task<List<MealResponse?>> GetAnimalMealById(long id)
 		{
-			throw new NotImplementedException();
+			var listMeal = await _mealRepositories.GetAnimalMealById(id);
+			if(listMeal is null)
+			{
+				return null;
+			}
+
+			return listMeal.Select(m => m.MapToResponse()).ToList();
 		}
 	}
 }

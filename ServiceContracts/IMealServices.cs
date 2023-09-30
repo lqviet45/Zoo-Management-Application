@@ -6,7 +6,7 @@ namespace ServiceContracts
 	{
 		Task<MealResponse> AddMeal(MealAddRequest mealAddRequest);
 
-		Task<List<MealResponse>> GetAnimalMealById(long id);
+		Task<List<MealResponse?>> GetAnimalMealById(long id);
 
 	}
 }
