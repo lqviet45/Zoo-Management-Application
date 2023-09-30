@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.MealDTO
 {
+	/// <summary>
+	/// Represents DTO class that is used as return type of most methods of AnimalFood service
+	/// </summary>
 	public class MealResponse
 	{
 		public long AnimalId { get; set; }
@@ -17,12 +20,16 @@ namespace ServiceContracts.DTO.MealDTO
 
 	public static class MealResponseExtensionMethods
 	{
+		/// <summary>
+		/// An extension method to convert an object of AnimalFood class into MealResponse class
+		/// </summary>
+		/// <param name="meal">The AnimalFood object to convert</param>
+		/// /// <returns>Returns the converted MealResponse object</returns>
 		public static MealResponse MapToResponse(this AnimalFood meal)
 		{
 			return new MealResponse()
 			{
 				AnimalId = meal.AnimalId,
-				Foods = meal.Food.Select(f => f.ToFoodResponse()).ToList(),
 				Note = meal.Note,
 				FeedingTime = meal.FeedingTime
 			};

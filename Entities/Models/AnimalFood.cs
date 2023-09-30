@@ -6,9 +6,9 @@ namespace Entities.Models
 {
 	public class AnimalFood
 	{
-		
+		[ForeignKey("Animal")]
         public  long AnimalId { get; set; }
-		
+		[ForeignKey("Food")]
         public int FoodId { get; set; }
 
 		public string? Note { get; set; }
@@ -17,6 +17,6 @@ namespace Entities.Models
 
         public virtual Animal? Animal { get; set; }
 
-        public virtual List<Food> Food { get; set; } = new List<Food>();
+        public virtual Food? Food { get; set; }
     }
 }

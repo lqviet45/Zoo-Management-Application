@@ -90,7 +90,7 @@ namespace Entities.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AnimalId", "FoodId");
+                    b.HasKey("AnimalId", "FoodId", "FeedingTime");
 
                     b.HasIndex("FoodId");
 
@@ -475,7 +475,7 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.OrderDetail", b =>
                 {
                     b.HasOne("Entities.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -526,6 +526,11 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.Food", b =>
                 {
                     b.Navigation("FoodLink");
+                });
+
+            modelBuilder.Entity("Entities.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

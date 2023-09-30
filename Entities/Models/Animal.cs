@@ -38,5 +38,7 @@ namespace Entities.Models
 		public virtual ICollection<AnimalFood> AnimalLink { get; set; } = null!;
 
 		public virtual ICollection<User> ZooTrainers { get; set; } = null!;
+
+		
 	}
 }

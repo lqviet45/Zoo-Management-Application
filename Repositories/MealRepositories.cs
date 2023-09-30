@@ -27,7 +27,7 @@ namespace Repositories
 			_dbContext.AnimalFoods.Add(animalFood);
 			await _dbContext.SaveChangesAsync();
 
-			animalFood.Food.Add(food);
+			animalFood.Food = food;
 
 			return animalFood;
 		}

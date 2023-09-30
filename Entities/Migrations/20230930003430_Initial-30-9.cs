@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Entities.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial309 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -243,12 +243,12 @@ namespace Entities.Migrations
                 {
                     AnimalId = table.Column<long>(type: "bigint", nullable: false),
                     FoodId = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FeedingTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FeedingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AnimalFood", x => new { x.AnimalId, x.FoodId });
+                    table.PrimaryKey("PK_AnimalFood", x => new { x.AnimalId, x.FoodId, x.FeedingTime });
                     table.ForeignKey(
                         name: "FK_AnimalFood_Animal_AnimalId",
                         column: x => x.AnimalId,

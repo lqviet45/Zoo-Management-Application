@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ServiceContracts.DTO.MealDTO
 {
 	/// <summary>
-	/// Act as a DTO class for adding new Food
+	/// Act as a DTO class for adding new Meal
 	/// </summary>
 	public class MealAddRequest
 	{
@@ -17,8 +17,11 @@ namespace ServiceContracts.DTO.MealDTO
 		[Required(ErrorMessage = "Feeding Time can't be blank")]
 		public DateTime FeedingTime { get; set; }
 
-	
-		
+
+		/// <summary>
+		/// Converts the current object of MealAddRequest into a new object of Meal type
+		/// </summary>
+		/// <returns></returns>
 		public AnimalFood MealToAnimalFood()
 		{
 			return new AnimalFood()

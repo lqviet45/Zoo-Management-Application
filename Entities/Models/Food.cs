@@ -9,6 +9,7 @@ namespace Entities.Models
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		
 		public int FoodId { get; set; }
 
 		[NotNull]
@@ -16,5 +17,7 @@ namespace Entities.Models
 		public string? FoodName { get; set; }
 		
 		public virtual ICollection<AnimalFood> FoodLink { get; set; } = null!;
+
+		
 	}
 }
