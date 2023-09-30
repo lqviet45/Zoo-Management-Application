@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+#region add services
 builder.Services.AddScoped<IUserRepositories, UserRepositories>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
@@ -40,6 +41,7 @@ builder.Services.AddScoped<IOrderReponsitories, OrderReponsitories>();
 builder.Services.AddScoped<IOrderSevices, OrderSevices>();
 
 builder.Services.AddScoped<IEmailServices, EmailServices>();
+#endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

@@ -111,7 +111,7 @@ namespace Zoo_Management_Application.Controllers
 			await _emailServices.SendEmail(email);
 		}
 
-		private string emailBody = $"<div>\r\n" +
+		private readonly string emailBody = $"<div>\r\n" +
 			"        <p>Cảm ơn quý khách đã mau vé</p>\r\n" +
 			"        <p style=\"color: #02ACEA;\">Thông tin đơn hàng Order ID: orderId</p>\r\n" +
 			"		 <p>Bạn có thể dùng order Id để lên web tìm kiếm thông tin đơn hàng của bạn ở trên đó</p>" +
