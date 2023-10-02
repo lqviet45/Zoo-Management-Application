@@ -1,8 +1,7 @@
 ﻿using Entities.Models;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using ServiceContracts.DTO.AreaDTO;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+
 
 namespace ServiceContracts.DTO.CageDTO
 {
@@ -24,7 +23,7 @@ namespace ServiceContracts.DTO.CageDTO
 		/// <summary>
 		/// An extension method to convert an object of Cage class into CageResponse class
 		/// </summary>
-		/// <param name="person">The Cage object to convert</param>
+		/// <param name="cage">The Cage object to convert</param>
 		/// /// <returns>Returns the converted CageResponse object</returns>
 		public static CageResponse ToCageResponse(this Cage cage)
 		{

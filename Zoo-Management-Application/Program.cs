@@ -41,10 +41,15 @@ builder.Services.AddScoped<IOrderReponsitories, OrderReponsitories>();
 builder.Services.AddScoped<IOrderSevices, OrderSevices>();
 
 builder.Services.AddScoped<IEmailServices, EmailServices>();
+
+builder.Services.AddScoped<INewsRepositories, NewsRepositories>();
+builder.Services.AddScoped<INewsServices, NewsServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
+	//options.JsonSerializerOptions.PropertyNamingPolicy = null;
+	//options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 	options.JsonSerializerOptions.WriteIndented = true;
 });

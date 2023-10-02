@@ -5,7 +5,7 @@ namespace ServiceContracts
     public interface IUserServices
 	{
 		/// <summary>
-		/// Adding the new User in to the User table
+		/// Adding the new User into the User table
 		/// </summary>
 		/// <param name="userAddRequest">The user to add</param>
 		/// <returns>UserResponse object base on the user adding</returns>
