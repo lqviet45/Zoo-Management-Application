@@ -9,7 +9,10 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-#region add services
+#region Add Services
+
+builder.Services.AddScoped<IFileServices, FileServices>();
+
 builder.Services.AddScoped<IUserRepositories, UserRepositories>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
@@ -44,12 +47,13 @@ builder.Services.AddScoped<IEmailServices, EmailServices>();
 
 builder.Services.AddScoped<INewsRepositories, NewsRepositories>();
 builder.Services.AddScoped<INewsServices, NewsServices>();
+
+builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
+builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-	//options.JsonSerializerOptions.PropertyNamingPolicy = null;
-	//options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 	options.JsonSerializerOptions.WriteIndented = true;
 });
@@ -72,6 +76,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

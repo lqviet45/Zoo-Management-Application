@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.NewsCategoriesDTO;
 using ServiceContracts.DTO.NewsDTO;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,16 +14,16 @@ namespace ServiceContracts.DTO.NewsDTO
 		public int NewsId { get; set; }
 		[Required(ErrorMessage = "Title can not be blank!")]
 		public string? Title { get; set; } = string.Empty;
-		public byte[]? Thumnail { get; set; }
-		public byte[]? Image { get; set; }
+		public string? Thumnail { get; set; }
+		public string? Image { get; set; }
 		[Required(ErrorMessage = "Content can not be blank!")]
 		public string? Content { get; set; } = string.Empty;
 		[Required(ErrorMessage = "Author can not be blank!")]
 		public string? Author { get; set; } = string.Empty;
-		public int CategoryId { get; set; }
 		public DateTime ReleaseDate { get; set; }
+		public int? CategoryId { get; set; }
 
-		public NewsCategories? NewsCategories { get; set; }
+		public NewsCategoryResponse? NewsCategories { get; set; }
 
 	}
 
@@ -44,7 +45,9 @@ namespace ServiceContracts.DTO.NewsDTO
 				Image = news.Image,
 				Content = news.Content,
 				Author = news.Author,
-				ReleaseDate = news.ReleaseDate
+				ReleaseDate = news.ReleaseDate,
+				CategoryId = news.CategoryId,
+				NewsCategories = news.NewsCategories.ToNewsCategoryResponse()
 			};
 		}
 

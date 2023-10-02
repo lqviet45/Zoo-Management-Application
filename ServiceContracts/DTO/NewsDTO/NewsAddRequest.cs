@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -12,10 +13,6 @@ namespace ServiceContracts.DTO.NewsDTO
 		[Required(ErrorMessage = "Title can not be blank!")]
 		public string Title { get; set; } = string.Empty;
 
-		public IFormFile Thumnail { get; set; } = null!;
-
-		public IFormFile Image { get; set; } = null!;
-
 		[Required(ErrorMessage = "Content can not be blank!")]
 		public string Content { get; set; } = string.Empty;
 
@@ -24,10 +21,12 @@ namespace ServiceContracts.DTO.NewsDTO
 
 		[Required(ErrorMessage = "Category Id can not be blank!")]
 		public int CategoryId { get; set; }
-
-		
-
 		public DateTime ReleaseDate { get; set; }
+		[NotMapped]
+		public IFormFile? ImageFile { get; set; }
+		[NotMapped]
+		public IFormFile? ThumnailFile { get; set; }
+
 
 		/// <summary>
 		/// Converts the current object of NewsAddRequest into a new object of News type
@@ -42,6 +41,7 @@ namespace ServiceContracts.DTO.NewsDTO
 				Author = Author,
 				CategoryId = CategoryId,
 				ReleaseDate = ReleaseDate
+			
 			};
 		}
 		

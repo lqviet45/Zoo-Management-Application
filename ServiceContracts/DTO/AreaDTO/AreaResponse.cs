@@ -19,7 +19,7 @@ namespace ServiceContracts.DTO.AreaDTO
         /// <summary>
         /// An extension method to convert an object of Area class into AreaResponse class
         /// </summary>
-        /// <param name="person">The Area object to convert</param>
+        /// <param name="area">The Area object to convert</param>
         /// /// <returns>Returns the converted AreaResponse object</returns>
         public static AreaResponse ToAreaResponse(this Area area)
         {

@@ -10,11 +10,13 @@ namespace Services
 	{
 		// private fields
 		private readonly INewsRepositories _newsRepositories;
+		private readonly IFileServices _fileServices;
 
 		// constructor
-		public NewsServices(INewsRepositories newsRepositories)
+		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices)
 		{
 			_newsRepositories = newsRepositories;
+			_fileServices = fileServices;
 		}
 
 		public async Task<NewsResponse> AddNews(NewsAddrequest? newsAddRequest)
@@ -31,26 +33,25 @@ namespace Services
 
 			News news = newsAddRequest.MapToNews();
 
-			if (newsAddRequest.Image.Length > 0)
+			
+
+			if(newsAddRequest.ImageFile != null)
 			{
-				using (var ms = new MemoryStream())
+				var fileResult = _fileServices.SaveImage(newsAddRequest.ImageFile);
+				if(fileResult.Item1 == 1)
 				{
-					newsAddRequest.Image.CopyTo(ms);
-					var fileBytes = ms.ToArray();
-					news.Image = fileBytes;
+					news.Image = fileResult.Item2; // getting name of image
 				}
 			}
 
-			if (newsAddRequest.Thumnail.Length > 0)
+			if(newsAddRequest.ThumnailFile != null)
 			{
-				using (var ms = new MemoryStream())
+				var fileResult = _fileServices.SaveImage(newsAddRequest.ThumnailFile);
+				if(fileResult.Item1 == 1)
 				{
-					newsAddRequest.Image.CopyTo(ms);
-					var fileBytes = ms.ToArray();
-					news.Thumnail = fileBytes;
+					news.Thumnail = fileResult.Item2; // getting name of thumbnail
 				}
 			}
-
 
 			await _newsRepositories.Add(news);
 			
@@ -84,13 +85,12 @@ namespace Services
 		{
 			var matchingNews = await _newsRepositories.GetNewsById(newsId);
 
-			if(matchingNews is null || matchingNews.Image is null || matchingNews.Thumnail is null)
+			if(matchingNews is null)
 			{
 				return null;
 			}
 			
-			matchingNews.Image = GetImage(Convert.ToBase64String(matchingNews.Image));
-			matchingNews.Thumnail = GetImage(Convert.ToBase64String(matchingNews.Thumnail));
+		
 
 			return matchingNews.ToNewsResponse();
 		}

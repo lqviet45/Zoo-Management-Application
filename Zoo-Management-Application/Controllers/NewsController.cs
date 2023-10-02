@@ -21,7 +21,10 @@ namespace Zoo_Management_Application.Controllers
 		[HttpPost]
 		public async Task<ActionResult<NewsResponse>> PostNews([FromForm]NewsAddrequest newsAddRequest)
 		{
-			
+			if(!ModelState.IsValid)
+			{
+				return BadRequest();
+			}
 			var newsResponse = await _newsServices.AddNews(newsAddRequest);
 			var id = new { id = newsResponse.NewsId };
 

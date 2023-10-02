@@ -14,9 +14,9 @@ namespace ServiceContracts.DTO.NewsDTO
 		[Required(ErrorMessage = "Title can not be blank!")]
 		public string Title { get; set; } = string.Empty;
 
-		public byte[]? Thumnail { get; set; }
+		public string? Thumnail { get; set; }
 
-		public byte[]? Image { get; set; }
+		public string? Image { get; set; }
 
 		[Required(ErrorMessage = "Content can not be blank!")]
 		public string? Content { get; set; }

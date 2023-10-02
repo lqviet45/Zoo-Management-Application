@@ -45,7 +45,7 @@ namespace RepositoryContracts
 		/// <summary>
 		/// Deletes a Area obj based on the given AreaId
 		/// </summary>
-		/// <param name="area">Area ID to search</param>
+		/// <param name="area">Area ID to delete</param>
 		/// <returns>Returns true if the deletion is successful otherwise false</returns>
 		Task<bool> DeleteArea(int AreaId);
 	}

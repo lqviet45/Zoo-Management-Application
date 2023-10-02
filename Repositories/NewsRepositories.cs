@@ -46,14 +46,16 @@ namespace Repositories
 
 		public async Task<List<News>> GetAllNews()
 		{
-			var listNews = await _dbContext.News.ToListAsync();
+			var listNews = await _dbContext.News.Include(cate => cate.NewsCategories)
+									.ToListAsync();
 
 			return listNews;
 		}
 
 		public async Task<News?> GetNewsById(int id)
 		{
-			var news = await _dbContext.News.Where(n => n.NewsId == id).FirstOrDefaultAsync();
+			var news = await _dbContext.News.Include(cate => cate.NewsCategories)
+				.Where(n => n.NewsId == id).FirstOrDefaultAsync();
 
 			return news;
 		}
