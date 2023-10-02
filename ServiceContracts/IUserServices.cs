@@ -26,6 +26,27 @@ namespace ServiceContracts
 		Task<List<UserResponse>> GetAllStaff();
 
 		/// <summary>
+		/// Returns all staff objects that matches with the given 
+		/// search field and search string
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching staff base on given search field 
+		/// and search string</returns>
+		Task<List<UserResponse>> GetFiteredStaff(string searchBy, string? searchString);
+
+		/// <summary>
+		/// Returns all zoo trainer objects that matches with the given 
+		/// search field and search string
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching zoo trainer base on given search field 
+		/// and search string</returns>
+		Task<List<UserResponse>> GetFiteredZooTrainer(string searchBy, string? searchString);
+
+
+		/// <summary>
 		/// Get a Staff by Id
 		/// </summary>
 		/// <param name="staffId">The staff Id to get</param>

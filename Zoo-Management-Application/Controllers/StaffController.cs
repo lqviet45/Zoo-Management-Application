@@ -33,5 +33,12 @@ namespace Zoo_Management_Application.Controllers
 			}
 			return Ok(mathcingStaff);
 		}
+
+		[HttpGet("search")]
+		public async Task<ActionResult<List<UserResponse>>> GetFilteredStaff(string searchBy, string? searchString)
+		{
+			var listStaff = await _userServices.GetFiteredStaff(searchBy, searchString);
+			return Ok(listStaff);
+		}
 	}
 }

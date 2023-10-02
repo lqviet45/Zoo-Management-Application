@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -45,7 +46,7 @@ namespace RepositoryContracts
 		/// </summary>
 		/// <param name="userName">The userName to get</param>
 		/// <returns>A matching user or null</returns>
-		Task<User?> GetUserByName(string? userName);
+		Task<User?> GetUserByUserName(string? userName);
 
 		/// <summary>
 		/// Get a user by Id
@@ -53,6 +54,13 @@ namespace RepositoryContracts
 		/// <param name="id">the id of a user to get</param>
 		/// <returns>A matching user or null</returns>
 		Task<User?> GetUserById(long id);
+
+		/// <summary>
+		/// Returns all user object base on the given expression
+		/// </summary>
+		/// <param name="predicate">LINQ expression to check</param>
+		/// <returns>All matching persons with given condition</returns>
+		Task<List<User>> GetFilteredUsers(Expression<Func<User, bool>> predicate);
 
 		/// <summary>
 		/// Update an existed user

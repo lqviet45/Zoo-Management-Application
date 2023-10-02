@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -53,6 +53,11 @@ namespace Repositories
 			return listZooTrainer;
 		}
 
+		public async Task<List<User>> GetFilteredUsers(Expression<Func<User, bool>> predicate)
+		{
+			return await _dbContext.Users.Where(predicate).ToListAsync();
+		}
+
 		public async Task<User?> GetStaffById(long staffId)
 		{
 			var matchingStaff = await _dbContext.Users.Include(u => u.Role)
@@ -70,7 +75,7 @@ namespace Repositories
 			return matchingUser;
 		}
 
-		public Task<User?> GetUserByName(string? userName)
+		public Task<User?> GetUserByUserName(string? userName)
 		{
 		    return _dbContext.Users
 				.Include(u => u.Role)

@@ -24,7 +24,7 @@ namespace Services
 			ArgumentNullException.ThrowIfNull(userAddRequest);
 
 
-			var userExist = await _userRepositories.GetUserByName(userAddRequest.UserName);
+			var userExist = await _userRepositories.GetUserByUserName(userAddRequest.UserName);
 			if (userExist != null) {
 				throw new ArgumentException("The userName is exist!");
 			}
@@ -63,6 +63,46 @@ namespace Services
 				user.ExperienceResponses = experiences.Result.Select(ex => ex.ToExperienceResponse()).ToList();
 			});
 			return listZooTrainerresponse;
+		}
+
+		public async Task<List<UserResponse>> GetFiteredStaff(string searchBy, string? searchString)
+		{
+			if (string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<User> users = searchBy switch
+			{
+				nameof(UserResponse.FullName) =>
+				await _userRepositories.GetFilteredUsers(temp => 
+					temp.FullName.Contains(searchString) && temp.RoleId == 2),
+
+				nameof(UserResponse.Email) => 
+				await _userRepositories.GetFilteredUsers(temp => 
+					temp.Email.Contains(searchString) && temp.RoleId == 2),
+
+				_ => await _userRepositories.GetAllStaff()
+			};
+
+			return users.Select(user => user.ToUserResponse()).ToList();
+		}
+
+		public async Task<List<UserResponse>> GetFiteredZooTrainer(string searchBy, string? searchString)
+		{
+			if (string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<User> users = searchBy switch
+			{
+				nameof(UserResponse.FullName) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.FullName.Contains(searchString) && temp.RoleId == 3),
+
+				nameof(UserResponse.Email) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.Email.Contains(searchString) && temp.RoleId == 3),
+
+				_ => await _userRepositories.GetAllZooTrainer()
+			};
+
+			return users.Select(user => user.ToUserResponse()).ToList();
 		}
 
 		public async Task<UserResponse?> GetStaffById(long staffId)
