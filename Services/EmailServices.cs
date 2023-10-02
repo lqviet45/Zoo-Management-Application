@@ -32,7 +32,7 @@ namespace Services
 			};
 
 			using var smtp = new SmtpClient();
-			smtp.Connect(
+			await smtp.ConnectAsync(
 				_configuration.GetSection("EmailHost").Value,
 				587,
 				SecureSocketOptions.StartTls);

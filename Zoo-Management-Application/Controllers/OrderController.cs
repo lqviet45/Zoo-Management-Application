@@ -137,7 +137,7 @@ namespace Zoo_Management_Application.Controllers
 			"                    </tbody>\r\n" +
 			"                    <tfoot>\r\n" +
 			"                        <tr>\r\n" +
-			"                            <td colspan=\"2\"></td>\r\n" +
+			"                            <td colspan=\"1\"></td>\r\n" +
 			"                            <td style=\"padding-right: 20px;\">Tổng giá trị đơn hàng</td>\r\n" +
 			"                            <td>allTotal</td>\r\n" +
 			"                        </tr>\r\n" +
