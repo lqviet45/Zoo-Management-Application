@@ -1,5 +1,4 @@
-﻿using System;
-using Entities.Models;
+﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.AreaDTO;

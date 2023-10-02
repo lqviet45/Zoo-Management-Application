@@ -80,6 +80,8 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));
 			modelBuilder.Entity<News>().ToTable(nameof(News));
+
+			
 		}
 	}
 }

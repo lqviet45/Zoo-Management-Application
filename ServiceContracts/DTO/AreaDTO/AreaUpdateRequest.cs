@@ -17,7 +17,7 @@ namespace ServiceContracts.DTO.AreaDTO
         public bool IsDelete { get; set; }
 
         /// <summary>
-        /// Converts the current object of AreaAddRequest into a new object of Area type
+        /// Converts the current object of AreaUpdateRequest into a new object of Area type
         /// </summary>
         /// <returns>Returns Area object</returns>
         public Area MapToArea()
