@@ -41,6 +41,10 @@ namespace Entities.AppDbContext
 
 		public virtual DbSet<AnimalFood> AnimalFoods { get; set; }
 
+		public virtual DbSet<NewsCategories> NewsCategories { get; set; }
+		public virtual DbSet<News> News { get; set; }
+
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -73,6 +77,9 @@ namespace Entities.AppDbContext
 				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
 				entity.ToTable(nameof(AnimalFood));
 			});
+
+			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));
+			modelBuilder.Entity<News>().ToTable(nameof(News));
 		}
 	}
 }
