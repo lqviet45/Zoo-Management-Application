@@ -124,6 +124,13 @@ namespace Services
 			return matchingZooTrainer.ToUserResponse();
 		}
 
+		public async Task<UserResponse?> LoginUser(string userName, string password)
+		{
+			var user = await _userRepositories.GetUserLogin(userName, password);
+			if (user is null) return null;
+			return user.ToUserResponse();
+		}
+
 		public async Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest)
 		{
 			if(userUpdateRequest is null)

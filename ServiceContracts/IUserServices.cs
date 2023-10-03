@@ -5,6 +5,14 @@ namespace ServiceContracts
     public interface IUserServices
 	{
 		/// <summary>
+		/// Use to check the login user
+		/// </summary>
+		/// <param name="userName">The userName to login</param>
+		/// <param name="password">The password</param>
+		/// <returns>A mitching user or null</returns>
+		Task<UserResponse?> LoginUser(string userName, string password);
+
+		/// <summary>
 		/// Adding the new User into the User table
 		/// </summary>
 		/// <param name="userAddRequest">The user to add</param>

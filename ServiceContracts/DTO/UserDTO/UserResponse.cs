@@ -13,7 +13,7 @@ namespace ServiceContracts.DTO.UserDTO
         public long UserId { get; set; }
 
         [Required(ErrorMessage = "UserName Can not be blank!")]
-        public string? UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Email can not be blank!")]
         [EmailAddress(ErrorMessage = "Invalid email address!")]

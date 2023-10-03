@@ -82,6 +82,13 @@ namespace Repositories
 				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}
 
+		public Task<User?> GetUserLogin(string userName, string password)
+		{
+			return _dbContext.Users
+				.Include(u => u.Role)
+				.FirstOrDefaultAsync(u => u.UserName == userName && u.Password == password);
+		}
+
 		public async Task<User?> GetZooTrainerById(long zooTrainerId)
 		{
 			var matchingZooTrainer = await _dbContext.Users
@@ -110,22 +117,5 @@ namespace Repositories
 			await _dbContext.SaveChangesAsync();
 			return userUpdate;
 		}
-
-		//public  List<Skill> GetUserSkill(int? experienceId = -1)
-		//{
-		//	SqlParameter[] parameters = new SqlParameter[]
-		//	{
-		//		new SqlParameter("@experienceId", experienceId),
-
-		//	};
-
-		//	string sql = "select SkillId ,SkillName from Skills sk join ExperienceSkill es " +
-		//		"on sk.SkillId = es.SkillsSkillId" +
-		//		" join Experiences ex on es.ExperiencesExperienceId = ex.ExperienceId " +
-		//		"where ex.ExperienceId = @experienceId";
-
-		//	var listSkill =  _dbContext.Skills.FromSqlRaw<Skill>(sql, parameters).ToList();
-		//	return listSkill;
-		//}
 	}
 }

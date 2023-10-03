@@ -9,6 +9,14 @@ namespace RepositoryContracts
 	public interface IUserRepositories
 	{
 		/// <summary>
+		/// Get the login user
+		/// </summary>
+		/// <param name="userName">The userName to login</param>
+		/// <param name="password">The password</param>
+		/// <returns>A matching user or null</returns>
+		Task<User?> GetUserLogin(string userName, string password);
+
+		/// <summary>
 		/// Adds a User object to the data store
 		/// </summary>
 		/// <param name="user">The user to add</param>

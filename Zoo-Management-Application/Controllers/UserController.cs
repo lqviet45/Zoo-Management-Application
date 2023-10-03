@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -11,13 +14,26 @@ namespace Zoo_Management_Application.Controllers
 	{
 		private readonly IUserServices _userServices;
 		private readonly IExperienceServices _experienceService;
+		private readonly IConfiguration _configuration;
 
-		public UserController(IUserServices userServices, IExperienceServices experienceService)
+		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration)
 		{
 			_userServices = userServices;
 			_experienceService = experienceService;
+			_configuration = configuration;
 		}
 
+		[HttpPost("login")]
+		public async Task<ActionResult<string>> Login(string username, string password)
+		{
+			var userLogin = await _userServices.LoginUser(username, password);
+			if (userLogin is null)
+			{
+				return BadRequest("Username or password is not correct!");
+			}
+			string token = CreateToken(userLogin);
+			return Ok(token);
+		}
 		
 		[HttpPost]
 		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
@@ -64,6 +80,31 @@ namespace Zoo_Management_Application.Controllers
 			if (!isDeleted) return NotFound("Delete Fail by some error!!");
 
 			return NoContent();
+		}
+
+		private string CreateToken(UserResponse user)
+		{
+			List<Claim> claims = new()
+			{
+				new Claim(ClaimTypes.Name, user.UserName)
+			};
+
+			var key = new SymmetricSecurityKey(
+				System.Text.Encoding.UTF8.GetBytes(
+					_configuration.GetSection("AppSettings:Token").Value
+					));
+
+			var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+			var token = new JwtSecurityToken(
+				claims: claims,		
+				expires: DateTime.Now.AddDays(1),
+				signingCredentials: cred);
+
+			var jwt = new JwtSecurityTokenHandler()
+				.WriteToken(token);
+
+			return jwt;
 		}
 	}
 }
