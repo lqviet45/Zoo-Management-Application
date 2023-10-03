@@ -86,7 +86,8 @@ namespace Zoo_Management_Application.Controllers
 		{
 			List<Claim> claims = new()
 			{
-				new Claim(ClaimTypes.Name, user.UserName)
+				new Claim(ClaimTypes.Name, user.UserName),
+				new Claim(ClaimTypes.Role, user.Role.RoleName)
 			};
 
 			var key = new SymmetricSecurityKey(
