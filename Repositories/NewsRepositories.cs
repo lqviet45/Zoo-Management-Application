@@ -9,22 +9,33 @@ namespace Repositories
 	{
 		// private field
 		private readonly ApplicationDbContext _dbContext;
+		private readonly INewsCategoriesRepositories _newsCategoriesRepositories;
 		
 
 		// constructor
-		public NewsRepositories(ApplicationDbContext dbContext)
+		public NewsRepositories(ApplicationDbContext dbContext, INewsCategoriesRepositories newsCategoriesRepositories)
 		{
 			_dbContext = dbContext;
+			_newsCategoriesRepositories = newsCategoriesRepositories;
 		
 		}
 
 		public async Task<News> Add(News news)
 		{
+			var cate = await _newsCategoriesRepositories.GetCategoryById(news.CategoryId);
+
+			if(cate == null)
+			{
+				throw new ArgumentException("The category is not exist!");
+			}
+
 			if(news is null) throw new ArgumentNullException(nameof(news));
 
 			_dbContext.News.Add(news);
 
 			await _dbContext.SaveChangesAsync();
+
+			news.NewsCategories = cate;
 
 			return news;
 		}

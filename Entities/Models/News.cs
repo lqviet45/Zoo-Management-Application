@@ -20,7 +20,7 @@ namespace Entities.Models
 
 		[ForeignKey("NewsCategories")]
 		[NotNull]
-		public int? CategoryId { get; set; }
+		public int CategoryId { get; set; }
 
 		public NewsCategories NewsCategories { get; set; } = null!;
 

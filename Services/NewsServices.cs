@@ -126,11 +126,27 @@ namespace Services
 
 			updatedNews.Title = newsUpdateRequest.Title;
 			updatedNews.Content = newsUpdateRequest.Content;
-			updatedNews.Image = newsUpdateRequest.Image;
-			updatedNews.Thumnail = newsUpdateRequest.Thumnail;
 			updatedNews.Author = newsUpdateRequest.Author;
 			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+
+			if (newsUpdateRequest.ImageFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ImageFile);
+				if (fileResult.Item1 == 1)
+				{
+					updatedNews.Image = fileResult.Item2; // getting name of image
+				}
+			}
+
+			if (newsUpdateRequest.ThumnailFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ThumnailFile);
+				if (fileResult.Item1 == 1)
+				{
+					updatedNews.Thumnail = fileResult.Item2; // getting name of thumbnail
+				}
+			}
 
 			await _newsRepositories.UpdateNews(updatedNews);
 

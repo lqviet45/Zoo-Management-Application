@@ -55,7 +55,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult<NewsResponse>> UpdateNews(NewsUpdateRequest newsUpdateRequest)
+		public async Task<ActionResult<NewsResponse>> UpdateNews([FromForm]NewsUpdateRequest newsUpdateRequest)
 		{
 			if (ModelState.IsValid)
 			{
