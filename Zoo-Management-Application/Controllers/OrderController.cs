@@ -51,7 +51,7 @@ namespace Zoo_Management_Application.Controllers
 			foreach (var orderResponse in orderDetailReponseList)
 			{
 				if (orderResponse.Ticket != null)
-					total += orderResponse.Ticket.Price * orderResponse.Quantity;
+					total += orderResponse.TotalPrice;
 			}
 
 			order.TotalPrice = total;

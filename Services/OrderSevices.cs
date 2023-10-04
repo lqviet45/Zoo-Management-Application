@@ -8,10 +8,12 @@ namespace Services
 	public class OrderSevices : IOrderSevices
 	{
 		private readonly IOrderReponsitories _orderReponsitories;
+		private readonly ITicketReponsitories _ticketReponsitories;
 
 		public OrderSevices(IOrderReponsitories orderReponsitories, ITicketReponsitories ticketReponsitories)
 		{
 			_orderReponsitories = orderReponsitories;
+			_ticketReponsitories = ticketReponsitories;
 		}
 
 		public async Task<OrderResponse> AddOrder(OrderAddRequest? orderAddRequest)
@@ -34,7 +36,15 @@ namespace Services
 			ValidationHelper.ModelValidation(orderDetailAddRequests);
 
 			var orderDetail = orderDetailAddRequests.Select(od => od.MapToOrderDetail()).ToList();
+			orderDetail.ForEach(od =>
+			{
+				double total = 0;
+				var ticket = _ticketReponsitories.GetTicketById(od.TicketId).Result;
+				if (ticket is not null)
+					total += od.Quantity * ticket.Price;
 
+				od.TotalPrice = total;
+			});
 			await _orderReponsitories.AddOrderDetail(orderDetail);
 
 			var orderDetailResponseList = orderDetail.Select(o => o.ToOrderDetailResopnse()).ToList();

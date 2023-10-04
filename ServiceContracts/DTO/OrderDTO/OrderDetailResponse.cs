@@ -8,6 +8,8 @@ namespace ServiceContracts.DTO.OrderDTO
 		public TicketResponse? Ticket { get; set; }
 
 		public int Quantity { get; set; }
+
+		public double TotalPrice { get; set; }
 	}
 
 	public static class OrderDetailExtension
@@ -17,7 +19,8 @@ namespace ServiceContracts.DTO.OrderDTO
 			return new OrderDetailResponse()
 			{
 				Ticket = orderDetail.Ticket?.ToTicketResponse(),
-				Quantity = orderDetail.Quantity
+				Quantity = orderDetail.Quantity,
+				TotalPrice = orderDetail.TotalPrice
 			};
 		}
 	}
