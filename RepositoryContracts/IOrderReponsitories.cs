@@ -32,5 +32,13 @@ namespace RepositoryContracts
 		/// <param name="total">The total to update</param>
 		/// <returns></returns>
 		Task UpdateOrderTotal(long orderId, double total);
+
+		/// <summary>
+		/// Get the total of order base on the From day and to day
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <returns>A Total of order that has pruchase day inside the from and to day</returns>
+		Task<double> GetTotalByDay(DateTime from, DateTime to);
 	}
 }

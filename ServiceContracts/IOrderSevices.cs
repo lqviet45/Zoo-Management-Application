@@ -32,5 +32,13 @@ namespace ServiceContracts
 		/// <param name="total">The total to update</param>
 		/// <returns></returns>
 		Task UpdateOrderTotal(long orderId, double total);
+
+		/// <summary>
+		/// Get the order that have purchase day between From date and to date
+		/// </summary>
+		/// <param name="from">The from date</param>
+		/// <param name="to">The to date</param>
+		/// <returns>A total of all the order that purchase day between the given From and To date</returns>
+		Task<double> GetTotalByDay(DateTime from, DateTime to);
 	}
 }

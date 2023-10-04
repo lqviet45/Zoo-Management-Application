@@ -57,5 +57,14 @@ namespace Repositories
 			order.TotalPrice = total;
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task<double> GetTotalByDay(DateTime from, DateTime to)
+		{
+			double total = await _context.Orders
+				.Where(o => o.PurchaseDate >=  from && o.PurchaseDate <= to)
+				.SumAsync(o => o.TotalPrice);
+
+			return total;
+		}
 	}
 }

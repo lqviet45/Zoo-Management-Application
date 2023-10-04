@@ -66,5 +66,11 @@ namespace Services
 			if (orderResponse is null) return;
 			await _orderReponsitories.UpdateOrderTotal(orderId, total);
 		}
+
+		public async Task<double> GetTotalByDay(DateTime from, DateTime to)
+		{
+			double total = await _orderReponsitories.GetTotalByDay(from, to);
+			return total;
+		}
 	}
 }

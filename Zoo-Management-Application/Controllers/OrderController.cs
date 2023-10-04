@@ -3,6 +3,7 @@ using ServiceContracts;
 using ServiceContracts.DTO.CustommerDTO;
 using ServiceContracts.DTO.EmailDTO;
 using ServiceContracts.DTO.OrderDTO;
+using ServiceContracts.DTO.TransReportDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -79,6 +80,16 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(order);
 		}
 
+		[HttpGet("TransReport")]
+		public async Task<IActionResult> GetTotalByDate(DateTime from, DateTime to)
+		{
+
+			var total = await _orderSevices.GetTotalByDay(from, to);
+
+			return Ok(new { total });
+		}
+
+		#region Send Mail
 		private async Task SendMail(OrderResponse order)
 		{
 			string orderBody = string.Empty;
@@ -147,5 +158,7 @@ namespace Zoo_Management_Application.Controllers
 			"            </div>\r\n" +
 			"        </div>\r\n" +
 			"    </div>";
+
+		#endregion
 	}
 }
