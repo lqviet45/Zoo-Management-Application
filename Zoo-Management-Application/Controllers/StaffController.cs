@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.UserDTO;
@@ -8,6 +7,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "Admin")]
 	public class StaffController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
@@ -24,7 +24,6 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(listStaff);
 		}
 
-		[Authorize(Roles = "Admin")]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetStaff(long Id)
 		{

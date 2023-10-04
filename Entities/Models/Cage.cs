@@ -21,5 +21,6 @@ namespace Entities.Models
 		[NotNull]
 		public int AreaId { get; set; }
 		public Area Area { get; set; } = null!;
+		public virtual ICollection<AnimalCage> AnimalCages { get; set; } = new List<AnimalCage>();
 	}
 }

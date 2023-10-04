@@ -44,6 +44,7 @@ namespace Entities.AppDbContext
 		public virtual DbSet<NewsCategories> NewsCategories { get; set; }
 		public virtual DbSet<News> News { get; set; }
 
+		public virtual DbSet<AnimalCage> AnimalCages { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -66,6 +67,22 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<Cage>().ToTable(nameof(Cage));
 			modelBuilder.Entity<Species>().ToTable(nameof(Species));
 			modelBuilder.Entity<Animal>().ToTable(nameof(Animal));
+
+			modelBuilder.Entity<AnimalCage>().HasKey(ac => new { ac.AnimalId, ac.CageId });
+
+			modelBuilder.Entity<AnimalCage>()
+				.Property(ac => ac.DayIn)
+				.HasColumnType("Date");
+
+			modelBuilder.Entity<AnimalCage>()
+				.HasOne<Animal>(ac => ac.Animal)
+				.WithMany(a => a.AnimalCages)
+				.HasForeignKey(ac => ac.AnimalId);
+
+			modelBuilder.Entity<AnimalCage>()
+				.HasOne<Cage>(ac => ac.Cage)
+				.WithMany(c => c.AnimalCages)
+				.HasForeignKey(ac => ac.CageId);
 
 			modelBuilder.Entity<Experience>().ToTable(nameof(Experience));
 			modelBuilder.Entity<Skill>().ToTable(nameof(Skill));

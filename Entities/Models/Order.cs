@@ -9,8 +9,11 @@ namespace Entities.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public long OrderId { get; set; }
+
 		[NotNull]
+		[Column(TypeName = "Date")]
 		public DateTime PurchaseDate { get; set; }
+		public double TotalPrice { get; set; }
 
 		[ForeignKey("Custommer")]
 		[NotNull]

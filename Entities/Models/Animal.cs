@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -29,16 +30,11 @@ namespace Entities.Models
 
 		[NotNull]
 		public bool IsDelete { get; set; }
-
-		[ForeignKey("Cage")]
-		[NotNull]
-		public int CageId { get; set; }
-		public virtual Cage? Cage { get; set; }
 		public virtual Species? Species { get; set; }
 		public virtual ICollection<AnimalFood> AnimalLink { get; set; } = null!;
 
 		public virtual ICollection<User> ZooTrainers { get; set; } = null!;
 
-		
+		public virtual ICollection<AnimalCage> AnimalCages { get; set; } = new List<AnimalCage>();
 	}
 }
