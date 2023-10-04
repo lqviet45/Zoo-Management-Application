@@ -47,5 +47,15 @@ namespace Repositories
 
 			return order;
 		}
+
+		public async Task UpdateOrderTotal(long orderId, double total)
+		{
+			var order = await GetOrderById(orderId);
+			if (order is null) {
+				return;
+			}
+			order.TotalPrice = total;
+			await _context.SaveChangesAsync();
+		}
 	}
 }

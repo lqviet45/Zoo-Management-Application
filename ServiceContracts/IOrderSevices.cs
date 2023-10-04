@@ -24,5 +24,13 @@ namespace ServiceContracts
 		/// <param name="orderDetailAddRequests">The list of orderDetail to add</param>
 		/// <returns>A list of OrderResponse</returns>
 		Task<List<OrderDetailResponse>> AddOrderDetail(List<OrderDetailAddRequest> orderDetailAddRequests);
+
+		/// <summary>
+		/// Update the order total
+		/// </summary>
+		/// <param name="orderId">The orderId to update</param>
+		/// <param name="total">The total to update</param>
+		/// <returns></returns>
+		Task UpdateOrderTotal(long orderId, double total);
 	}
 }

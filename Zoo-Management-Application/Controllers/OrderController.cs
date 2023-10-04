@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.CustommerDTO;
 using ServiceContracts.DTO.EmailDTO;
@@ -56,6 +55,8 @@ namespace Zoo_Management_Application.Controllers
 			}
 
 			order.TotalPrice = total;
+
+			await _orderSevices.UpdateOrderTotal(order.OrderId, total);
 
 			await SendMail(order);
 

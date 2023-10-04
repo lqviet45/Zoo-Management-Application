@@ -49,5 +49,12 @@ namespace Services
 
 			return orderResponse.ToOrderResopnse();
 		}
+
+		public async Task UpdateOrderTotal(long orderId, double total)
+		{
+			var orderResponse = await _orderReponsitories.GetOrderById(orderId);
+			if (orderResponse is null) return;
+			await _orderReponsitories.UpdateOrderTotal(orderId, total);
+		}
 	}
 }

@@ -24,5 +24,13 @@ namespace RepositoryContracts
 		/// <param name="orderDetails">The list of orderDetail to add</param>
 		/// <returns>A list of OrderDetail</returns>
 		Task<List<OrderDetail>> AddOrderDetail(List<OrderDetail> orderDetails);
+
+		/// <summary>
+		/// Update Total price for order
+		/// </summary>
+		/// <param name="orderId">The orderId to update</param>
+		/// <param name="total">The total to update</param>
+		/// <returns></returns>
+		Task UpdateOrderTotal(long orderId, double total);
 	}
 }
