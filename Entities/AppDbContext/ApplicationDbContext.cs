@@ -46,6 +46,8 @@ namespace Entities.AppDbContext
 
 		public virtual DbSet<AnimalCage> AnimalCages { get; set; }
 
+		public virtual DbSet<AnimalUser> AnimalUsers { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -98,7 +100,11 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));
 			modelBuilder.Entity<News>().ToTable(nameof(News));
 
-			
+			modelBuilder.Entity<AnimalUser>(entity =>
+			{
+				entity.HasKey(e => new { e.AnimalId, e.UserId });
+				entity.ToTable(nameof(AnimalUser));
+			});
 		}
 	}
 }

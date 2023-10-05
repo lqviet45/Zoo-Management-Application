@@ -16,7 +16,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<MealResponse>> PostMeal(MealAddRequest mealAddRequest)
+		public async Task<ActionResult<MealResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
 		{
 			
 

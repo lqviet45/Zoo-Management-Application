@@ -8,6 +8,7 @@ namespace Repositories
 {
 	public class UserRepositories : IUserRepositories
 	{
+		// Fields
 		private readonly ApplicationDbContext _dbContext;
 
 		//Contructor

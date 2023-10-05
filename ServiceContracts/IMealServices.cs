@@ -4,9 +4,9 @@ namespace ServiceContracts
 {
 	public interface IMealServices
 	{
-		Task<MealResponse> AddMeal(MealAddRequest mealAddRequest);
+		Task<MealResponse> AddMeal(List<MealAddRequest> mealAddRequest);
 
-		Task<List<MealResponse?>> GetAnimalMealById(long id);
+		Task<List<MealResponse>> GetAnimalMealById(long id);
 
 	}
 }

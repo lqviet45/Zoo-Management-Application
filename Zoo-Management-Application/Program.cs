@@ -55,6 +55,12 @@ builder.Services.AddScoped<INewsServices, NewsServices>();
 
 builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
 builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
+
+builder.Services.AddScoped<IAnimalRepositories, AnimalRepositories>();
+builder.Services.AddScoped<IAnimalServices, AnimalServices>();
+
+builder.Services.AddScoped<IAnimalUserRepositories, AnimalUserRepositories>();
+builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>

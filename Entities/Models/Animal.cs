@@ -33,7 +33,7 @@ namespace Entities.Models
 		public virtual Species? Species { get; set; }
 		public virtual ICollection<AnimalFood> AnimalLink { get; set; } = null!;
 
-		public virtual ICollection<User> ZooTrainers { get; set; } = null!;
+		public virtual ICollection<AnimalUser> AnimalZooTrainers { get; set; } = new List<AnimalUser>();
 
 		public virtual ICollection<AnimalCage> AnimalCages { get; set; } = new List<AnimalCage>();
 	}

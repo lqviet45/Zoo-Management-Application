@@ -78,7 +78,7 @@ namespace ServiceContracts
 		Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest);
 
 		/// <summary>
-		/// Delete by User id
+		/// Delete User by id
 		/// </summary>
 		/// <param name="userId">The user id to delete</param>
 		/// <returns>True if delete success, else False</returns>

@@ -12,6 +12,7 @@ namespace ServiceContracts.DTO.MealDTO
 		[Required(ErrorMessage ="Animal ID can't be blank")]
 		public long AnimalId { get; set; }
 
+		[Required(ErrorMessage = "Food ID can't be blank")]
 		public int FoodId { get; set; }
 		public string? Note { get; set; }
 		[Required(ErrorMessage = "Feeding Time can't be blank")]
