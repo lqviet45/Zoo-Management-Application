@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,11 +55,13 @@ builder.Services.AddScoped<IEmailServices, EmailServices>();
 builder.Services.AddScoped<INewsRepositories, NewsRepositories>();
 builder.Services.AddScoped<INewsServices, NewsServices>();
 
-builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
-builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
-
 builder.Services.AddScoped<IAnimalRepositories, AnimalRepositories>();
 builder.Services.AddScoped<IAnimalServices, AnimalServices>();
+
+builder.Services.AddScoped<IJwtServices, JwtServices>();
+
+builder.Services.AddScoped<IAnimalUserRepositories, AnimalUserRepositories>();
+builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
 
 builder.Services.AddScoped<IAnimalUserRepositories, AnimalUserRepositories>();
 builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
@@ -82,18 +86,55 @@ builder.Services.AddSwaggerGen(options =>
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//CROS http://localhost:4200
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuider =>
+	{
+		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+		.WithHeaders("Authorization", "origin", "accept", "content-type")
+		.WithMethods("GET", "POST", "PUT", "DELETE");
+	});
+});
+
+// Add authentication to Server
+
+builder.Services.AddAuthentication(options => 
+{ 
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
 	.AddJwtBearer(options =>
 	{
-		options.TokenValidationParameters = new TokenValidationParameters
+		options.TokenValidationParameters = new TokenValidationParameters()
 		{
+			ValidateAudience = true,
+			ValidAudience = builder.Configuration["Jwt:Audience"],
+			ValidateIssuer = true,
+			ValidIssuer = builder.Configuration["Jwt:Issuer"],
+			ValidateLifetime = true,
 			ValidateIssuerSigningKey = true,
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
 				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-			ValidateIssuer = false,
-			ValidateAudience = false
 		};
 	});
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//	.AddJwtBearer(options =>
+//	{
+//		options.TokenValidationParameters = new TokenValidationParameters
+//		{
+//			ValidateIssuerSigningKey = true,
+//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+//				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+//			ValidateIssuer = false,
+//			ValidateAudience = false
+//		};
+//	});
+
+builder.Services.AddAuthorization();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
