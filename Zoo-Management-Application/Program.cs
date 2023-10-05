@@ -55,6 +55,10 @@ builder.Services.AddScoped<IEmailServices, EmailServices>();
 builder.Services.AddScoped<INewsRepositories, NewsRepositories>();
 builder.Services.AddScoped<INewsServices, NewsServices>();
 
+builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
+builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
+
+builder.Services.AddScoped<IJwtServices, JwtServices>();
 builder.Services.AddScoped<IAnimalRepositories, AnimalRepositories>();
 builder.Services.AddScoped<IAnimalServices, AnimalServices>();
 
@@ -97,6 +101,25 @@ builder.Services.AddCors(options =>
 	});
 });
 
+//CROS http://localhost:4200
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuider =>
+	{
+		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+		.WithHeaders("Authorization", "origin", "accept", "content-type")
+		.WithMethods("GET", "POST", "PUT", "DELETE");
+	});
+});
+
+// Add authentication to Server
+
+builder.Services.AddAuthentication(options => 
+{ 
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
 // Add authentication to Server
 
 builder.Services.AddAuthentication(options => 
