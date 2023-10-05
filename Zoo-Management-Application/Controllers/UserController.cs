@@ -48,20 +48,6 @@ namespace Zoo_Management_Application.Controllers
 			var authenUser = _jwtServices.CreateToken(userLogin);
 
 			return Ok(authenUser);
-
-			//string token = CreateToken(userLogin);
-			//AuthenticationResponse authenUser = new()
-			//{
-			//	UserName = userLogin.UserName,
-			//	Email = userLogin.Email,
-			//	Role = userLogin.Role.RoleName,
-			//	Token = token,
-			//	Expiration = DateTime.UtcNow.AddMinutes(10)
-			//};
-
-			var authenUser = _jwtServices.CreateToken(userLogin);
-
-			return Ok(authenUser);
 		}
 		
 		[HttpPost]
