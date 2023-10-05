@@ -55,6 +55,8 @@ builder.Services.AddScoped<INewsServices, NewsServices>();
 
 builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
 builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
+
+builder.Services.AddScoped<IJwtServices, JwtServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -74,6 +76,17 @@ builder.Services.AddSwaggerGen(options =>
 		Type = SecuritySchemeType.ApiKey
 	});
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
+//CROS http://localhost:4200
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policyBuider =>
+	{
+		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+		.WithHeaders("Authorization", "origin", "accept", "content-type")
+		.WithMethods("GET", "POST", "PUT", "DELETE");
+	});
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
