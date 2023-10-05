@@ -16,12 +16,14 @@ namespace Zoo_Management_Application.Controllers
 		private readonly IUserServices _userServices;
 		private readonly IExperienceServices _experienceService;
 		private readonly IConfiguration _configuration;
+		private readonly IJwtServices _jwtServices;
 
-		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration)
+		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration, IJwtServices jwtServices)
 		{
 			_userServices = userServices;
 			_experienceService = experienceService;
 			_configuration = configuration;
+			_jwtServices = jwtServices;
 		}
 
 		[HttpPost("login")]
@@ -34,16 +36,18 @@ namespace Zoo_Management_Application.Controllers
 				return BadRequest("Username or password is not correct!");
 			}
 
-			string token = CreateToken(userLogin);
+			//string token = CreateToken(userLogin);
+			//AuthenticationResponse authenUser = new()
+			//{
+			//	UserName = userLogin.UserName,
+			//	Email = userLogin.Email,
+			//	Role = userLogin.Role.RoleName,
+			//	Token = token,
+			//	Expiration = DateTime.UtcNow.AddMinutes(10)
+			//};
 
-			AuthenticationResponse authenUser = new()
-			{
-				UserName = userLogin.UserName,
-				Email = userLogin.Email,
-				Role = userLogin.Role.RoleName,
-				Token = token,
-				Expiration = DateTime.UtcNow.AddMinutes(10)
-			};
+			var authenUser = _jwtServices.CreateToken(userLogin);
+
 			return Ok(authenUser);
 		}
 		
