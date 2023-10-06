@@ -119,7 +119,7 @@ builder.Services.AddAuthentication(options =>
 	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 
 	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
+});
 // Add authentication to Server
 
 builder.Services.AddAuthentication(options => 
