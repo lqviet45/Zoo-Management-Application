@@ -52,25 +52,42 @@ namespace Services
 			//return meal.MapToResponse();
  		}
 
-		public Task<bool> DeleteAMeal(long id)
+		public async Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
-			throw new NotImplementedException();
+			var food = await _mealRepositories.GetAnimalFoodById(deleteFood.MealToAnimalFood());
+
+			if (food is null) return false;
+
+			var isDelete =  await _mealRepositories.DeleteFoodInAMeal(food);
+
+			return isDelete;
+		}
+
+		public async Task<bool> DeleteAMeal(MealDeleteRequest deleteMeal)
+		{
+			var meal = await _mealRepositories
+				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+
+			if(meal is null) return false;
+
+			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+
+			return isDelete;
+
 		}
 
 		public async Task<List<MealResponse>> GetAnimalMealById(long id)
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
-			if(listMeal is null)
-			{
-				return null;
-			}
 
 			return listMeal.Select(m => m.MapToResponse()).ToList();
 		}
 
-		public Task<List<MealResponse>> GetAnimalMealByIdAndDate(long id, DateTime date)
+		public async Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
 		{
-			throw new NotImplementedException();
+			var listMeal = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
+
+			return listMeal.Select(m => m.MapToResponse()).ToList();
 		}
 	}
 }

@@ -24,10 +24,22 @@ namespace ServiceContracts
 		/// Get animal food by animal id and date
 		/// </summary>
 		/// <param name="id">Animal ID</param>
-		/// <param name="date">Date</param>
+		/// <param name="time">Date</param>
 		/// <returns>The specified food belong to an animal at a specified time</returns>
-		Task<List<MealResponse>> GetAnimalMealByIdAndDate(long id, DateTime date);
+		Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time);
 
-		Task<bool> DeleteAMeal(long id);
+		/// <summary>
+		/// Delete a meal by animal and feeding time
+		/// </summary>
+		/// <param name="deleteMeal">The specified meal to delete</param>
+		/// <returns>Returns true if delete success, otherwise returns false</returns>
+		Task<bool> DeleteAMeal(MealDeleteRequest deleteMeal);
+
+		/// <summary>
+		/// Delete a food in a meal
+		/// </summary>
+		/// <param name="deleteFood">The specified meal to delete</param>
+		/// <returns>Returns true if delete success, otherwise returns false</returns>
+		Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood);
 	}
 }

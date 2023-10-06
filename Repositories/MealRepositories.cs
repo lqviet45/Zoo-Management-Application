@@ -2,6 +2,7 @@
 using RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
 using Entities.AppDbContext;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Repositories
 {
@@ -32,11 +33,32 @@ namespace Repositories
 			return animalFood;
 		}
 
+		public async Task<bool> DeleteAMeal(long animalId, TimeSpan feedingTime)
+		{
+			var deleteFood = await _dbContext.AnimalFoods.Where(x => x.AnimalId == animalId
+													&& x.FeedingTime == feedingTime)
+													.ToListAsync();
+			if (deleteFood.IsNullOrEmpty())
+			{
+				return false;
+			}
+
+			_dbContext.AnimalFoods.RemoveRange(deleteFood);
+
+			int isDeleted = await _dbContext.SaveChangesAsync();
+
+			return isDeleted > 0;
+
+		}
+
 		public async Task<bool> DeleteFoodInAMeal(AnimalFood animalFood)
 		{
-			var deleteFood = await _dbContext.AnimalFoods.Where(x => x.AnimalId == animalFood.AnimalId
-														 && x.FoodId == animalFood.FoodId)
-														.FirstOrDefaultAsync();
+			var deleteFood = await _dbContext.AnimalFoods
+							.Where(x => x.AnimalId == animalFood.AnimalId
+							 && x.FoodId == animalFood.FoodId
+							 && x.FeedingTime == animalFood.FeedingTime)
+							.FirstOrDefaultAsync();
+
 			if(deleteFood == null) return false;
 
 			 _dbContext.AnimalFoods.Remove(deleteFood);
@@ -54,12 +76,33 @@ namespace Repositories
 			return listMeal;
 		}
 
+		public async Task<AnimalFood?> GetAnimalFoodById(AnimalFood animalFood)
+		{
+			var matchingFood = await _dbContext.AnimalFoods
+								.Where(x => x.AnimalId == animalFood.AnimalId
+								 && x.FoodId == animalFood.FoodId
+								&& x.FeedingTime == animalFood.FeedingTime)
+								.FirstOrDefaultAsync();
+
+			return matchingFood;
+		}
+
 		public async Task<List<AnimalFood>> GetAnimalMealById(long id)
 		{
 			var listMeal = await _dbContext.AnimalFoods.Include(f => f.Food).
 						  Where(meal => meal.AnimalId == id).ToListAsync();
 
 			return listMeal;
+		}
+
+		public async Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long animalId, TimeSpan feedingTime)
+		{
+			var meal = await _dbContext.AnimalFoods
+								.Where(meal => meal.AnimalId == animalId
+								&& meal.FeedingTime == feedingTime)
+								.ToListAsync();
+
+			return meal;
 		}
 
 		public Task<AnimalFood> UpdateMeal(AnimalFood animalFood)

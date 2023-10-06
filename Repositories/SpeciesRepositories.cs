@@ -26,7 +26,12 @@ namespace Repositories
 
 		public async Task<bool> Delete(int speciesId)
 		{
-			 _dbContext.Species.RemoveRange(_dbContext.Species.Where(species => species.SpeciesId == speciesId));
+			var deleteSpecies = await _dbContext.Species.Where(species => species.SpeciesId == speciesId)
+														.FirstOrDefaultAsync();
+
+			if (deleteSpecies == null) { return false; }
+
+			_dbContext.Species.Remove(deleteSpecies);
 
 			int rowsDeleted = await _dbContext.SaveChangesAsync();
 
