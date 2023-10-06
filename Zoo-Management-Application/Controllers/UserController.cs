@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Zoo_Management_Application.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class UserController : ControllerBase
 	{
@@ -37,7 +37,8 @@ namespace Zoo_Management_Application.Controllers
 			}
 
 			//string token = CreateToken(userLogin);
-			//AuthenticationResponse authenUser = new()
+			//AuthenticationResponse authenUser = new() 
+			//{ 
 			//	UserName = userLogin.UserName,
 			//	Email = userLogin.Email,
 			//	Role = userLogin.Role.RoleName,
@@ -48,6 +49,7 @@ namespace Zoo_Management_Application.Controllers
 			var authenUser = _jwtServices.CreateToken(userLogin);
 
 			return Ok(authenUser);
+
 		}
 		
 		[HttpPost]

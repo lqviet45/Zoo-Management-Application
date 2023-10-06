@@ -30,10 +30,6 @@ namespace Services
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
 
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-
-				new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-
 				new Claim(ClaimTypes.Role, user.Role.RoleName),
 
 				new Claim(ClaimTypes.NameIdentifier, user.UserName)
@@ -43,12 +39,12 @@ namespace Services
 				Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]));
 
 			SigningCredentials signingCredentials = new SigningCredentials(
-				securityKey, SecurityAlgorithms.HmacSha256);
+				securityKey, SecurityAlgorithms.HmacSha256Signature);
 
 			JwtSecurityToken tokenGenerator = new JwtSecurityToken(
 				_configuration["Jwt:Issuer"],
 				_configuration["Jwt:Audience"],
-				claims,
+				claims: claims,
 				expires: expriration,
 				signingCredentials: signingCredentials
 				);
