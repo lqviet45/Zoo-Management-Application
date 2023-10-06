@@ -101,17 +101,6 @@ builder.Services.AddCors(options =>
 	});
 });
 
-//CROS http://localhost:4200
-builder.Services.AddCors(options =>
-{
-	options.AddDefaultPolicy(policyBuider =>
-	{
-		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
-		.WithHeaders("Authorization", "origin", "accept", "content-type")
-		.WithMethods("GET", "POST", "PUT", "DELETE");
-	});
-});
-
 // Add authentication to Server
 
 builder.Services.AddAuthentication(options =>
@@ -128,6 +117,7 @@ builder.Services.AddAuthentication(options =>
 
 	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{
 		options.TokenValidationParameters = new TokenValidationParameters()
