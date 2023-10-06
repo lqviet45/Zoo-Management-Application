@@ -23,13 +23,13 @@ namespace Services
 			if (user.Role is null) 
 				throw new ArgumentNullException("User don't have any role");
 
-			DateTime expriration = DateTime.Now.AddMinutes
-				(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
+			DateTime expriration = DateTime.Now.AddDays
+				(Convert.ToDouble(_configuration["Jwt:EXPIRATION_DAYS"]));
 
 			List<Claim> claims = new List<Claim>()
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				new Claim(ClaimTypes.Role, user.Role.RoleName),
 
 				new Claim(ClaimTypes.NameIdentifier, user.UserName)
