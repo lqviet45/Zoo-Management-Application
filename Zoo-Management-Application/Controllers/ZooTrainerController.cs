@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
-using Services;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using ServiceContracts.DTO.WrapperDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -23,11 +22,16 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<UserResponse>> GetAllZooTrainer()
+		public async Task<IActionResult> GetAllZooTrainer(int? pageNumber, string searchBy = "FullName", string? searchString = null)
 		{
-			var listZooTrainer = await _userServices.GetAllZooTrainer();
+			var listZooTrainer = await _userServices.GetFiteredZooTrainer(searchBy, searchString);
 
-			return Ok(listZooTrainer);
+			var pageSize = 5;
+			var pagingList = PaginatedList<UserResponse>.CreateAsync(listZooTrainer.AsQueryable().AsNoTracking(),pageNumber ?? 1 , pageSize);
+
+			var resopnse = new { pagingList, pagingList.TotalPages };
+
+			return Ok(resopnse);
 		}
 
 		[HttpGet("{Id}")]
