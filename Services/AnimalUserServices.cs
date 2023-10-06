@@ -14,9 +14,11 @@ namespace Services
 		private readonly IUserRepositories _userRepositories;
 
 		// constructor
-		public AnimalUserServices(IAnimalUserRepositories animalUserRepositories)
+		public AnimalUserServices(IAnimalUserRepositories animalUserRepositories, IAnimalRepositories animalRepositories, IUserRepositories userRepositories)
 		{
 			_animalUserRepositories = animalUserRepositories;
+			_animalRepositories = animalRepositories;
+			_userRepositories = userRepositories;
 		}
 		public async Task<AnimalUserResponse> AddAnimalUser(AnimalUserAddRequest animalUserAddRequest)
 		{

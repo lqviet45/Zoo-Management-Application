@@ -22,7 +22,7 @@ namespace ServiceContracts.DTO.AnimalUserDTO
 		/// An extension method to convert an object of Area class into AnimalUserResponse class
 		/// </summary>
 		/// <param name="animalUser">The AnimalUser object to convert</param>
-		/// /// <returns>Returns the converted AreaResponse object</returns>
+		/// /// <returns>Returns the converted AnimalUserResponse object</returns>
 		public static AnimalUserResponse ToAnimalUserResponse(this AnimalUser animalUser)
 		{
 			return new AnimalUserResponse()

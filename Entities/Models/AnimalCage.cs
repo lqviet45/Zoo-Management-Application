@@ -12,6 +12,8 @@ namespace Entities.Models
 		public int CageId { get; set; }
 		[Column(TypeName = "Date")]
 		public DateTime DayIn { get; set; }
+
+		public bool IsIn { get; set; }
 		public virtual Animal? Animal { get; set; }
 		public virtual Cage? Cage { get; set; }
 	}

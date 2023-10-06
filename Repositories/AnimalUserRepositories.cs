@@ -50,5 +50,10 @@ namespace Repositories
 
 			return animalUser;
 		}
+
+		public Task<AnimalUser> GetTrainedAnimal(long? userId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

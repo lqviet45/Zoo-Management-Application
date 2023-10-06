@@ -70,11 +70,13 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<Species>().ToTable(nameof(Species));
 			modelBuilder.Entity<Animal>().ToTable(nameof(Animal));
 
-			modelBuilder.Entity<AnimalCage>().HasKey(ac => new { ac.AnimalId, ac.CageId });
+			modelBuilder.Entity<AnimalCage>().HasKey(ac => new { ac.AnimalId, ac.CageId, ac.DayIn });
 
 			modelBuilder.Entity<AnimalCage>()
 				.Property(ac => ac.DayIn)
 				.HasColumnType("Date");
+
+			modelBuilder.Entity<AnimalCage>().Property(ac => ac.IsIn);
 
 			modelBuilder.Entity<AnimalCage>()
 				.HasOne<Animal>(ac => ac.Animal)

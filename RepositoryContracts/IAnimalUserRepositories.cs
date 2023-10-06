@@ -20,5 +20,12 @@ namespace RepositoryContracts
 		/// <param name="userId">The zoo trainer id</param>
 		/// <returns>Return the matching AnimalUser obj</returns>
 		Task<AnimalUser?> GetAnimalUserRelationship(long? animalId, long? userId);
+
+		/// <summary>
+		/// Get the trained animal of a zoo trainer
+		/// </summary>
+		/// <param name="userId">The id of the zoo trainer</param>
+		/// <returns>A list of animalUser</returns>
+		Task<AnimalUser> GetTrainedAnimal(long? userId);
 	}
 }
