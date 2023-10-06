@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
-using ServiceContracts.DTO.AuthenDTO;
 using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using System.IdentityModel.Tokens.Jwt;

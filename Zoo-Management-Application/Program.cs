@@ -102,7 +102,6 @@ builder.Services.AddCors(options =>
 });
 
 // Add authentication to Server
-
 builder.Services.AddAuthentication(options =>
 {
 	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
