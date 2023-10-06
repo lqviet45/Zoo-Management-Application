@@ -32,5 +32,33 @@ namespace Zoo_Management_Application.Controllers
 			var mealResponse = await _mealServices.GetAnimalMealById(id);
 			return Ok(mealResponse);
 		}
+
+		[HttpDelete]
+		public async Task<ActionResult<bool>> DeleteAMeal(MealDeleteRequest mealDeleteRequest)
+		{
+			var isDeleted = await _mealServices.DeleteAMeal(mealDeleteRequest);
+
+			if (!isDeleted) return NotFound("The given animal id or feeding time doesn't exist!");
+
+			return Ok(isDeleted);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<bool>> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
+		{
+			var isDeleted = await _mealServices.DeleteAFoodInAMeal(deleteFood);
+
+			if (!isDeleted) return NotFound("The given animal id or feeding time or food id doesn't exist!");
+
+			return Ok(isDeleted);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<List<MealResponse>>> GetMealAtATime(long animalId, TimeSpan feedingTime)
+		{
+			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalId, feedingTime);
+			
+			return Ok(mealResponse);
+		}
 	}
 }

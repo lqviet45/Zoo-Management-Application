@@ -109,14 +109,6 @@ builder.Services.AddAuthentication(options =>
 
 	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 });
-// Add authentication to Server
-
-builder.Services.AddAuthentication(options =>
-{
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-
-	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{

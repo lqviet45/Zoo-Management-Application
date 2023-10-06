@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ServiceContracts.DTO.MealDTO
 {
@@ -9,7 +10,7 @@ namespace ServiceContracts.DTO.MealDTO
 	{
 		[Required(ErrorMessage ="Animal ID can't be blank")]
 		public long AnimalId { get; set; }
-
+		
 		[Required(ErrorMessage = "FeedingTime can't be blank")]
 		public TimeSpan FeedingTime { get; set; }
 	}

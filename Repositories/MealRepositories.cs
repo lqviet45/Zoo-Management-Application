@@ -29,6 +29,7 @@ namespace Repositories
 			await _dbContext.SaveChangesAsync();
 
 			animalFood.Food = food;
+			animalFood.Animal = animal;
 
 			return animalFood;
 		}
@@ -71,14 +72,18 @@ namespace Repositories
 
 		public async Task<List<AnimalFood>> GetAllMeal()
 		{
-			var listMeal = await _dbContext.AnimalFoods.ToListAsync();
+			var listMeal = await _dbContext.AnimalFoods
+							.Include(f => f.Food)
+							.Include(a => a.Animal)
+							.ToListAsync();
+							
 
 			return listMeal;
 		}
 
 		public async Task<AnimalFood?> GetAnimalFoodById(AnimalFood animalFood)
 		{
-			var matchingFood = await _dbContext.AnimalFoods
+			var matchingFood = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal)
 								.Where(x => x.AnimalId == animalFood.AnimalId
 								 && x.FoodId == animalFood.FoodId
 								&& x.FeedingTime == animalFood.FeedingTime)
@@ -89,7 +94,7 @@ namespace Repositories
 
 		public async Task<List<AnimalFood>> GetAnimalMealById(long id)
 		{
-			var listMeal = await _dbContext.AnimalFoods.Include(f => f.Food).
+			var listMeal = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal).
 						  Where(meal => meal.AnimalId == id).ToListAsync();
 
 			return listMeal;
@@ -97,7 +102,7 @@ namespace Repositories
 
 		public async Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long animalId, TimeSpan feedingTime)
 		{
-			var meal = await _dbContext.AnimalFoods
+			var meal = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal)
 								.Where(meal => meal.AnimalId == animalId
 								&& meal.FeedingTime == feedingTime)
 								.ToListAsync();
