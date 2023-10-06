@@ -52,13 +52,40 @@ namespace Services
 			//return meal.MapToResponse();
  		}
 
+		public async Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
+		{
+			var food = await _mealRepositories.GetAnimalFoodById(deleteFood.MealToAnimalFood());
+
+			if (food is null) return false;
+
+			var isDelete =  await _mealRepositories.DeleteFoodInAMeal(food);
+
+			return isDelete;
+		}
+
+		public async Task<bool> DeleteAMeal(MealDeleteRequest deleteMeal)
+		{
+			var meal = await _mealRepositories
+				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+
+			if(meal is null) return false;
+
+			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+
+			return isDelete;
+
+		}
+
 		public async Task<List<MealResponse>> GetAnimalMealById(long id)
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
-			if(listMeal is null)
-			{
-				return null;
-			}
+
+			return listMeal.Select(m => m.MapToResponse()).ToList();
+		}
+
+		public async Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
+		{
+			var listMeal = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
 
 			return listMeal.Select(m => m.MapToResponse()).ToList();
 		}

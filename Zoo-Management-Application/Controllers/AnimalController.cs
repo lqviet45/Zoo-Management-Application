@@ -27,11 +27,12 @@ namespace Zoo_Management_Application.Controllers
 		{
 			var animalResponse = await _animalServices.AddAnimal(animaladd);
 
-			
-
 			var id = new { id = animalResponse.AnimalId };
 
 			return CreatedAtAction("GetAnimalById", id, animalResponse);
 		}
+
+
+
 	}
 }

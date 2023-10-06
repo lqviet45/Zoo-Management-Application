@@ -12,7 +12,8 @@ namespace Entities.Models
 
 		public string? Note { get; set; }
 		[NotNull]
-		public DateTime FeedingTime { get; set; }
+		[Column(TypeName = "Time(0)")]
+		public TimeSpan FeedingTime { get; set; }
 
         public virtual Animal? Animal { get; set; }
 
