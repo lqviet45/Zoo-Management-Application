@@ -16,6 +16,7 @@ namespace Entities.Models
 		public string? Image { get; set; }
 		public string? Content { get; set; }
 		public string? Author { get; set; }
+		[Column(TypeName = "Date")]
 		public DateTime ReleaseDate { get; set; }
 
 		[ForeignKey("NewsCategories")]

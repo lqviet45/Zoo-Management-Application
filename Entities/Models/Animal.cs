@@ -20,7 +20,7 @@ namespace Entities.Models
 		[NotNull]
 		public string? AnimalName { get; set;}
 
-		[Column(TypeName = "DateTime2")]
+		[Column(TypeName = "Date")]
 		[NotNull]
 		public DateTime DateArrive { get; set; }
 

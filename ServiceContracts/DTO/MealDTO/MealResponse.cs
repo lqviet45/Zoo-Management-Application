@@ -15,7 +15,7 @@ namespace ServiceContracts.DTO.MealDTO
 		public List<FoodResponse> Foods { get; set; } = new List<FoodResponse>();
 		public string? Note { get; set; }
 		[Required]
-		public DateTime FeedingTime { get; set; }
+		public TimeSpan FeedingTime { get; set; }
 	}
 
 	public static class MealResponseExtensionMethods

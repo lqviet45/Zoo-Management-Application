@@ -52,6 +52,11 @@ namespace Services
 			//return meal.MapToResponse();
  		}
 
+		public Task<bool> DeleteAMeal(long id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<List<MealResponse>> GetAnimalMealById(long id)
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
@@ -61,6 +66,11 @@ namespace Services
 			}
 
 			return listMeal.Select(m => m.MapToResponse()).ToList();
+		}
+
+		public Task<List<MealResponse>> GetAnimalMealByIdAndDate(long id, DateTime date)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

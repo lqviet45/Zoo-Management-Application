@@ -111,8 +111,8 @@ builder.Services.AddAuthentication(options =>
 });
 // Add authentication to Server
 
-builder.Services.AddAuthentication(options => 
-{ 
+builder.Services.AddAuthentication(options =>
+{
 	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 
 	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
