@@ -93,7 +93,7 @@ builder.Services.AddSwaggerGen(options =>
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-//CROS http://localhost:4200
+//CROS http://localhost:3000
 builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(policyBuider =>
