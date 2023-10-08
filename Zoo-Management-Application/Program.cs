@@ -13,7 +13,6 @@ using Swashbuckle.AspNetCore.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceContracts.DTO.Converter;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
