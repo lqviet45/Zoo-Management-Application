@@ -94,14 +94,16 @@ builder.Services.AddSwaggerGen(options =>
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-//CROS http://localhost:4200
+//CROS http://localhost:3000
 builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(policyBuider =>
 	{
-		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+		policyBuider
+		.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
 		.WithHeaders("Authorization", "origin", "accept", "content-type")
-		.WithMethods("GET", "POST", "PUT", "DELETE");
+		.WithMethods("GET", "POST", "PUT", "DELETE")
+		.AllowCredentials();
 	});
 });
 
@@ -161,7 +163,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
