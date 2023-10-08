@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
+using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
+using ServiceContracts.DTO.UserDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -31,7 +33,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("animal/{animalId}")]
-		public async Task<ActionResult<AnimalUserResponse>> GetZooTrainerByAnimalId(long animalId)
+		public async Task<ActionResult<UserResponse>> GetZooTrainerByAnimalId(long animalId)
 		{
 			var animalUserResponse = await _animalUserServices.GetZooTrainerByAnimalId(animalId);
 
@@ -45,7 +47,7 @@ namespace Zoo_Management_Application.Controllers
 
 
 		[HttpGet("user/{userId}")]
-		public async Task<ActionResult<AnimalUserResponse>> GetAnimalByZooTrainerId(long userId)
+		public async Task<ActionResult<AnimalResponse>> GetAnimalByZooTrainerId(long userId)
 		{
 			var animalUserResponse = await _animalUserServices.GetAnimalByZooTrainerId(userId);
 

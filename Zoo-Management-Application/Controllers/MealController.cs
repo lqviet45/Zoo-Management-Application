@@ -33,7 +33,7 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(mealResponse);
 		}
 
-		[HttpDelete]
+		[HttpDelete("AllMeal")]
 		public async Task<ActionResult<bool>> DeleteAMeal(MealDeleteRequest mealDeleteRequest)
 		{
 			var isDeleted = await _mealServices.DeleteAMeal(mealDeleteRequest);
@@ -43,7 +43,7 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(isDeleted);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("Meal")]
 		public async Task<ActionResult<bool>> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
 			var isDeleted = await _mealServices.DeleteAFoodInAMeal(deleteFood);
