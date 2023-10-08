@@ -40,5 +40,13 @@ namespace RepositoryContracts
 		/// <param name="to">The to day</param>
 		/// <returns>A Total of order that has pruchase day inside the from and to day</returns>
 		Task<double> GetTotalByDay(DateTime from, DateTime to);
+
+		/// <summary>
+		/// Get list of order detail between the From and To day
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <returns>A list of orderDetail object that between the given date</returns>
+		Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to);
 	}
 }
