@@ -3,6 +3,7 @@ using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.AnimalAddDTO;
 using ServiceContracts.DTO.AnimalDTO;
+using ServiceContracts.DTO.AnimalUserDTO;
 using Services.Helper;
 
 namespace Services
@@ -78,5 +79,29 @@ namespace Services
 		{
 			throw new NotImplementedException();
 		}
+
+
+
+		public async Task<List<AnimalResponse>> GetAnimalByZooTrainerId(long? userId)
+		{
+			var listAnimal = await _animalUserRepositories.GetAnimalByZooTrainerId(userId);
+
+			var listAnimalResponse = listAnimal.Select(animal => animal.ToAnimalUserResponse()).ToList();
+
+			List<AnimalResponse> animaList = new List<AnimalResponse>();
+
+			listAnimalResponse.ForEach(animal =>
+			{
+				var animalDetail = _animalRepositories.GetAnimalById(animal.AnimalId).Result;
+
+				if(animalDetail != null)
+				{
+					animaList.Add(animalDetail.ToAnimalResponse());
+				}
+			});
+
+			return animaList;
+		}
+
 	}
 }

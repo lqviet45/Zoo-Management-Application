@@ -40,8 +40,6 @@ namespace Zoo_Management_Application.Controllers
 				return NotFound("This Animal is not being trained by any Zoo Trainer!");
 			}
 
-
-
 			return Ok(animalUserResponse);
 		}
 
@@ -50,6 +48,11 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<AnimalUserResponse>> GetAnimalByZooTrainerId(long userId)
 		{
 			var animalUserResponse = await _animalUserServices.GetAnimalByZooTrainerId(userId);
+
+			if (animalUserResponse == null)
+			{
+				return NotFound("This Zoo Trainer is not training any Animal!");
+			}
 
 			return Ok(animalUserResponse);
 		}

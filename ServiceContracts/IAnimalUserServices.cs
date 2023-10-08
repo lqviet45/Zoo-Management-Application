@@ -1,4 +1,6 @@
-﻿using ServiceContracts.DTO.AnimalUserDTO;
+﻿using ServiceContracts.DTO.AnimalDTO;
+using ServiceContracts.DTO.AnimalUserDTO;
+using ServiceContracts.DTO.UserDTO;
 
 namespace ServiceContracts
 {
@@ -26,13 +28,13 @@ namespace ServiceContracts
 		/// </summary>
 		/// <param name="userId">The zoo trainer id</param>
 		/// <returns>A list of AnimalUserResponse</returns>
-		Task<List<AnimalUserResponse>> GetAnimalByZooTrainerId(long? userId);
+		Task<List<AnimalResponse>> GetAnimalByZooTrainerId(long? userId);
 
 		/// <summary>
 		/// Get all zoo trainer of an animal
 		/// </summary>
 		/// <param name="animalId">The id of an animal</param>
 		/// <returns>A list of AnimalUserResponse</returns>
-		Task<List<AnimalUserResponse>> GetZooTrainerByAnimalId(long? animalId);
+		Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId);
 	}
 }
