@@ -80,7 +80,9 @@ namespace Services
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
 
-			return listMeal.Select(m => m.MapToResponse()).ToList();
+			var mealResponse = listMeal.Select(m => m.MapToResponse()).ToList();
+
+			return mealResponse;
 		}
 
 		public async Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
