@@ -1,8 +1,10 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
+using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using Services.Helper;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Services
 {
@@ -56,6 +58,53 @@ namespace Services
 
 			return animalUser.ToAnimalUserResponse();
 
+		}
+
+		public async Task<bool> DeleteAnimalUser(long animalId, long userId)
+		{
+			var animalUser = await _animalUserRepositories.GetAnimalUserRelationship(animalId, userId);
+
+			if (animalUser == null)
+			{
+				return false;
+			}
+
+			await _animalUserRepositories.Delete(animalId, userId);
+
+			return true;
+
+		}
+
+		public async Task<List<AnimalUserResponse>> GetAnimalByZooTrainerId(long? userId)
+		{
+			var listAnimal = await _animalUserRepositories.GetAnimalByZooTrainerId(userId);
+
+			var listAnimalResponse = listAnimal.Select(animal => animal.ToAnimalUserResponse()).ToList();
+
+			listAnimalResponse.ForEach(  async animal =>
+			{
+				var animalDetail = await _animalRepositories.GetAnimalById(animal.AnimalId);
+
+				animal.AnimalResponse  = animalDetail.ToAnimalResponse();
+			});
+
+			return listAnimalResponse;
+		}
+
+		public async Task<List<AnimalUserResponse>> GetZooTrainerByAnimalId(long? animalId)
+		{
+			var listZooTrainer = await _animalUserRepositories.GetZooTrainerByAnimalId(animalId);
+
+			var listZooTrainerResponse = listZooTrainer.Select(zooTrainer => zooTrainer.ToAnimalUserResponse()).ToList();
+
+			listZooTrainerResponse.ForEach(async zooTrainer =>
+			{
+				var zooTrainerDetail = await _userRepositories.GetUserById(zooTrainer.UserId);
+
+				zooTrainer.UserResponse = zooTrainerDetail.ToUserResponse();
+			});
+
+			return listZooTrainerResponse;
 		}
 	}
 }

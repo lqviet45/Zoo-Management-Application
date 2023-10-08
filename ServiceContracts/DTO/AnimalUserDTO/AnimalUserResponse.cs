@@ -14,6 +14,10 @@ namespace ServiceContracts.DTO.AnimalUserDTO
 		[Required(ErrorMessage = "UserId can not be blank!")]
 		public long UserId { get; set; }
 
+		public List<Animal> AnimalResponse { get; set; } = new List<Animal>();
+
+		public List<User> UserResponse { get; set; } = new List<User>();
+
 	}
 
 	public static class AnimalUserExtension

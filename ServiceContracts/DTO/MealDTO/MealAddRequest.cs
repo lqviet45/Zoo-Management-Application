@@ -1,5 +1,8 @@
 ﻿using Entities.Models;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using ServiceContracts.DTO.FoodDTO;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.MealDTO
@@ -9,6 +12,8 @@ namespace ServiceContracts.DTO.MealDTO
 	/// </summary>
 	public class MealAddRequest
 	{
+	
+
 		[Required(ErrorMessage ="Animal ID can't be blank")]
 		public long AnimalId { get; set; }
 
@@ -16,6 +21,7 @@ namespace ServiceContracts.DTO.MealDTO
 		public int FoodId { get; set; }
 		public string? Note { get; set; }
 		[Required(ErrorMessage = "Feeding Time can't be blank")]
+		
 		public TimeSpan FeedingTime { get; set; }
 
 

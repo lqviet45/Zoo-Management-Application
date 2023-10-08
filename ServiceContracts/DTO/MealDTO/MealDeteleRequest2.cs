@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 using Entities.Models;
+using Newtonsoft.Json;
 
 namespace ServiceContracts.DTO.MealDTO
 {
