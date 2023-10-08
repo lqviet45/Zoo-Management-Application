@@ -72,5 +72,14 @@ namespace Services
 			double total = await _orderReponsitories.GetTotalByDay(from, to);
 			return total;
 		}
+
+		public async Task<List<OrderDetailResponse>> GetOrderDetailsByDate(DateTime from, DateTime to)
+		{
+			var listOrderDetail = await _orderReponsitories.GetOrderDeatilByDate(from, to);
+			
+			var listResponse = listOrderDetail.Select(od => od.ToOrderDetailResopnse()).ToList();
+
+			return listResponse;
+		}
 	}
 }

@@ -66,5 +66,15 @@ namespace Repositories
 
 			return total;
 		}
+
+		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to)
+		{
+			List<OrderDetail> listOrderDetail = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
+				.ToListAsync();
+
+			return listOrderDetail;
+		}
 	}
 }
