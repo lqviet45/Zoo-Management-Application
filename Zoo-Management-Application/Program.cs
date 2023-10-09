@@ -13,7 +13,6 @@ using Swashbuckle.AspNetCore.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceContracts.DTO.Converter;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
@@ -108,12 +107,12 @@ builder.Services.AddCors(options =>
 });
 
 // Add authentication to Server
-builder.Services.AddAuthentication(options =>
-{
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//builder.Services.AddAuthentication(options =>
+//{
+//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 
-	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-});
+//	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{

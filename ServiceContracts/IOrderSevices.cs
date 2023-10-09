@@ -1,4 +1,5 @@
-﻿using ServiceContracts.DTO.OrderDTO;
+﻿using Entities.Models;
+using ServiceContracts.DTO.OrderDTO;
 
 namespace ServiceContracts
 {
@@ -40,5 +41,31 @@ namespace ServiceContracts
 		/// <param name="to">The to date</param>
 		/// <returns>A total of all the order that purchase day between the given From and To date</returns>
 		Task<double> GetTotalByDay(DateTime from, DateTime to);
+
+		/// <summary>
+		/// Get the total of order base on the From day and to day
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <param name="ticketId">The ticketId to search</param>
+		/// <returns>A Total of mathcing order that has pruchase day inside the from and to day</returns>
+		Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId);
+
+		/// <summary>
+		/// Get all the orderDetails between the given From and To date
+		/// </summary>
+		/// <param name="from">The from date</param>
+		/// <param name="to">The to date</param>
+		/// <returns>A list of all the orderDetails between the given From and To date</returns>
+		Task<List<OrderDetailResponse>> GetOrderDetailsByDate(DateTime from, DateTime to);
+
+		///<summary>
+		/// Get list of order detail between the From and To day and have the same ticketId
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <param name="ticketId">The ticketId user want to search</param>
+		/// <returns>A list of matching orderDetails object that between the given date</returns>
+		Task<List<OrderDetailResponse>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId);
 	}
 }

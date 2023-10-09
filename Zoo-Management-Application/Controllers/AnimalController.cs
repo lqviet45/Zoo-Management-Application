@@ -32,7 +32,40 @@ namespace Zoo_Management_Application.Controllers
 			return CreatedAtAction("GetAnimalById", id, animalResponse);
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<List<AnimalResponse>>> GetAllAnimal()
+		{
+			var listAnimal = await _animalServices.GetAnimalList();
+			return Ok(listAnimal);
+		}
 
+		[HttpGet("{id}")]
+		public async Task<ActionResult<AnimalResponse>> GetAnimalById(int id)
+		{
+			var animal = await _animalServices.GetAnimalById(id);
+			if (animal == null) return NotFound();
+			return Ok(animal);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<bool>> DeleteAnimal(int id)
+		{
+			var result = await _animalServices.DeleteAnimal(id);
+			if (result == false) return NotFound();
+			return Ok(result);
+		}
+
+		[HttpPut]
+		public async Task<ActionResult<AnimalResponse>> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest)
+		{
+			if (ModelState.IsValid)
+			{
+				var animal = await _animalServices.UpdateAnimal(animalUpdateRequest);
+				if (animal == null) return NotFound();
+				return Ok(animal);
+			}
+			return BadRequest();
+		}
 
 	}
 }

@@ -3,6 +3,7 @@ using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
+using ServiceContracts.DTO.UserDTO;
 using Services.Helper;
 using System.Reflection.Metadata.Ecma335;
 
@@ -33,14 +34,14 @@ namespace Services
 				throw new ArgumentException("This Zoo Trainer is not exist!");
 			}
 
-			// Check if animal is exist in database
+			// Check if user is exist in database
 			var animal = await _animalRepositories.GetAnimalById(animalUserAddRequest.AnimalId);
 			if (animal == null)
 			{
 				throw new ArgumentException("This Animal is not exist!");
 			}
 
-			// Check if zoo trainer is training this animal
+			// Check if zoo trainer is training this user
 			var relationshipExist = await _animalUserRepositories.GetAnimalUserRelationship
 									(animalUserAddRequest.AnimalId
 									, animalUserAddRequest.UserId);
@@ -75,36 +76,47 @@ namespace Services
 
 		}
 
-		public async Task<List<AnimalUserResponse>> GetAnimalByZooTrainerId(long? userId)
+		public async Task<List<AnimalResponse>> GetAnimalByZooTrainerId(long? userId)
 		{
 			var listAnimal = await _animalUserRepositories.GetAnimalByZooTrainerId(userId);
 
 			var listAnimalResponse = listAnimal.Select(animal => animal.ToAnimalUserResponse()).ToList();
 
-			listAnimalResponse.ForEach(  async animal =>
-			{
-				var animalDetail = await _animalRepositories.GetAnimalById(animal.AnimalId);
+			List<AnimalResponse> animaList = new List<AnimalResponse>();
 
-				animal.AnimalResponse  = animalDetail.ToAnimalResponse();
+			listAnimalResponse.ForEach(animal =>
+			{
+				var animalDetail = _animalRepositories.GetAnimalById(animal.AnimalId).Result;
+
+				if (animalDetail != null)
+				{
+					animaList.Add(animalDetail.ToAnimalResponse());
+				}
 			});
 
-			return listAnimalResponse;
+			return animaList;
 		}
 
-		public async Task<List<AnimalUserResponse>> GetZooTrainerByAnimalId(long? animalId)
+		public async Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId)
 		{
-			var listZooTrainer = await _animalUserRepositories.GetZooTrainerByAnimalId(animalId);
+			var listUser = await _animalUserRepositories.GetAnimalByZooTrainerId(animalId);
 
-			var listZooTrainerResponse = listZooTrainer.Select(zooTrainer => zooTrainer.ToAnimalUserResponse()).ToList();
+			var listUserResponse = listUser.Select(user => user.ToAnimalUserResponse()).ToList();
 
-			listZooTrainerResponse.ForEach(async zooTrainer =>
+			List<UserResponse> userList = new List<UserResponse>();
+
+			listUserResponse.ForEach(user =>
 			{
-				var zooTrainerDetail = await _userRepositories.GetUserById(zooTrainer.UserId);
+				var userDetail = _userRepositories.GetZooTrainerById(user.UserId).Result;
 
-				zooTrainer.UserResponse = zooTrainerDetail.ToUserResponse();
+				if (userDetail != null)
+				{
+					userList.Add(userDetail.ToUserResponse());
+				}
 			});
 
-			return listZooTrainerResponse;
+			return userList;
 		}
+	
 	}
 }

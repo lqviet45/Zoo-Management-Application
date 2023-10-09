@@ -74,12 +74,13 @@ namespace Repositories
 				throw new ArgumentException("Animal or cage is not exist");
 			}
 
-			var isExist = await _dbContext.AnimalCages
-				.AnyAsync(animalCage => animalCage.AnimalId == animalCage.AnimalId
-				&& animalCage.CageId == animalCage.CageId &&
-				animalCage.DayIn == animalCage.DayIn);
+			var isExist = _dbContext.AnimalCages.FirstOrDefault
+				(a => a.AnimalId == animalCage.AnimalId 
+				 && a.CageId == animalCage.CageId
+				 && a.DayIn == animalCage.DayIn
+				 && a.IsIn == true);
 
-			if (isExist)
+			if (isExist != null)
 			{
 				return true;
 			}
@@ -104,6 +105,21 @@ namespace Repositories
 			}
 
 			return animalCage;
+		}
+
+		public async Task<bool> MoveAnimalOut(long animalId)
+		{
+			var animalCage = _dbContext.AnimalCages.FirstOrDefault(animalCage => animalCage.AnimalId == animalId && animalCage.IsIn == true);
+
+			if (animalCage is null)
+			{
+				return false;
+			}
+
+			animalCage.IsIn = false;
+			await _dbContext.SaveChangesAsync();
+
+			return true;
 		}
 	}
 }

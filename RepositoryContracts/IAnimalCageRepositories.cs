@@ -22,13 +22,13 @@ namespace RepositoryContracts
 		Task<List<AnimalCage>> GetAnimalCageHistory(long animalId);
 
 		/// <summary>
-		/// Get all the cage that an animal is in
+		/// Get all element in AnimalCage table
 		/// </summary>
 		/// <returns>List of animalcage</returns>
 		Task<List<AnimalCage>> GetAllAnimalCage();
 
 		/// <summary>
-		/// Get all the animal in a cage
+		/// Get all the animal in a specific cage
 		/// </summary>
 		/// <param name="cageId">The id of the cage</param>
 		/// <returns>List of animalcage</returns>
@@ -47,5 +47,14 @@ namespace RepositoryContracts
 		/// <param name="animalId">The id of the cage</param>
 		/// <returns>Returns the cage that animal is in</returns>
 		Task<AnimalCage> GetAnimalPresentCage(long animalId);
+
+		/// <summary>
+		/// Set the animal is out of the cage (Set is In is False)
+		/// </summary>
+		/// <param name="animalId"></param>
+		/// <returns></returns>
+		Task<bool> MoveAnimalOut(long animalId);
+
+		
 	}
 }
