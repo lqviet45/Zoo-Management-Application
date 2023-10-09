@@ -28,10 +28,10 @@ namespace Repositories
 			_context.OrderDetails.AddRange(orderDetails);
 			
 			await _context.SaveChangesAsync();
-
+			var listTicket = await _ticketReponsitories.GetAllTicket();
 			orderDetails.ForEach(od =>
 			{
-				od.Ticket = _ticketReponsitories.GetTicketById(od.TicketId).Result;
+				od.Ticket = listTicket.Find(t => t.TicketId == od.TicketId);
 			});
 
 			return orderDetails;

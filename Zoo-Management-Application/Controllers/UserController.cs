@@ -88,31 +88,5 @@ namespace Zoo_Management_Application.Controllers
 
 			return NoContent();
 		}
-
-		private string CreateToken(UserResponse user)
-		{
-			List<Claim> claims = new()
-			{
-				new Claim(ClaimTypes.Name, user.UserName),
-				new Claim(ClaimTypes.Role, user.Role.RoleName)
-			};
-
-			var key = new SymmetricSecurityKey(
-				System.Text.Encoding.UTF8.GetBytes(
-					_configuration.GetSection("AppSettings:Token").Value
-					));
-
-			var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-			var token = new JwtSecurityToken(
-				claims: claims,		
-				expires: DateTime.Now.AddDays(1),
-				signingCredentials: cred);
-
-			var jwt = new JwtSecurityTokenHandler()
-				.WriteToken(token);
-
-			return jwt;
-		}
 	}
 }

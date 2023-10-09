@@ -37,10 +37,11 @@ namespace Services
 			ValidationHelper.ModelValidation(orderDetailAddRequests);
 
 			var orderDetail = orderDetailAddRequests.Select(od => od.MapToOrderDetail()).ToList();
+			var ticketList = await _ticketReponsitories.GetAllTicket();
 			orderDetail.ForEach(od =>
 			{
 				double total = 0;
-				var ticket = _ticketReponsitories.GetTicketById(od.TicketId).Result;
+				var ticket = ticketList.Find(t => t.TicketId == od.TicketId);
 				if (ticket is not null)
 					total += od.Quantity * ticket.Price;
 
