@@ -81,12 +81,19 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("TransReport")]
-		public async Task<IActionResult> GetTotalByDate(DateTime from, DateTime to)
+		public async Task<IActionResult> GetTotalByDate(DateTime from, DateTime to, int ticketId = -1)
 		{
 
-			var total = await _orderSevices.GetTotalByDay(from, to);
+			if (ticketId is -1)
+			{
+				var totalAll = await _orderSevices.GetTotalByDay(from, to);
+				var listOrderDetails = await _orderSevices.GetOrderDetailsByDate(from, to);
+				return Ok(new { totalAll, listOrderDetails });
+			}
 
-			return Ok(new { total });
+			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
+			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(to, from, ticketId);
+			return Ok(new { total, listOrderDetail });
 		}
 
 		#region Send Mail
