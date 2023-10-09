@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Entities.Models
 {
+	[Table("FeedingsSchedule")]
 	public class AnimalFood
 	{
 		[ForeignKey("Animal")]

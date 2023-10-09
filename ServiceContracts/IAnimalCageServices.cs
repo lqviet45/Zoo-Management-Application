@@ -50,5 +50,12 @@ namespace ServiceContracts
 		/// <param name="animalId">The id of an animal</param>
 		/// <returns>Returns true if success, otherwise returns false</returns>
 		Task<bool> MoveAnimalOut(long animalId);
+
+		/// <summary>
+		/// Update the animal cage of an animal by adding new rows in the table
+		/// </summary>
+		/// <param name="animalCageUpdateRequest">The AnimalCage obj </param>
+		/// <returns>Returns the AnimalCage obj</returns>
+		Task<AnimalCageResponse> UpdateAnimalCage(AnimalCageUpdateRequest animalCageUpdateRequest);
 	}
 }

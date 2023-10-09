@@ -23,22 +23,22 @@ namespace Services
 			_cageRepositories = cageRepositories;
 		}
 
-		public async Task<AnimalCageResponse> Add(AnimalCageAddRequest animalCageAddRequest)
+		public async Task<AnimalCageResponse> UpdateAnimalCage(AnimalCageUpdateRequest animalCageUpdateRequest)
 		{
-			ArgumentNullException.ThrowIfNull(animalCageAddRequest);
+			ArgumentNullException.ThrowIfNull(animalCageUpdateRequest);
 
-			var animalCageExist = await _animalCageRepositories.CheckAnimalCage(animalCageAddRequest.MapToAnimalCage());
+			var animalCageExist = await _animalCageRepositories.CheckAnimalCage(animalCageUpdateRequest.MapToAnimalCage());
 
 			if(animalCageExist)
 			{
 				throw new ArgumentException("The animal is already in this cage at this specified day");
 			}
 
-			var presentCage = await _animalCageRepositories.GetAnimalPresentCage(animalCageAddRequest.AnimalId);
+			var presentCage = await _animalCageRepositories.GetAnimalPresentCage(animalCageUpdateRequest.AnimalId);
 
 			if(presentCage != null)
 			{
-				if(presentCage.CageId == animalCageAddRequest.CageId)
+				if(presentCage.CageId == animalCageUpdateRequest.CageId)
 				{
 					throw new ArgumentException("The animal is already in this cage");
 				}
@@ -48,9 +48,9 @@ namespace Services
 				}
 			}
 
-			ValidationHelper.ModelValidation(animalCageAddRequest);
+			ValidationHelper.ModelValidation(animalCageUpdateRequest);
 
-			AnimalCage animalCage = animalCageAddRequest.MapToAnimalCage();
+			AnimalCage animalCage = animalCageUpdateRequest.MapToAnimalCage();
 			await _animalCageRepositories.Add(animalCage);
 
 			return animalCage.ToAnimalCageResponse();
@@ -144,6 +144,27 @@ namespace Services
 			return true;
 
 		}
+
+		public async Task<AnimalCageResponse> Add(AnimalCageAddRequest animalCageAddRequest)
+		{
+			ArgumentNullException.ThrowIfNull(animalCageAddRequest);
+
+			var animalCageExist = await _animalCageRepositories.CheckAnimalCage(animalCageAddRequest.MapToAnimalCage());
+
+			if (animalCageExist)
+			{
+				throw new ArgumentException("The animal is already in this cage at this specified day");
+			}
+
+			ValidationHelper.ModelValidation(animalCageAddRequest);
+
+			AnimalCage animalCage = animalCageAddRequest.MapToAnimalCage();
+			await _animalCageRepositories.Add(animalCage);
+
+			return animalCage.ToAnimalCageResponse();
+		}
+
+
 	}
 	
 }
