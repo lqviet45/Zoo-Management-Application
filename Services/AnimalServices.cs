@@ -10,7 +10,7 @@ namespace Services
 {
     public class AnimalServices : IAnimalServices
 	{
-		// prvate fields
+		// private fields
 		private readonly IAnimalRepositories _animalRepositories;
 		private readonly IAnimalUserRepositories _animalUserRepositories;
 		private readonly IUserRepositories _userRepositories;

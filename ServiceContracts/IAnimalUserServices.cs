@@ -36,5 +36,7 @@ namespace ServiceContracts
 		/// <param name="animalId">The id of an animal</param>
 		/// <returns>A list of AnimalUserResponse</returns>
 		Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId);
+
+
 	}
 }

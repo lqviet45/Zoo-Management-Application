@@ -2,6 +2,8 @@
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.AnimalCageDTO;
+using ServiceContracts.DTO.AnimalDTO;
+using ServiceContracts.DTO.CageDTO;
 using Services.Helper;
 
 namespace Services
@@ -10,11 +12,15 @@ namespace Services
 	{
 		// privvate filed
 		private readonly IAnimalCageRepositories _animalCageRepositories;
+		private readonly IAnimalRepositories _animalRepositories;
+		private readonly ICageRepositories _cageRepositories;
 
 		// constructor
-		public AnimalCageServices(IAnimalCageRepositories animalCageRepositories)
+		public AnimalCageServices(IAnimalCageRepositories animalCageRepositories, IAnimalRepositories animalRepositories, ICageRepositories cageRepositories)
 		{
 			_animalCageRepositories = animalCageRepositories;
+			_animalRepositories = animalRepositories;
+			_cageRepositories = cageRepositories;
 		}
 
 		public async Task<AnimalCageResponse> Add(AnimalCageAddRequest animalCageAddRequest)
@@ -28,6 +34,20 @@ namespace Services
 				throw new ArgumentException("The animal is already in this cage at this specified day");
 			}
 
+			var presentCage = await _animalCageRepositories.GetAnimalPresentCage(animalCageAddRequest.AnimalId);
+
+			if(presentCage != null)
+			{
+				if(presentCage.CageId == animalCageAddRequest.CageId)
+				{
+					throw new ArgumentException("The animal is already in this cage");
+				}
+				else
+				{
+					var isMove = await _animalCageRepositories.MoveAnimalOut(presentCage.AnimalId);
+				}
+			}
+
 			ValidationHelper.ModelValidation(animalCageAddRequest);
 
 			AnimalCage animalCage = animalCageAddRequest.MapToAnimalCage();
@@ -36,6 +56,7 @@ namespace Services
 			return animalCage.ToAnimalCageResponse();
 		}
 
+		// This function is not used, but it is still here for future use
 		public async Task<List<AnimalCageResponse>> GetAllAnimalCage()
 		{
 			var listAnimalCage = await _animalCageRepositories.GetAllAnimalCage();
@@ -45,23 +66,52 @@ namespace Services
 			return listAnimalCageResponse;
 		}
 
-		public async Task<List<AnimalCageResponse>> GetAllAnimalInTheCage(int cageId)
+		public async Task<List<AnimalResponse>> GetAllAnimalInTheCage(int cageId)
 		{
-			var listAnimalCage = await _animalCageRepositories.GetAllAnimalInTheCage(cageId);
-			var listAnimalCageResponse = listAnimalCage.Select(animalCage => animalCage.ToAnimalCageResponse()).ToList();
-			return listAnimalCageResponse;
+			var listAnimal = await _animalCageRepositories.GetAllAnimalInTheCage(cageId);
+
+			var listAnimalResponse = listAnimal.Select(animalCage => animalCage.ToAnimalCageResponse()).ToList();
+
+			List<AnimalResponse> animalList = new List<AnimalResponse>();
+
+			listAnimalResponse.ForEach(animal =>
+			{
+				var animalDetail = _animalRepositories.GetAnimalById(animal.AnimalId).Result;
+
+				if (animalDetail != null)
+				{
+					animalList.Add(animalDetail.ToAnimalResponse());
+				}
+
+			});
+
+			return animalList;
+
 		}
 
-		public async Task<List<AnimalCageResponse>> GetAnimalCageHistory(long animalId)
+		public async Task<List<CageResponse>> GetAnimalCageHistory(long animalId)
 		{
-			var listAnimalCage = await _animalCageRepositories.GetAnimalCageHistory(animalId);
+			var listCage = await _animalCageRepositories.GetAnimalCageHistory(animalId);
 
-			var listAnimalCageResponse = listAnimalCage.Select(animalCage => animalCage.ToAnimalCageResponse()).ToList();
+			var listCageResponse = listCage.Select(animalCage => animalCage.ToAnimalCageResponse()).ToList();
 
-			return listAnimalCageResponse;
+			List<CageResponse> cageList = new List<CageResponse>();
+
+			listCageResponse.ForEach(cage =>
+			{
+				var cageDetail = _cageRepositories.GetCageById(cage.CageId).Result;
+
+				if (cageDetail != null)
+				{
+					cageList.Add(cageDetail.ToCageResponse());
+				}
+
+			});
+
+			return cageList;
 		}
 
-		public async Task<AnimalCageResponse> GetAnimalPresentCage(long animalId)
+		public async Task<CageResponse> GetAnimalPresentCage(long animalId)
 		{
 			var animalCage = await _animalCageRepositories.GetAnimalPresentCage(animalId);
 
@@ -70,7 +120,29 @@ namespace Services
 				throw new ArgumentException("The animal is not in any cage");
 			}
 
-			return animalCage.ToAnimalCageResponse();
+			var cage = await _cageRepositories.GetCageById(animalCage.CageId);
+
+			if(cage is null)
+			{
+				throw new ArgumentException("The cage is not exist");
+			}
+
+			return cage.ToCageResponse();
+		}
+
+		public async Task<bool> MoveAnimalOut(long animalId)
+		{
+			var animalCage = await _animalCageRepositories.GetAnimalPresentCage(animalId);
+
+			if (animalCage is null)
+			{
+				return false;
+			}
+
+			await _animalCageRepositories.MoveAnimalOut(animalId);
+
+			return true;
+
 		}
 	}
 	

@@ -19,10 +19,10 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<MealResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
 		{
 			
-
 			var mealResponse = await _mealServices.AddMeal(mealAddRequest);
 
 			var routeValues = new { Id = mealResponse.AnimalId };
+
 			return CreatedAtAction("GetAnimalMealById", routeValues, mealResponse);
 		}
 
@@ -30,6 +30,9 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<List<MealResponse>>> GetAnimalMealById(long id)
 		{
 			var mealResponse = await _mealServices.GetAnimalMealById(id);
+
+			
+
 			return Ok(mealResponse);
 		}
 

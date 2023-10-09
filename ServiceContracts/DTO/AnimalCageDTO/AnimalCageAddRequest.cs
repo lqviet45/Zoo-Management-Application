@@ -15,7 +15,8 @@ namespace ServiceContracts.DTO.AnimalCageDTO
 		public long AnimalId { get; set; }
 
 		[Required(ErrorMessage = "DateIn Can not be blank!")]
-		public DateTime? DayIn { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime DayIn { get; set; }
 
 		[Required(ErrorMessage = "IsIn Can not be blank!")]
 		public bool IsIn { get; set; }
@@ -30,7 +31,7 @@ namespace ServiceContracts.DTO.AnimalCageDTO
 			{
 				AnimalId = this.AnimalId,
 				CageId = this.CageId,
-				DayIn = (DateTime)DayIn,
+				DayIn = DayIn,
 				IsIn = true
 			};
 		}
