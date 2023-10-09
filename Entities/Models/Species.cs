@@ -15,6 +15,5 @@ namespace Entities.Models
 		public string? SpeciesName { get; set;}
 		public string? Description { get; set;}
 
-		
 	}
 }

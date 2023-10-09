@@ -12,6 +12,8 @@ namespace ServiceContracts.DTO.SpeciesDTO
         public int SpeciesId { get; set; }
         [Required(ErrorMessage = "Species Name can not be blank!")]
         public string? SpeciesName { get; set; }
+
+        public string? Description { get; set; }
     }
 
     public static class SpeciesExtension
@@ -26,7 +28,8 @@ namespace ServiceContracts.DTO.SpeciesDTO
             return new SpeciesResponse()
             {
                 SpeciesId = species.SpeciesId,
-                SpeciesName = species.SpeciesName
+                SpeciesName = species.SpeciesName,
+                Description = species.Description
             };
         }
     }
