@@ -96,7 +96,7 @@ namespace Entities.AppDbContext
 			modelBuilder.Entity<AnimalFood>(entity =>
 			{
 				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
-				entity.ToTable(nameof(AnimalFood));
+				entity.ToTable("FeedingsSchedule");
 			});
 
 			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));

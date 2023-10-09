@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
+using ServiceContracts.DTO.FoodDTO;
 using ServiceContracts.DTO.MealDTO;
 
 namespace Zoo_Management_Application.Controllers
@@ -16,7 +17,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<MealResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
+		public async Task<ActionResult<AnimalFoodResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
 		{
 			
 			var mealResponse = await _mealServices.AddMeal(mealAddRequest);
@@ -30,8 +31,6 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<List<MealResponse>>> GetAnimalMealById(long id)
 		{
 			var mealResponse = await _mealServices.GetAnimalMealById(id);
-
-			
 
 			return Ok(mealResponse);
 		}
@@ -57,7 +56,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<MealResponse>>> GetMealAtATime(long animalId, TimeSpan feedingTime)
+		public async Task<ActionResult<List<FoodResponse>>> GetMealAtATime(long animalId, TimeSpan feedingTime)
 		{
 			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalId, feedingTime);
 			
