@@ -67,11 +67,34 @@ namespace Repositories
 			return total;
 		}
 
+		public async Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId)
+		{
+			double total = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Include(od => od.Ticket)
+				.Where(o => o.Order != null && o.Order.PurchaseDate >= from && o.Order.PurchaseDate <= to && o.TicketId == ticketId)
+				.SumAsync(o => o.TotalPrice);
+
+			return total;
+		}
+
 		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to)
 		{
 			List<OrderDetail> listOrderDetail = await _context.OrderDetails
 				.Include(od => od.Order)
+				.Include(od => od.Ticket)
 				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
+				.ToListAsync();
+
+			return listOrderDetail;
+		}
+
+		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to, int ticketId)
+		{
+			List<OrderDetail> listOrderDetail = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Include(od => od.Ticket)
+				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
 				.ToListAsync();
 
 			return listOrderDetail;
