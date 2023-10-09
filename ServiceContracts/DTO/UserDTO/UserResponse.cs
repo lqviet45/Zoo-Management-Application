@@ -1,5 +1,4 @@
 ﻿using Entities.Models;
-using ServiceContracts.DTO.ExperienceDTO;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -32,8 +31,6 @@ namespace ServiceContracts.DTO.UserDTO
         public DateTime DateOfBirth { get; set; }
         public int RoleId { get; set; }
         public virtual Role? Role { get; set; }
-
-        public List<ExperienceResponse> ExperienceResponses { get; set; } = new List<ExperienceResponse>();
     }
 
     public static class UserExtension

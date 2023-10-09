@@ -1,7 +1,6 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using Services.Helper;
 
@@ -11,12 +10,11 @@ namespace Services
     public class UserServices : IUserServices
 	{
 		private readonly IUserRepositories _userRepositories;
-		private readonly IExperienceRepositories _experienceRepositories;
 
-		public UserServices(IUserRepositories userRepositories, IExperienceRepositories experienceRepositories)
+		public UserServices(IUserRepositories userRepositories)
 		{
 			_userRepositories = userRepositories;
-			_experienceRepositories = experienceRepositories;
+
 		}
 
 		public async Task<UserResponse> AddUser(UserAddRequest? userAddRequest)
@@ -58,10 +56,6 @@ namespace Services
 		{
 			var listZooTrainer = await _userRepositories.GetAllZooTrainer();
 			var listZooTrainerresponse = listZooTrainer.Select(user => user.ToUserResponse()).ToList();
-			listZooTrainerresponse.ForEach(user => { 
-				var experiences = _experienceRepositories.GetExperienceByUserId(user.UserId);
-				user.ExperienceResponses = experiences.Result.Select(ex => ex.ToExperienceResponse()).ToList();
-			});
 			return listZooTrainerresponse;
 		}
 

@@ -1,7 +1,6 @@
 ﻿using Entities.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -44,7 +43,7 @@ namespace ServiceContracts.DTO.UserDTO
 
         [Required(ErrorMessage = "Role can not be empty!")]
         public int RoleId { get; set; }
-        public ExperienceAddRequest? ExperienceAddRequest { get; set; }
+        
 
         /// <summary>
         /// Convert UserAddRequest to User

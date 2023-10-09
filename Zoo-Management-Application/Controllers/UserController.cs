@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.AuthenDTO;
-using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,14 +13,12 @@ namespace Zoo_Management_Application.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
-		private readonly IExperienceServices _experienceService;
 		private readonly IConfiguration _configuration;
 		private readonly IJwtServices _jwtServices;
 
-		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration, IJwtServices jwtServices)
+		public UserController(IUserServices userServices, IConfiguration configuration, IJwtServices jwtServices)
 		{
 			_userServices = userServices;
-			_experienceService = experienceService;
 			_configuration = configuration;
 			_jwtServices = jwtServices;
 		}
@@ -47,12 +44,6 @@ namespace Zoo_Management_Application.Controllers
 		{
 			
 			var userResponse = await _userServices.AddUser(userAddRequest);
-			if (userAddRequest.ExperienceAddRequest != null)
-			{
-				userAddRequest.ExperienceAddRequest.UserId = userResponse.UserId;
-				var experienceResponse = await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
-				userResponse.ExperienceResponses = new List<ExperienceResponse>() { experienceResponse };
-			}
 
 			var routeValues = new { Id = userResponse.UserId };
 			if (userResponse.RoleId == 2)
@@ -72,8 +63,7 @@ namespace Zoo_Management_Application.Controllers
 			if (ModelState.IsValid)
 			{
 				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
-				var experience = await _experienceService.AddExperience(userUpdateRequest.ExperienceAddRequest);
-				userUpdate.ExperienceResponses.Add(experience);
+
 				return Ok(userUpdate);
 			}
 
