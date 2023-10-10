@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -47,5 +48,12 @@ namespace RepositoryContracts
 		/// <param name="foodId">The id of the food to delete</param>
 		/// <returns>Returns true if delete successful, otherwise returns false</returns>
 		Task<bool> Delete(int foodId);
+
+		/// <summary>
+		/// Returns all food obj base on the given expression
+		/// </summary>
+		/// <param name="predicate">Linq expression to check</param>
+		/// <returns>All food that matching with the given condition</returns>
+		Task<List<Food>> GetFiteredFood(Expression<Func<Food, bool>> predicate);
 	}
 }

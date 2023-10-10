@@ -56,6 +56,23 @@ namespace Services
 			return listFoodResponse;
 		}
 
+		public async Task<List<FoodResponse>> GetFilteredFood(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Food> foods = searchBy switch
+			{
+				nameof(FoodResponse.FoodName) =>
+				await _foodRepositories.GetFiteredFood(temp =>
+					temp.FoodName.Contains(searchString)),
+
+				_ => await _foodRepositories.GetAllFood()
+			};
+
+			return foods.Select(food => food.ToFoodResponse()).ToList();
+
+		}
+
 		public async Task<FoodResponse?> GetFoodById(int foodId)
 		{
 			var matchingFood = await _foodRepositories.GetFoodByFoodId(foodId);

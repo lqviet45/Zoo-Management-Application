@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO.FoodDTO;
+using ServiceContracts.DTO.WrapperDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -28,10 +30,13 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<FoodResponse>>> GetAllFood()
+		public async Task<ActionResult<List<FoodResponse>>> GetAllFood(int? pageNumber, string searchBy = "FoodName", string? searchString = null)
 		{
-			var listFood = await _foodServices.GetAllFood();
-			return Ok(listFood);
+			var listFood = await _foodServices.GetFilteredFood(searchBy, searchString);
+			int pageSize = 5;
+			var pagingList = PaginatedList<FoodResponse>.CreateAsync(listFood.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
+			var response = new { pagingList, pagingList.TotalPages };
+			return Ok(response);
 		}
 
 		[HttpGet("{id}")]

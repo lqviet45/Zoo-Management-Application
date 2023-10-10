@@ -48,5 +48,13 @@ namespace ServiceContracts
 		/// <param name="foodId">The food id to delete</param>
 		/// <returns>True if delete success, else False</returns>
 		Task<bool> DeleteFood(int foodId);
+
+		/// <summary>
+		/// Returns all food objects that matches with the given search field and search string
+		/// </summary>
+		/// <param name="searchBy">The field to search</param>
+		/// <param name="searchString">The string to search</param>
+		/// <returns>Returns all the matching food base on the given search field and search string</returns>
+		Task<List<FoodResponse>> GetFilteredFood(string searchBy, string? searchString);
 	}
 }
