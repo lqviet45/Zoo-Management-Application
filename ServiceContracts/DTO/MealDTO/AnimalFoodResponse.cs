@@ -7,29 +7,33 @@ namespace ServiceContracts.DTO.MealDTO
 	/// <summary>
 	/// Represents DTO class that is used as return type of most methods of AnimalFood service
 	/// </summary>
-	public class MealResponse
+	public class AnimalFoodResponse
 	{
 		[Required]
 		public long AnimalId { get; set; }
+
+		[Required]
+		public int FoodId { get; set; }
+
 		public string? Note { get; set; }
 		[Required]
 		public TimeSpan FeedingTime { get; set; }
 
-		public List<FoodResponse> Food { get; set; } = new List<FoodResponse>();
 	}
 
-	public static class MealResponseExtensionMethods
+	public static class AnimalFoodResponseExtensionMethods
 	{
 		/// <summary>
-		/// An extension method to convert an object of AnimalFood class into MealResponse class
+		/// An extension method to convert an object of AnimalFood class into AnimalFoodResponse class
 		/// </summary>
 		/// <param name="meal">The AnimalFood object to convert</param>
 		/// /// <returns>Returns the converted MealResponse object</returns>
-		public static MealResponse MapToResponse(this AnimalFood meal)
+		public static AnimalFoodResponse MapToAnimalFoodResponse(this AnimalFood meal)
 		{
-			return new MealResponse()
+			return new AnimalFoodResponse()
 			{
 				AnimalId = meal.AnimalId,
+				FoodId = meal.FoodId,
 				Note = meal.Note,
 				FeedingTime = meal.FeedingTime
 			};

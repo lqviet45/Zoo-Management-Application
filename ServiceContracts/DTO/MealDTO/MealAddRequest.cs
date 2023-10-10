@@ -21,7 +21,6 @@ namespace ServiceContracts.DTO.MealDTO
 		public int FoodId { get; set; }
 		public string? Note { get; set; }
 		[Required(ErrorMessage = "Feeding Time can't be blank")]
-		
 		public TimeSpan FeedingTime { get; set; }
 
 

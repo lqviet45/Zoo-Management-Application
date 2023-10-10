@@ -18,11 +18,11 @@ namespace Services
 			_mealRepositories = mealRepositories;
 			_foodRepositories = foodRepositories;
 		}
-		public async Task<MealResponse> AddMeal(List<MealAddRequest> mealAddRequest)
+		public async Task<AnimalFoodResponse> AddMeal(List<MealAddRequest> mealAddRequest)
 		{
 			List<AnimalFood> animalFoods = new List<AnimalFood>();
 
-			var mealResponse = new MealResponse();
+			var mealResponse = new AnimalFoodResponse();
 			mealResponse.AnimalId = mealAddRequest.First().AnimalId;
 			mealResponse.Note = mealAddRequest.First().Note;
 			mealResponse.FeedingTime = mealAddRequest.First().FeedingTime;
@@ -37,20 +37,12 @@ namespace Services
 			animalFoods.ForEach(af =>
 			{
 				if (af.Food is not null)
-					mealResponse.Foods.Add(af.Food.ToFoodResponse());
+					mealResponse.FoodId = af.FoodId;
 
 			});
 
 			return mealResponse;
-			//var food = await _foodRepositories.GetFoodByFoodId(mealAddRequest.FoodId);
-			//if(food == null)
-			//{
-			//	throw new ArgumentNullException("The given food id doesn't exist!");
-			//}
-			//var meal = mealAddRequest.MealToAnimalFood();
-			//await _mealRepositories.Add(meal);
-			//return meal.MapToResponse();
- 		}
+		}
 
 		public async Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
@@ -82,14 +74,39 @@ namespace Services
 
 			var mealResponse = listMeal.Select(m => m.MapToResponse()).ToList();
 
+			foreach (var meal in mealResponse)
+			{
+				meal.Food = listMeal.Where(af => af.AnimalId == meal.AnimalId && af.FeedingTime == meal.FeedingTime)
+					.Select(af => af.Food.ToFoodResponse())
+					.ToList();
+			}
+
 			return mealResponse;
 		}
 
-		public async Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
-		{
-			var listMeal = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
+	
 
-			return listMeal.Select(m => m.MapToResponse()).ToList();
+		public async Task<List<FoodResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
+		{
+			var listFood = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
+
+			var foodResponse = listFood.Select(m => m.MapToAnimalFoodResponse()).ToList();
+
+			List<FoodResponse> foodList = new List<FoodResponse>();
+
+			foodResponse.ForEach(food =>
+			{
+				var foodDetail = _foodRepositories.GetFoodByFoodId(food.FoodId).Result;
+
+				if(foodDetail != null)
+				{
+					foodList.Add(foodDetail.ToFoodResponse());
+				}
+
+			});
+
+			return foodList;
 		}
+
 	}
 }

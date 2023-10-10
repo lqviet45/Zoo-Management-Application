@@ -75,8 +75,6 @@ namespace Repositories
 		{
 			var news = await _dbContext.News.Where(n => n.Title == title).FirstOrDefaultAsync();
 
-		
-
 			return news;
 		}
 

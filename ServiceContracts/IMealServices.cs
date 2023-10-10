@@ -1,4 +1,5 @@
-﻿using ServiceContracts.DTO.MealDTO;
+﻿using ServiceContracts.DTO.FoodDTO;
+using ServiceContracts.DTO.MealDTO;
 
 namespace ServiceContracts
 {
@@ -11,7 +12,7 @@ namespace ServiceContracts
 		/// <returns>MealResponse object base on the meal adding</returns>
 		/// <exception cref="ArgumentNullException"></exception>
 		/// <exception cref="ArgumentException"></exception>
-		Task<MealResponse> AddMeal(List<MealAddRequest> mealAddRequest);
+		Task<AnimalFoodResponse> AddMeal(List<MealAddRequest> mealAddRequest);
 
 		/// <summary>
 		/// Get All the meal in AnimalFood table base on animal Id
@@ -26,7 +27,7 @@ namespace ServiceContracts
 		/// <param name="id">Animal ID</param>
 		/// <param name="time">Date</param>
 		/// <returns>The specified food belong to an animal at a specified time</returns>
-		Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time);
+		Task<List<FoodResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time);
 
 		/// <summary>
 		/// Delete a meal by animal and feeding time

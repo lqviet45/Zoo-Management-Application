@@ -26,7 +26,7 @@ namespace Services
 				}
 				return false;
 			} 
-			catch (Exception ex)
+			catch(Exception)
 			{
 				return false;
 			}
@@ -61,7 +61,7 @@ namespace Services
 				return new Tuple<int, string>(1, newFileName);
 
 			}
-			catch(Exception ex)
+			catch(Exception)
 			{
 				return new Tuple<int, string>(0, "Error has occured");
 			}
