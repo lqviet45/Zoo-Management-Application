@@ -40,6 +40,12 @@ namespace ServiceContracts
 		/// <returns>Returns the Species response obj after updation</returns>
 		Task<SpeciesResponse> UpdateSpecies(SpeciesUpdateRequest? speciesUpdateRequest);
 
-
+		/// <summary>
+		/// Returns all species obj that matches with the given search field and search string
+		/// </summary>
+		/// <param name="searchBy">The field to search</param>
+		/// <param name="searchString">The string to search</param>
+		/// <returns>Returns all matching species base on the given search field and search string</returns>
+		Task<List<SpeciesResponse>> GetFilteredSpecies(string searchBy, string? searchString);
 	}
 }

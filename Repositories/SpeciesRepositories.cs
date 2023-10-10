@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -49,6 +50,12 @@ namespace Repositories
 								.ToListAsync();
 
 			return listSpecies;
+		}
+
+		public async Task<List<Species>> GetFilteredSpecies(Expression<Func<Species, bool>> predicate)
+		{
+			return await _dbContext.Species.Where(predicate)
+								   .ToListAsync();
 		}
 
 		public async Task<Species?> GetSpeciesById(int speciesId)

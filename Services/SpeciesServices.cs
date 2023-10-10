@@ -78,6 +78,51 @@ namespace Services
 			return listSpecies.Select(temp => temp.ToSpeciesResponse()).ToList();
 		}
 
+		public async Task<List<SpeciesResponse>> GetFilteredSpecies(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Species> species = searchBy switch
+			{
+				nameof(SpeciesResponse.SpeciesName) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.SpeciesName.Contains(searchString)),
+
+				nameof(SpeciesResponse.Family) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Family.Contains(searchString)),
+				
+				nameof(SpeciesResponse.Infomation) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Infomation.Contains(searchString)),
+
+				nameof(SpeciesResponse.Characteristic) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Characteristic.Contains(searchString)),
+
+				nameof(SpeciesResponse.Allocation) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Allocation.Contains(searchString)),
+
+				nameof(SpeciesResponse.Ecological) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+						temp.Ecological.Contains(searchString)),
+
+				nameof(SpeciesResponse.Diet) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+									temp.Diet.Contains(searchString)),
+
+				nameof(SpeciesResponse.BreedingAndReproduction) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.BreedingAndReproduction.Contains(searchString)),
+
+				_ => await _speciesRepositories.GetAllSpecies()
+			};
+
+			return species.Select(temp => temp.ToSpeciesResponse()).ToList();
+
+		}
+
 		public async Task<SpeciesResponse?> GetSpeciesById(int? id)
 		{
 			if(id == null) return null;
