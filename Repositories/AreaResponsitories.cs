@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -55,6 +55,11 @@ namespace Repositories
 		public async Task<Area?> GetAreaByName(string areaName)
 		{
 			return await _dbContext.Areas.Where(area => area.AreaName == areaName && area.IsDelete == false).FirstOrDefaultAsync();
+		}
+
+		public async Task<List<Area>> GetFilteredArea(Expression<Func<Area, bool>> predicate)
+		{
+			return await _dbContext.Areas.Where(predicate).ToListAsync();
 		}
 
 		public async Task<Area> UpdateArea(Area area)

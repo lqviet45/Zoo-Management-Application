@@ -73,6 +73,21 @@ namespace Services
 			return area.ToAreaResponse();
 		}
 
+		public async Task<List<AreaResponse>> GetFilteredArea(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Area> areas = searchBy switch
+			{
+				nameof(AreaResponse.AreaName) => 
+				await _areaRepositories.GetFilteredArea(temp => temp.AreaName.Contains(searchString)),
+
+				_ => await _areaRepositories.GetAllArea()
+			};
+
+			return areas.Select(area => area.ToAreaResponse()).ToList();
+		}
+
 		public async Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest)
 		{
 			if(areaUpdateRequest == null) throw new ArgumentNullException(nameof(areaUpdateRequest));
