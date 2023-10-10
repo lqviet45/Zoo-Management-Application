@@ -13,12 +13,15 @@ namespace ServiceContracts.DTO.SkillDTO
 		[StringLength(40)]
 		public string? SkillName { get; set; }
 
+		public long UserId { get; set; }
+
 		public Skill MapToSkill()
 		{
 			return new Skill()
 			{
 				SkillId = SkillId,
-				SkillName = SkillName
+				SkillName = SkillName,
+				UserId = UserId
 			};
 		}
 	}

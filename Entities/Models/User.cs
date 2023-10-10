@@ -45,6 +45,7 @@ namespace Entities.Models
 		[ForeignKey("Role")]
 		public int RoleId { get; set; }
 		public virtual Role? Role { get; set; }
+		public virtual List<Skill> Skills { get; set; } = new List<Skill>();
 		public virtual ICollection<AnimalUser> UserAnimals { get; set; } = new List<AnimalUser>();
 	}
 }

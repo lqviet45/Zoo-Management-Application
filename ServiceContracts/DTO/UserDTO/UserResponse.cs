@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.SkillDTO;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -31,6 +32,7 @@ namespace ServiceContracts.DTO.UserDTO
         public DateTime DateOfBirth { get; set; }
         public int RoleId { get; set; }
         public virtual Role? Role { get; set; }
+        public List<SkillResponse> skills { get; set; } = new List<SkillResponse>();
     }
 
     public static class UserExtension
@@ -52,7 +54,8 @@ namespace ServiceContracts.DTO.UserDTO
                 DateOfBirth = user.DateOfBirth,
                 RoleId = user.RoleId,
                 Role = user.Role,
-                Gender = user.Gender
+                Gender = user.Gender,
+                skills = user.Skills.Select(s => s.ToSkillResponse()).ToList()
             };
         }
     }

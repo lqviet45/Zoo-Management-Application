@@ -10,7 +10,7 @@ namespace ServiceContracts.DTO.SkillDTO
         public string? SkillName { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         public Skill MapToSkill()
         {

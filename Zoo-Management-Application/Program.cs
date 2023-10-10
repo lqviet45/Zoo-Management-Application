@@ -68,6 +68,9 @@ builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
 
 builder.Services.AddScoped<IAnimalCageRepositories, AnimalCageRepositories>();
 builder.Services.AddScoped<IAnimalCageServices, AnimalCageServices>();
+
+builder.Services.AddScoped<ISkillRepositories, SkillRepositories>();
+builder.Services.AddScoped<ISkillServices, SkillServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>

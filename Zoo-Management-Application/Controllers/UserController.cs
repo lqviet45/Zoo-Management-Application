@@ -15,12 +15,14 @@ namespace Zoo_Management_Application.Controllers
 		private readonly IUserServices _userServices;
 		private readonly IConfiguration _configuration;
 		private readonly IJwtServices _jwtServices;
+		private readonly ISkillServices _skillServices;
 
-		public UserController(IUserServices userServices, IConfiguration configuration, IJwtServices jwtServices)
+		public UserController(IUserServices userServices, IConfiguration configuration, IJwtServices jwtServices, ISkillServices skillServices)
 		{
 			_userServices = userServices;
 			_configuration = configuration;
 			_jwtServices = jwtServices;
+			_skillServices = skillServices;
 		}
 
 		[HttpPost("login")]
@@ -45,6 +47,15 @@ namespace Zoo_Management_Application.Controllers
 			
 			var userResponse = await _userServices.AddUser(userAddRequest);
 
+			foreach (var skill in userAddRequest.Skills)
+			{
+				skill.UserId = userResponse.UserId;
+			}
+
+			var listSkill = await _skillServices.AddSkills(userAddRequest.Skills);
+
+			userResponse.skills = listSkill;
+
 			var routeValues = new { Id = userResponse.UserId };
 			if (userResponse.RoleId == 2)
 			{
@@ -63,6 +74,18 @@ namespace Zoo_Management_Application.Controllers
 			if (ModelState.IsValid)
 			{
 				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
+
+				if (userUpdateRequest.Skills.Count > 0)
+				{
+					userUpdateRequest.Skills.ForEach(s =>
+					{
+						s.UserId = userUpdate.UserId;
+					});
+					
+					var listSkillUpdate = await _skillServices.UpdateSkills(userUpdateRequest.Skills);
+
+					userUpdate.skills = listSkillUpdate;
+				}
 
 				return Ok(userUpdate);
 			}
