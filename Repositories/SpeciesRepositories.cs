@@ -26,37 +26,47 @@ namespace Repositories
 
 		public async Task<bool> Delete(int speciesId)
 		{
-			var deleteSpecies = await _dbContext.Species.Where(species => species.SpeciesId == speciesId)
-														.FirstOrDefaultAsync();
+			var deleteSpecies = await _dbContext.Species
+								.Where(species => species.SpeciesId == speciesId)
+								.FirstOrDefaultAsync();
 
-			if (deleteSpecies == null) { return false; }
+			if (deleteSpecies == null) 
+			{
+				return false; 
+			}
 
-			_dbContext.Species.Remove(deleteSpecies);
+			deleteSpecies.IsDeleted = true;
 
-			int rowsDeleted = await _dbContext.SaveChangesAsync();
+			 await _dbContext.SaveChangesAsync();
 
-			return rowsDeleted > 0;
+			return true;
 		}
 
 		public async Task<List<Species>> GetAllSpecies()
 		{
-			var listSpecies = await _dbContext.Species.ToListAsync();
+			var listSpecies = await _dbContext.Species
+								.Where(temp => temp.IsDeleted == false)
+								.ToListAsync();
 
 			return listSpecies;
 		}
 
 		public async Task<Species?> GetSpeciesById(int speciesId)
 		{
-			var species = await _dbContext.Species.Where(species => species.SpeciesId == speciesId)
-											.FirstOrDefaultAsync();
+			var species = await _dbContext.Species
+							.Where(species => species.SpeciesId == speciesId 
+							&& species.IsDeleted == false)
+							.FirstOrDefaultAsync();
 
 			return species;
 		}
 
 		public async Task<Species?> GetSpeciesByName(string speciesName)
 		{
-			return await _dbContext.Species.Where(species => species.SpeciesName == speciesName)
-									 .FirstOrDefaultAsync();
+			return await _dbContext.Species
+					.Where(species => species.SpeciesName == speciesName
+					&& species.IsDeleted == false)
+					.FirstOrDefaultAsync();
 		}
 
 		public async Task<Species> Update(Species species)
@@ -67,7 +77,16 @@ namespace Repositories
 			if (matchingSpecies == null) { return species; }
 
 			matchingSpecies.SpeciesName = species.SpeciesName;
-			matchingSpecies.Description = species.Description;
+			matchingSpecies.Family = species.Family;
+			matchingSpecies.Infomation = species.Infomation;
+			matchingSpecies.Characteristic = species.Characteristic;
+			matchingSpecies.Ecological = species.Ecological;
+			matchingSpecies.Allocation = species.Allocation;
+			matchingSpecies.Diet = species.Diet;
+			matchingSpecies.BreedingAndReproduction = species.BreedingAndReproduction;
+			matchingSpecies.IsDeleted = species.IsDeleted;
+			matchingSpecies.Image = species.Image;
+
 			await _dbContext.SaveChangesAsync();
 
 			return matchingSpecies;

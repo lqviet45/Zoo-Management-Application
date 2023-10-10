@@ -10,11 +10,13 @@ namespace Services
 	{
 		// private field
 		private readonly ISpeciesRepositories _speciesRepositories;
+		private readonly IFileServices _fileServices;
 
 		// constructor
-		public SpeciesServices(ISpeciesRepositories speciesRepositories)
+		public SpeciesServices(ISpeciesRepositories speciesRepositories, IFileServices fileServices)
 		{
 			_speciesRepositories = speciesRepositories;
+			_fileServices = fileServices;
 		}
 		public async Task<SpeciesResponse> AddSpecies(SpeciesAddRequest? speciesAddRequest)
 		{
@@ -22,7 +24,7 @@ namespace Services
 
 			// Check Duplicate SpeciesName
 			var speciesExist = await _speciesRepositories.GetSpeciesByName(speciesAddRequest.SpeciesName);
-			if (speciesExist != null)
+			if (speciesExist is not null)
 			{
 				throw new ArgumentException("The SpeciesName is exist!");
 			}
@@ -30,6 +32,15 @@ namespace Services
 			ValidationHelper.ModelValidation(speciesAddRequest);
 
 			Species species = speciesAddRequest.MapToSpecies();
+
+			if(speciesAddRequest.ImageFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(speciesAddRequest.ImageFile);
+				if(fileResult.Item1 == 1)
+				{
+					species.Image = fileResult.Item2; // getting name of image
+				}
+			}
 
 			await _speciesRepositories.Add(species);
 
@@ -45,6 +56,14 @@ namespace Services
 			if (species == null)
 			{
 				return false;
+			}
+
+			if(species is not null)
+			{
+				if(!string.IsNullOrEmpty(species.Image))
+				{
+					_fileServices.DeleteImage(species.Image); // delete old image
+				}
 			}
 
 			await _speciesRepositories.Delete(id.Value);
@@ -87,7 +106,29 @@ namespace Services
 			}
 
 			matchingSpecies.SpeciesName = speciesUpdateRequest.SpeciesName;
-			matchingSpecies.Description = speciesUpdateRequest.Description;
+			matchingSpecies.Family = speciesUpdateRequest.Family;
+			matchingSpecies.Infomation = speciesUpdateRequest.Infomation;
+			matchingSpecies.Characteristic = speciesUpdateRequest.Characteristic;
+			matchingSpecies.Ecological = speciesUpdateRequest.Ecological;
+			matchingSpecies.Allocation = speciesUpdateRequest.Allocation;
+			matchingSpecies.Diet = speciesUpdateRequest.Diet;
+			matchingSpecies.BreedingAndReproduction = speciesUpdateRequest.BreedingAndReproduction;
+			matchingSpecies.IsDeleted = speciesUpdateRequest.IsDeleted;
+			
+			if(speciesUpdateRequest.ImageFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(speciesUpdateRequest.ImageFile);
+
+				if(!string.IsNullOrEmpty(matchingSpecies.Image))
+				{
+					_fileServices.DeleteImage(matchingSpecies.Image); // delete old image
+				}
+
+				if(fileResult.Item1 == 1)
+				{
+					matchingSpecies.Image = fileResult.Item2; // getting name of image
+				}
+			}
 
 			await _speciesRepositories.Update(matchingSpecies);
 

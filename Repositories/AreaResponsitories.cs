@@ -59,7 +59,8 @@ namespace Repositories
 
 		public async Task<Area> UpdateArea(Area area)
 		{
-			Area? matchingArea = await _dbContext.Areas.FirstOrDefaultAsync(temp => temp.AreaId == area.AreaId);
+			Area? matchingArea = await _dbContext.Areas
+								.FirstOrDefaultAsync(temp => temp.AreaId == area.AreaId);
 
 			if(matchingArea == null) { return area; }
 

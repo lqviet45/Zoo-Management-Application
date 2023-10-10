@@ -103,8 +103,6 @@ namespace Services
 				return null;
 			}
 			
-		
-
 			return matchingNews.ToNewsResponse();
 		}
 
@@ -136,7 +134,7 @@ namespace Services
 
 				if (!string.IsNullOrEmpty(updatedNews.Image))
 				{
-					_fileServices.DeleteImage(updatedNews.Image);
+					_fileServices.DeleteImage(updatedNews.Image); // delete old image
 				}
 
 				if (fileResult.Item1 == 1)
@@ -152,7 +150,7 @@ namespace Services
 
 				if (!string.IsNullOrEmpty(updatedNews.Thumnail))
 				{
-					_fileServices.DeleteImage(updatedNews.Thumnail);
+					_fileServices.DeleteImage(updatedNews.Thumnail); // delete old image
 				}
 
 				if (fileResult.Item1 == 1)
