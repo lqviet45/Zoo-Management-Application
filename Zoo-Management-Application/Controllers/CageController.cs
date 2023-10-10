@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.DTO.AreaDTO;
 using ServiceContracts.DTO.CageDTO;
+using ServiceContracts.DTO.WrapperDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -30,10 +32,17 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<CageResponse>>> GetAllCage()
+		public async Task<ActionResult<List<CageResponse>>> GetAllCage(int? pageNumber, string searchBy = "CageName", string? searchString = null)
 		{
-			var listCage = await _cageServices.GetAllCage();
-			return Ok(listCage);
+			var listCage = await _cageServices.GetFilteredCage(searchBy, searchString);
+
+			int pageSize = 5;
+
+			var pagingList = PaginatedList<CageResponse>.CreateAsync(listCage.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
+
+			var response = new { pagingList, pagingList.TotalPages };
+
+			return Ok(response);
 		}
 
 		[HttpGet("{id}")]
@@ -42,6 +51,14 @@ namespace Zoo_Management_Application.Controllers
 			var cage = await _cageServices.GetCageById(id);
 			if (cage == null) return NotFound();
 			return Ok(cage);
+		}
+
+		[HttpGet("area/{areaId}")]
+		public async Task<ActionResult<List<CageResponse>>> GetCageByAreaId(int areaId)
+		{
+			var listCage = await _cageServices.GetCageByAreaId(areaId);
+			if (listCage == null) return NotFound();
+			return Ok(listCage);
 		}
 
 		[HttpDelete("{id}")]
