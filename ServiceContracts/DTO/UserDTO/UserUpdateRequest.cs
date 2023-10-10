@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.SkillDTO;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -35,6 +36,7 @@ namespace ServiceContracts.DTO.UserDTO
 
         [Required(ErrorMessage = "Date of birth can not be blank!")]
         public DateTime DateOfBirth { get; set; }
+        public List<SkillUpdateRequest> Skills { get; set; } = new List<SkillUpdateRequest>();
 
         public User MapToUser()
         {

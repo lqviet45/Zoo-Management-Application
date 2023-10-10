@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ServiceContracts.DTO.SkillDTO;
 using ServiceContracts.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -44,6 +45,7 @@ namespace ServiceContracts.DTO.UserDTO
         [Required(ErrorMessage = "Role can not be empty!")]
         public int RoleId { get; set; }
         
+        public List<SkillAddRequest> Skills { get; set; } = new List<SkillAddRequest>();
 
         /// <summary>
         /// Convert UserAddRequest to User

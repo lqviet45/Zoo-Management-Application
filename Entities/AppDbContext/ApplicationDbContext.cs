@@ -90,7 +90,9 @@ namespace Entities.AppDbContext
 			{
 				entity.HasKey(s => s.SkillId);
 				entity.HasOne(s => s.User)
-				.WithMany(u => u.);
+				.WithMany(u => u.Skills)
+				.HasForeignKey(s => s.UserId);
+				entity.ToTable(nameof(Skill));
 			});
 
 			modelBuilder.Entity<Food>().ToTable(nameof(Food));
