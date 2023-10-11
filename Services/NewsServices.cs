@@ -67,6 +67,19 @@ namespace Services
 				return false;
 			}
 
+			if (existNews is not null)
+			{
+				if (!string.IsNullOrEmpty(existNews.Image))
+				{
+					_fileServices.DeleteImage(existNews.Image);
+				}
+
+				if (!string.IsNullOrEmpty(existNews.Thumnail))
+				{
+					_fileServices.DeleteImage(existNews.Thumnail);
+				}
+			}
+
 			var isDeleted = await _newsRepositories.DeleteNews(newsId);
 
 			return isDeleted;
@@ -90,8 +103,6 @@ namespace Services
 				return null;
 			}
 			
-		
-
 			return matchingNews.ToNewsResponse();
 		}
 
@@ -120,15 +131,28 @@ namespace Services
 			if (newsUpdateRequest.ImageFile != null)
 			{
 				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ImageFile);
+
+				if (!string.IsNullOrEmpty(updatedNews.Image))
+				{
+					_fileServices.DeleteImage(updatedNews.Image); // delete old image
+				}
+
 				if (fileResult.Item1 == 1)
 				{
 					updatedNews.Image = fileResult.Item2; // getting name of image
 				}
+
 			}
 
 			if (newsUpdateRequest.ThumnailFile != null)
 			{
 				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ThumnailFile);
+
+				if (!string.IsNullOrEmpty(updatedNews.Thumnail))
+				{
+					_fileServices.DeleteImage(updatedNews.Thumnail); // delete old image
+				}
+
 				if (fileResult.Item1 == 1)
 				{
 					updatedNews.Thumnail = fileResult.Item2; // getting name of thumbnail

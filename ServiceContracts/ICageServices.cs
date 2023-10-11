@@ -41,5 +41,20 @@ namespace ServiceContracts
 		/// <param name="cageUpdateRequest">Cage detail to update including Cage ID</param>
 		/// <returns>Returns the Cage response obj after updatation</returns>
 		Task<CageResponse> UpdateCage(CageUpdateRequest? cageUpdateRequest);
+
+		/// <summary>
+		/// Get all cage that belong to an area
+		/// </summary>
+		/// <param name="areaId">The id of the area</param>
+		/// <returns></returns>
+		Task<List<CageResponse>> GetCageByAreaId(int areaId);
+
+		/// <summary>
+		/// Returns all cage objects that matches with the given search field and search string
+		/// </summary>
+		/// <param name="searchBy">The field to search</param>
+		/// <param name="searchString">The string to search</param>
+		/// <returns>Returns all the cage that matching base on the given field</returns>
+		Task<List<CageResponse>> GetFilteredCage(string searchBy, string? searchString);
 	}
 }

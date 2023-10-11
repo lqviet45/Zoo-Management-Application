@@ -19,8 +19,6 @@ namespace Entities.AppDbContext
 
 		public virtual DbSet<Cage> Cages { get; set; }
 
-		public virtual DbSet<Experience> Experiences { get; set; }
-
 		public virtual DbSet<Custommer> Custommers { get; set; }
 
 		public virtual DbSet<Order> Orders { get; set; }
@@ -88,15 +86,21 @@ namespace Entities.AppDbContext
 				.WithMany(c => c.AnimalCages)
 				.HasForeignKey(ac => ac.CageId);
 
-			modelBuilder.Entity<Experience>().ToTable(nameof(Experience));
-			modelBuilder.Entity<Skill>().ToTable(nameof(Skill));
+			modelBuilder.Entity<Skill>(entity =>
+			{
+				entity.HasKey(s => s.SkillId);
+				entity.HasOne(s => s.User)
+				.WithMany(u => u.Skills)
+				.HasForeignKey(s => s.UserId);
+				entity.ToTable(nameof(Skill));
+			});
 
 			modelBuilder.Entity<Food>().ToTable(nameof(Food));
 
 			modelBuilder.Entity<AnimalFood>(entity =>
 			{
 				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
-				entity.ToTable(nameof(AnimalFood));
+				entity.ToTable("FeedingsSchedule");
 			});
 
 			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));

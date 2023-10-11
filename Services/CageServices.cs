@@ -62,6 +62,15 @@ namespace Services
 			return listCage.Select(temp => temp.ToCageResponse()).ToList();
 		}
 
+		public async Task<List<CageResponse>> GetCageByAreaId(int areaId)
+		{
+			var listCage = await _cageRepositories.GetCageByAreaId(areaId);
+
+			var listCageResonse = listCage.Select(temp => temp.ToCageResponse()).ToList();
+
+			return listCageResonse;
+		}
+
 		public async Task<CageResponse?> GetCageById(int? id)
 		{
 			if(id == null) return null;
@@ -74,6 +83,27 @@ namespace Services
 			}
 
 			return cage.ToCageResponse();
+		}
+
+		public async Task<List<CageResponse>> GetFilteredCage(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Cage> cages = searchBy switch
+			{
+				nameof(CageResponse.CageName) => 
+				await _cageRepositories.GetFilteredCage(temp => 
+					temp.CageName.Contains(searchString) && temp.IsDelete == false),
+
+				nameof(CageResponse.Area.AreaName) =>	
+				await _cageRepositories.GetFilteredCage(temp => 
+					temp.Area.AreaName.Contains(searchString) && temp.IsDelete == false),
+
+				_ => await _cageRepositories.GetAllCage()
+			};
+
+			return cages.Select(temp => temp.ToCageResponse()).ToList();
+
 		}
 
 		public async Task<CageResponse> UpdateCage(CageUpdateRequest? cageUpdateRequest)

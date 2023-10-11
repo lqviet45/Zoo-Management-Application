@@ -20,9 +20,8 @@ namespace Entities.Models
 		public string? SkillName { get; set; }
 
 		[NotNull]
-		[ForeignKey("Experience")]
-		public int ExperienceId { get; set; }
-		public virtual Experience? Experience { get; set; }
+		public long UserId { get; set; }
+		public virtual User? User { get; set; }
 
 	}
 }

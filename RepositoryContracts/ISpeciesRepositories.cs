@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -48,7 +49,11 @@ namespace RepositoryContracts
 		/// <returns>Return true if delete successful, otherwise retruns false</returns>
 		Task<bool> Delete(int speciesId);
 
-		
-		
+		/// <summary>
+		/// Returns all species objects that matches with the given
+		/// </summary>
+		/// <param name="predicate">Linq expression to check</param>
+		/// <returns>All matching species with the given condition</returns>
+		Task<List<Species>> GetFilteredSpecies(Expression<Func<Species, bool>> predicate);
 	}
 }

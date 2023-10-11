@@ -29,9 +29,6 @@ builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IAreaRepositories, AreaRepositories>();
 builder.Services.AddScoped<IAreaServices, AreaServices>();
 
-builder.Services.AddScoped<IExperienceServices, ExperienceServices>();
-builder.Services.AddScoped<IExperienceRepositories, ExperienceRepositories>();
-
 builder.Services.AddScoped<ICageRepositories, CageRepositories>();
 builder.Services.AddScoped<ICageServices, CageServices>();
 
@@ -71,6 +68,9 @@ builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
 
 builder.Services.AddScoped<IAnimalCageRepositories, AnimalCageRepositories>();
 builder.Services.AddScoped<IAnimalCageServices, AnimalCageServices>();
+
+builder.Services.AddScoped<ISkillRepositories, SkillRepositories>();
+builder.Services.AddScoped<ISkillServices, SkillServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>

@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.AuthenDTO;
-using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,16 +13,16 @@ namespace Zoo_Management_Application.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
-		private readonly IExperienceServices _experienceService;
 		private readonly IConfiguration _configuration;
 		private readonly IJwtServices _jwtServices;
+		private readonly ISkillServices _skillServices;
 
-		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration, IJwtServices jwtServices)
+		public UserController(IUserServices userServices, IConfiguration configuration, IJwtServices jwtServices, ISkillServices skillServices)
 		{
 			_userServices = userServices;
-			_experienceService = experienceService;
 			_configuration = configuration;
 			_jwtServices = jwtServices;
+			_skillServices = skillServices;
 		}
 
 		[HttpPost("login")]
@@ -47,12 +46,15 @@ namespace Zoo_Management_Application.Controllers
 		{
 			
 			var userResponse = await _userServices.AddUser(userAddRequest);
-			if (userAddRequest.ExperienceAddRequest != null)
+
+			foreach (var skill in userAddRequest.Skills)
 			{
-				userAddRequest.ExperienceAddRequest.UserId = userResponse.UserId;
-				var experienceResponse = await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
-				userResponse.ExperienceResponses = new List<ExperienceResponse>() { experienceResponse };
+				skill.UserId = userResponse.UserId;
 			}
+
+			var listSkill = await _skillServices.AddSkills(userAddRequest.Skills);
+
+			userResponse.skills = listSkill;
 
 			var routeValues = new { Id = userResponse.UserId };
 			if (userResponse.RoleId == 2)
@@ -72,8 +74,19 @@ namespace Zoo_Management_Application.Controllers
 			if (ModelState.IsValid)
 			{
 				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
-				var experience = await _experienceService.AddExperience(userUpdateRequest.ExperienceAddRequest);
-				userUpdate.ExperienceResponses.Add(experience);
+
+				if (userUpdateRequest.Skills.Count > 0)
+				{
+					userUpdateRequest.Skills.ForEach(s =>
+					{
+						s.UserId = userUpdate.UserId;
+					});
+					
+					var listSkillUpdate = await _skillServices.UpdateSkills(userUpdateRequest.Skills);
+
+					userUpdate.skills = listSkillUpdate;
+				}
+
 				return Ok(userUpdate);
 			}
 

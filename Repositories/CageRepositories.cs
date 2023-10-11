@@ -2,7 +2,8 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -51,6 +52,16 @@ namespace Repositories
 			return listCage;
 		}
 
+		public async Task<List<Cage>> GetCageByAreaId(int areaId)
+		{
+			var listCage = await _dbContext.Cages.Include(cage => cage.Area).
+							Where(cage => cage.AreaId == areaId 
+							&& cage.IsDelete == false)
+							.ToListAsync();
+
+			return listCage;
+		}
+
 		public async Task<Cage?> GetCageById(int? cageId)
 		{
 			var cage = await _dbContext.Cages.Include(cage => cage.Area)
@@ -64,6 +75,15 @@ namespace Repositories
 		{
 			return await _dbContext.Cages.FirstOrDefaultAsync(cage => 
 						cage.CageName == cageName && cage.IsDelete == false);
+		}
+
+		public async Task<List<Cage>> GetFilteredCage(Expression<Func<Cage, bool>> predicate)
+		{
+			var listCage = await _dbContext.Cages.Include(cage => cage.Area)
+									.Where(predicate).ToListAsync();
+
+			return listCage;
+
 		}
 
 		public async Task<Cage> UpdateCage(Cage cage)

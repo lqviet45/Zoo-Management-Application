@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO.AreaDTO
         public int AreaId { get; set; }
 
         [Required(ErrorMessage = "Area Name Can not be blank!")]
-        public string? AreaName { get; set; }
+        public string AreaName { get; set; } = string.Empty;
 
         public bool IsDelete { get; set; }
 
