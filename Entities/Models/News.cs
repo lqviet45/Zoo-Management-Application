@@ -11,10 +11,20 @@ namespace Entities.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int NewsId { get; set; }
+		[NotNull]
+		[StringLength(100)]
 		public string? Title { get; set; }
+		[NotNull]
+		[StringLength(100)]
 		public string? Thumnail { get; set; }
+		[NotNull]
+		[StringLength(100)]
 		public string? Image { get; set; }
+		[NotNull]
+		[MaxLength]
 		public string? Content { get; set; }
+		[NotNull]
+		[StringLength(50)]
 		public string? Author { get; set; }
 		[Column(TypeName = "Date")]
 		public DateTime ReleaseDate { get; set; }

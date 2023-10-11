@@ -94,6 +94,31 @@ namespace Services
 			return listNewsResponse;
 		}
 
+		public async Task<List<NewsResponse>> GetFiteredNews(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<News> news = searchBy switch
+			{
+				nameof(NewsResponse.Title) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Title.Contains(searchString)),
+
+				nameof(NewsResponse.Author) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Author.Contains(searchString)),
+
+				nameof(NewsResponse.Content) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Content.Contains(searchString)),
+
+				_ => await _newsRepositories.GetAllNews()
+			};
+
+			return news.Select(news => news.ToNewsResponse()).ToList();
+
+		}
+
 		public async Task<NewsResponse?> GetNewsById(int newsId)
 		{
 			var matchingNews = await _newsRepositories.GetNewsById(newsId);
