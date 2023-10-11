@@ -108,6 +108,30 @@ namespace Services
 			return animalListResponse;
 		}
 
+		public async Task<List<AnimalResponse>> GetFiteredAnimal(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Animal> animals = searchBy switch
+			{
+				nameof(AnimalResponse.AnimalName) => 
+				await _animalRepositories.GetFilteredAnimal(temp => 
+						temp.AnimalName.Contains(searchString) && temp.IsDelete == false),
+
+				nameof(AnimalResponse.Species.SpeciesName) => 
+				await _animalRepositories.GetFilteredAnimal(temp => 
+						temp.Species.SpeciesName.Contains(searchString) && temp.IsDelete == false),
+
+				nameof(AnimalResponse.Status) => 
+				await _animalRepositories.GetFilteredAnimal(temp => 
+						temp.Status.Contains(searchString) && temp.IsDelete == false),
+
+				_ => await _animalRepositories.GetAllAnimal()
+			};
+
+			return animals.Select(animal => animal.ToAnimalResponse()).ToList();
+		}
+
 		public async Task<AnimalResponse> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest)
 		{
 			if(animalUpdateRequest == null)

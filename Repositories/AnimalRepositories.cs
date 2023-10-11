@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -98,6 +98,16 @@ namespace Repositories
 									.Include(a => a.AnimalCages)
 									.ToListAsync();
 			return matchingAnimal;
+		}
+
+		public async Task<List<Animal>> GetFilteredAnimal(Expression<Func<Animal, bool>> predicate)
+		{
+			return await _dbContext.Animals
+				.Include(a => a.Species)
+				.Include(a => a.AnimalLink)
+				.Include(a => a.AnimalZooTrainers)
+				.Include(a => a.AnimalCages)
+				.Where(predicate).ToListAsync();
 		}
 
 		public async Task<Animal> UpdateAnimal(Animal animal)

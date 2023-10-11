@@ -44,5 +44,13 @@ namespace ServiceContracts
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="ArgumentNullException"></exception>
 		Task<AnimalResponse> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest);
+
+		/// <summary>
+		/// Returns all Animal objects that matches with the given search field and search string
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching Animal base on the given search field and search string</returns>
+		Task<List<AnimalResponse>> GetFiteredAnimal(string searchBy, string? searchString);
  	}
 }
