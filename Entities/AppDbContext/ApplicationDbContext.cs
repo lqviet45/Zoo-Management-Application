@@ -54,6 +54,13 @@ namespace Entities.AppDbContext
 				entity.HasKey(e => e.RoleId);
 				entity.ToTable(nameof(Role));
 			});
+
+			modelBuilder.Entity<Role>().HasData(
+				new Role() { RoleId = 1, RoleName = "Admin" },
+				new Role() { RoleId = 2, RoleName = "OfficeStaff" },
+				new Role() { RoleId = 3, RoleName = "ZooTrainner" }
+			);
+
 			modelBuilder.Entity<User>().ToTable(nameof(User));
 			modelBuilder.Entity<Custommer>().ToTable(nameof(Custommer));
 			modelBuilder.Entity<Order>().ToTable(nameof(Order));
