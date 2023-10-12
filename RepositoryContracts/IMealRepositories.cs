@@ -18,11 +18,11 @@ namespace RepositoryContracts
 		Task<AnimalFood> Add(AnimalFood animalFood);
 
 		/// <summary>
-		/// Get all meal of an animal base on animal id
+		/// Get all meal of an animal base on animal id and zoo trainer id
 		/// </summary>
-		/// <param name="id">The Id of the animal</param>
+		/// <param name="id">The AnimalUser ID </param>
 		/// <returns>List of meals or list of AnimalFood obj</returns>
-		Task <List<AnimalFood>> GetAnimalMealById(long id);
+		Task<List<IGrouping<TimeSpan, AnimalFood>>> GetAnimalMealById(long id);
 
 		/// <summary>
 		/// Get all meal of animals
@@ -45,27 +45,27 @@ namespace RepositoryContracts
 		Task<bool> DeleteFoodInAMeal(AnimalFood animalFood);
 
 		/// <summary>
-		/// Get Animal Meal in a specified time
+		/// Get Animal Meal in a specified time base on the the specified Zoo Trainer
 		/// </summary>
-		/// <param name="animalId">The Id of the animal</param>
+		/// <param name="AnimalUserId">The Id of the AnimalUser</param>
 		/// <param name="feedingTime">The feeding time</param>
 		/// <returns>Returns all the food of the animal at a specified feeding time</returns>
-		Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long animalId, TimeSpan feedingTime);
+		Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long AnimalUserId, TimeSpan feedingTime);
 
 		/// <summary>
 		/// Delete all food in a meal in a specified time
 		/// </summary>
-		/// <param name="animalId">The id of an animal</param>
+		/// <param name="animalUserId">The AnimalUser ID</param>
 		/// <param name="feedingTime">The specified time</param>
 		/// <returns>Returns true if delete success, otherwise returns false</returns>
-		Task<bool> DeleteAMeal(long animalId, TimeSpan feedingTime);
+		Task<bool> DeleteAMeal(long animalUserId, TimeSpan feedingTime);
 
 		/// <summary>
-		/// Get a food in a meal by animal id, food id and feeding time
+		/// Get a food in a meal by animal id, user id,food id and feeding time
 		/// </summary>
 		/// <param name="animalFood">The id of animal, food, and feeding time</param>
 		/// <returns>Returns the matching AnimalFood obj</returns>
-		Task<AnimalFood?> GetAnimalFoodById(AnimalFood animalFood);
+		Task<AnimalFood?> GetSingleFoodInAnimalMeal(AnimalFood animalFood);
 
 		
 	}

@@ -1,6 +1,8 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.AnimalUserDTO;
 using ServiceContracts.DTO.FoodDTO;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ServiceContracts.DTO.MealDTO
 {
@@ -10,12 +12,15 @@ namespace ServiceContracts.DTO.MealDTO
 	public class MealResponse
 	{
 		[Required]
-		public long AnimalId { get; set; }
+		public long AnimalUserId { get; set; }
 		public string? Note { get; set; }
 		[Required]
 		public TimeSpan FeedingTime { get; set; }
 
 		public List<FoodResponse> Food { get; set; } = new List<FoodResponse>();
+
+		[NotNull]
+		public AnimalUserResponse? animalUser { get; set; }
 	}
 
 	public static class MealResponseExtensionMethods
@@ -29,9 +34,11 @@ namespace ServiceContracts.DTO.MealDTO
 		{
 			return new MealResponse()
 			{
-				AnimalId = meal.AnimalId,
+				AnimalUserId = meal.AnimalUserId,
 				Note = meal.Note,
-				FeedingTime = meal.FeedingTime
+				FeedingTime = meal.FeedingTime,
+				animalUser = meal.AnimalUser.ToAnimalUserResponse()
+				
 			};
 		}
 	}

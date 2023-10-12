@@ -23,7 +23,7 @@ namespace Services
 			List<AnimalFood> animalFoods = new List<AnimalFood>();
 
 			var mealResponse = new AnimalFoodResponse();
-			mealResponse.AnimalId = mealAddRequest.First().AnimalId;
+			mealResponse.AnimalUserId = mealAddRequest.First().AnimalUserId;
 			mealResponse.Note = mealAddRequest.First().Note;
 			mealResponse.FeedingTime = mealAddRequest.First().FeedingTime;
 
@@ -46,7 +46,7 @@ namespace Services
 
 		public async Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
-			var food = await _mealRepositories.GetAnimalFoodById(deleteFood.MealToAnimalFood());
+			var food = await _mealRepositories.GetSingleFoodInAnimalMeal(deleteFood.MealToAnimalFood());
 
 			if (food is null) return false;
 
@@ -58,11 +58,11 @@ namespace Services
 		public async Task<bool> DeleteAMeal(MealDeleteRequest deleteMeal)
 		{
 			var meal = await _mealRepositories
-				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalUserId, deleteMeal.FeedingTime);
 
 			if(meal is null) return false;
 
-			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalUserId, deleteMeal.FeedingTime);
 
 			return isDelete;
 
@@ -72,23 +72,24 @@ namespace Services
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
 
-			var mealResponse = listMeal.Select(m => m.MapToResponse()).ToList();
+			List<MealResponse> listMealResponse = new List<MealResponse>();
 
-			foreach (var meal in mealResponse)
+			foreach(var meal in listMeal)
 			{
-				meal.Food = listMeal.Where(af => af.AnimalId == meal.AnimalId && af.FeedingTime == meal.FeedingTime)
-					.Select(af => af.Food.ToFoodResponse())
-					.ToList();
+				var mealResponse = meal.First().MapToResponse();
+				mealResponse.Food = meal.Select(m => m.Food.ToFoodResponse()).ToList();
+				listMealResponse.Add(mealResponse);
 			}
+		
 
-			return mealResponse;
+			return listMealResponse;
 		}
 
 	
 
-		public async Task<List<FoodResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
+		public async Task<List<FoodResponse>> GetAnimalMealByIdAndTime(long animalUserid, TimeSpan time)
 		{
-			var listFood = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
+			var listFood = await _mealRepositories.GetAnimalMealInASpecifiedTime(animalUserid, time);
 
 			var foodResponse = listFood.Select(m => m.MapToAnimalFoodResponse()).ToList();
 

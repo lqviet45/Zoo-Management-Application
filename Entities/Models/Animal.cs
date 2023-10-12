@@ -32,7 +32,7 @@ namespace Entities.Models
 		public bool IsDelete { get; set; }
 		[NotNull]
 		public virtual Species? Species { get; set; }
-		public virtual ICollection<AnimalFood> AnimalLink { get; set; } = null!;
+		
 
 		public virtual ICollection<AnimalUser> AnimalZooTrainers { get; set; } = new List<AnimalUser>();
 

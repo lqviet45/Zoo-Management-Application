@@ -20,8 +20,9 @@ namespace Entities.Models
 		[Column(TypeName = "Time(0)")]
 		public TimeSpan FeedingTime { get; set; }
 
+		[NotNull]
         public virtual AnimalUser? AnimalUser { get; set; }
-
+		[NotNull]
         public virtual Food? Food { get; set; }
     }
 }

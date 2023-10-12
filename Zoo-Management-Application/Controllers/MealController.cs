@@ -22,7 +22,7 @@ namespace Zoo_Management_Application.Controllers
 			
 			var mealResponse = await _mealServices.AddMeal(mealAddRequest);
 
-			var routeValues = new { Id = mealResponse.AnimalId };
+			var routeValues = new { Id = mealResponse.animalUser.AnimalId };
 
 			return CreatedAtAction("GetAnimalMealById", routeValues, mealResponse);
 		}
@@ -56,9 +56,9 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<FoodResponse>>> GetMealAtATime(long animalId, TimeSpan feedingTime)
+		public async Task<ActionResult<List<FoodResponse>>> GetMealAtATime(long animalUserId, TimeSpan feedingTime)
 		{
-			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalId, feedingTime);
+			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalUserId, feedingTime);
 			
 			return Ok(mealResponse);
 		}

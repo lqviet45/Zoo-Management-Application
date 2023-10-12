@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO.MealDTO
 	public class MealDeleteRequest2
 	{
 		[Required(ErrorMessage = "Animal ID can't be blank")]
-		public long AnimalId { get; set; }
+		public long AnimalUserId { get; set; }
 
 		[Required(ErrorMessage = "FeedingTime can't be blank")]
 		public TimeSpan FeedingTime { get; set; }
@@ -28,7 +28,7 @@ namespace ServiceContracts.DTO.MealDTO
 		{
 			return new AnimalFood
 			{
-				AnimalId = AnimalId,
+				AnimalUserId = AnimalUserId,
 				FeedingTime = FeedingTime,
 				FoodId = FoodId
 			};

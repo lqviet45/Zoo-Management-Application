@@ -8,7 +8,7 @@ namespace Entities.Models
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int AnimalUserId { get; set; }
+		public long AnimalUserId { get; set; }
 
 		[NotNull]
 		public long AnimalId { get; set; }
