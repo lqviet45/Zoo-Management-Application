@@ -7,7 +7,7 @@ using Services.Helper;
 
 namespace Services
 {
-    public class UserServices : IUserServices
+	public class UserServices : IUserServices
 	{
 		private readonly IUserRepositories _userRepositories;
 
@@ -24,7 +24,8 @@ namespace Services
 
 
 			var userExist = await _userRepositories.GetUserByUserName(userAddRequest.UserName);
-			if (userExist != null) {
+			if (userExist != null)
+			{
 				throw new ArgumentException("The userName is exist!");
 			}
 
@@ -48,7 +49,7 @@ namespace Services
 
 		public async Task<List<UserResponse>> GetAllStaff()
 		{
-		 	var listStaff = await _userRepositories.GetAllStaff();
+			var listStaff = await _userRepositories.GetAllStaff();
 			var listStaffResponse = listStaff.Select(user => user.ToUserResponse()).ToList();
 			return listStaffResponse;
 		}
@@ -67,12 +68,12 @@ namespace Services
 			List<User> users = searchBy switch
 			{
 				nameof(UserResponse.FullName) =>
-				await _userRepositories.GetFilteredUsers(temp => 
-					temp.FullName.Contains(searchString) && temp.RoleId == 2),
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.FullName.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2),
 
-				nameof(UserResponse.Email) => 
-				await _userRepositories.GetFilteredUsers(temp => 
-					temp.Email.Contains(searchString) && temp.RoleId == 2),
+				nameof(UserResponse.Email) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2),
 
 				_ => await _userRepositories.GetAllStaff()
 			};
@@ -93,6 +94,10 @@ namespace Services
 				nameof(UserResponse.Email) =>
 				await _userRepositories.GetFilteredUsers(temp =>
 					temp.Email.Contains(searchString) && temp.RoleId == 3),
+
+				nameof(UserResponse.PhoneNumber) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.PhoneNumber.Contains(searchString) && temp.RoleId == 3),
 
 				_ => await _userRepositories.GetAllZooTrainer()
 			};
@@ -128,7 +133,7 @@ namespace Services
 
 		public async Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest)
 		{
-			if(userUpdateRequest is null)
+			if (userUpdateRequest is null)
 			{
 				throw new ArgumentNullException(nameof(userUpdateRequest));
 			}
