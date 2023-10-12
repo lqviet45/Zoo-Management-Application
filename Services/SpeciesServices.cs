@@ -10,11 +10,13 @@ namespace Services
 	{
 		// private field
 		private readonly ISpeciesRepositories _speciesRepositories;
+		private readonly IFileServices _fileServices;
 
 		// constructor
-		public SpeciesServices(ISpeciesRepositories speciesRepositories)
+		public SpeciesServices(ISpeciesRepositories speciesRepositories, IFileServices fileServices)
 		{
 			_speciesRepositories = speciesRepositories;
+			_fileServices = fileServices;
 		}
 		public async Task<SpeciesResponse> AddSpecies(SpeciesAddRequest? speciesAddRequest)
 		{
@@ -22,7 +24,7 @@ namespace Services
 
 			// Check Duplicate SpeciesName
 			var speciesExist = await _speciesRepositories.GetSpeciesByName(speciesAddRequest.SpeciesName);
-			if (speciesExist != null)
+			if (speciesExist is not null)
 			{
 				throw new ArgumentException("The SpeciesName is exist!");
 			}
@@ -30,6 +32,15 @@ namespace Services
 			ValidationHelper.ModelValidation(speciesAddRequest);
 
 			Species species = speciesAddRequest.MapToSpecies();
+
+			if(speciesAddRequest.ImageFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(speciesAddRequest.ImageFile);
+				if(fileResult.Item1 == 1)
+				{
+					species.Image = fileResult.Item2; // getting name of image
+				}
+			}
 
 			await _speciesRepositories.Add(species);
 
@@ -47,6 +58,14 @@ namespace Services
 				return false;
 			}
 
+			if(species is not null)
+			{
+				if(!string.IsNullOrEmpty(species.Image))
+				{
+					_fileServices.DeleteImage(species.Image); // delete old image
+				}
+			}
+
 			await _speciesRepositories.Delete(id.Value);
 
 			return true;
@@ -57,6 +76,51 @@ namespace Services
 			var listSpecies = await _speciesRepositories.GetAllSpecies();
 
 			return listSpecies.Select(temp => temp.ToSpeciesResponse()).ToList();
+		}
+
+		public async Task<List<SpeciesResponse>> GetFilteredSpecies(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Species> species = searchBy switch
+			{
+				nameof(SpeciesResponse.SpeciesName) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.SpeciesName.Contains(searchString)),
+
+				nameof(SpeciesResponse.Family) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Family.Contains(searchString)),
+				
+				nameof(SpeciesResponse.Infomation) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Infomation.Contains(searchString)),
+
+				nameof(SpeciesResponse.Characteristic) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Characteristic.Contains(searchString)),
+
+				nameof(SpeciesResponse.Allocation) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.Allocation.Contains(searchString)),
+
+				nameof(SpeciesResponse.Ecological) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+						temp.Ecological.Contains(searchString)),
+
+				nameof(SpeciesResponse.Diet) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+									temp.Diet.Contains(searchString)),
+
+				nameof(SpeciesResponse.BreedingAndReproduction) =>
+				await _speciesRepositories.GetFilteredSpecies(temp => 
+					temp.BreedingAndReproduction.Contains(searchString)),
+
+				_ => await _speciesRepositories.GetAllSpecies()
+			};
+
+			return species.Select(temp => temp.ToSpeciesResponse()).ToList();
+
 		}
 
 		public async Task<SpeciesResponse?> GetSpeciesById(int? id)
@@ -87,7 +151,29 @@ namespace Services
 			}
 
 			matchingSpecies.SpeciesName = speciesUpdateRequest.SpeciesName;
-			matchingSpecies.Description = speciesUpdateRequest.Description;
+			matchingSpecies.Family = speciesUpdateRequest.Family;
+			matchingSpecies.Infomation = speciesUpdateRequest.Infomation;
+			matchingSpecies.Characteristic = speciesUpdateRequest.Characteristic;
+			matchingSpecies.Ecological = speciesUpdateRequest.Ecological;
+			matchingSpecies.Allocation = speciesUpdateRequest.Allocation;
+			matchingSpecies.Diet = speciesUpdateRequest.Diet;
+			matchingSpecies.BreedingAndReproduction = speciesUpdateRequest.BreedingAndReproduction;
+			matchingSpecies.IsDeleted = speciesUpdateRequest.IsDeleted;
+			
+			if(speciesUpdateRequest.ImageFile != null)
+			{
+				var fileResult = _fileServices.SaveImage(speciesUpdateRequest.ImageFile);
+
+				if(!string.IsNullOrEmpty(matchingSpecies.Image))
+				{
+					_fileServices.DeleteImage(matchingSpecies.Image); // delete old image
+				}
+
+				if(fileResult.Item1 == 1)
+				{
+					matchingSpecies.Image = fileResult.Item2; // getting name of image
+				}
+			}
 
 			await _speciesRepositories.Update(matchingSpecies);
 

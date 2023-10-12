@@ -4,6 +4,7 @@ using Entities.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007125730_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,7 +98,7 @@ namespace Entities.Migrations
 
                     b.HasIndex("FoodId");
 
-                    b.ToTable("FeedingsSchedule", (string)null);
+                    b.ToTable("AnimalFood", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.AnimalUser", b =>
@@ -186,6 +189,24 @@ namespace Entities.Migrations
                     b.HasKey("CustommerId");
 
                     b.ToTable("Custommer", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.Experience", b =>
+                {
+                    b.Property<int>("ExperienceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceId"));
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ExperienceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Experience", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Food", b =>
@@ -328,17 +349,17 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SkillId"));
 
+                    b.Property<int>("ExperienceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SkillName")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("SkillId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ExperienceId");
 
                     b.ToTable("Skill", (string)null);
                 });
@@ -521,6 +542,17 @@ namespace Entities.Migrations
                     b.Navigation("Area");
                 });
 
+            modelBuilder.Entity("Entities.Models.Experience", b =>
+                {
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entities.Models.News", b =>
                 {
                     b.HasOne("Entities.Models.NewsCategories", "NewsCategories")
@@ -564,13 +596,13 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Skill", b =>
                 {
-                    b.HasOne("Entities.Models.User", "User")
+                    b.HasOne("Entities.Models.Experience", "Experience")
                         .WithMany("Skills")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ExperienceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Experience");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -598,6 +630,11 @@ namespace Entities.Migrations
                     b.Navigation("AnimalCages");
                 });
 
+            modelBuilder.Entity("Entities.Models.Experience", b =>
+                {
+                    b.Navigation("Skills");
+                });
+
             modelBuilder.Entity("Entities.Models.Food", b =>
                 {
                     b.Navigation("FoodLink");
@@ -610,8 +647,6 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
-                    b.Navigation("Skills");
-
                     b.Navigation("UserAnimals");
                 });
 #pragma warning restore 612, 618

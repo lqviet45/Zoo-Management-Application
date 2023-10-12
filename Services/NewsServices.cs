@@ -94,6 +94,31 @@ namespace Services
 			return listNewsResponse;
 		}
 
+		public async Task<List<NewsResponse>> GetFiteredNews(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<News> news = searchBy switch
+			{
+				nameof(NewsResponse.Title) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Title.Contains(searchString)),
+
+				nameof(NewsResponse.Author) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Author.Contains(searchString)),
+
+				nameof(NewsResponse.Content) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Content.Contains(searchString)),
+
+				_ => await _newsRepositories.GetAllNews()
+			};
+
+			return news.Select(news => news.ToNewsResponse()).ToList();
+
+		}
+
 		public async Task<NewsResponse?> GetNewsById(int newsId)
 		{
 			var matchingNews = await _newsRepositories.GetNewsById(newsId);
@@ -103,8 +128,6 @@ namespace Services
 				return null;
 			}
 			
-		
-
 			return matchingNews.ToNewsResponse();
 		}
 
@@ -136,7 +159,7 @@ namespace Services
 
 				if (!string.IsNullOrEmpty(updatedNews.Image))
 				{
-					_fileServices.DeleteImage(updatedNews.Image);
+					_fileServices.DeleteImage(updatedNews.Image); // delete old image
 				}
 
 				if (fileResult.Item1 == 1)
@@ -152,7 +175,7 @@ namespace Services
 
 				if (!string.IsNullOrEmpty(updatedNews.Thumnail))
 				{
-					_fileServices.DeleteImage(updatedNews.Thumnail);
+					_fileServices.DeleteImage(updatedNews.Thumnail); // delete old image
 				}
 
 				if (fileResult.Item1 == 1)

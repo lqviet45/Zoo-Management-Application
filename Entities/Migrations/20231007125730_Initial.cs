@@ -252,19 +252,18 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skill",
+                name: "Experience",
                 columns: table => new
                 {
-                    SkillId = table.Column<int>(type: "int", nullable: false)
+                    ExperienceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SkillName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Skill", x => x.SkillId);
+                    table.PrimaryKey("PK_Experience", x => x.ExperienceId);
                     table.ForeignKey(
-                        name: "FK_Skill_User_UserId",
+                        name: "FK_Experience_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
@@ -298,6 +297,32 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AnimalFood",
+                columns: table => new
+                {
+                    AnimalId = table.Column<long>(type: "bigint", nullable: false),
+                    FoodId = table.Column<int>(type: "int", nullable: false),
+                    FeedingTime = table.Column<TimeSpan>(type: "Time(0)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimalFood", x => new { x.AnimalId, x.FoodId, x.FeedingTime });
+                    table.ForeignKey(
+                        name: "FK_AnimalFood_Animal_AnimalId",
+                        column: x => x.AnimalId,
+                        principalTable: "Animal",
+                        principalColumn: "AnimalId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnimalFood_Food_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Food",
+                        principalColumn: "FoodId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AnimalUser",
                 columns: table => new
                 {
@@ -322,28 +347,22 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedingsSchedule",
+                name: "Skill",
                 columns: table => new
                 {
-                    AnimalId = table.Column<long>(type: "bigint", nullable: false),
-                    FoodId = table.Column<int>(type: "int", nullable: false),
-                    FeedingTime = table.Column<TimeSpan>(type: "Time(0)", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SkillId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SkillName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    ExperienceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedingsSchedule", x => new { x.AnimalId, x.FoodId, x.FeedingTime });
+                    table.PrimaryKey("PK_Skill", x => x.SkillId);
                     table.ForeignKey(
-                        name: "FK_FeedingsSchedule_Animal_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animal",
-                        principalColumn: "AnimalId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FeedingsSchedule_Food_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "Food",
-                        principalColumn: "FoodId",
+                        name: "FK_Skill_Experience_ExperienceId",
+                        column: x => x.ExperienceId,
+                        principalTable: "Experience",
+                        principalColumn: "ExperienceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -358,6 +377,11 @@ namespace Entities.Migrations
                 column: "CageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnimalFood_FoodId",
+                table: "AnimalFood",
+                column: "FoodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AnimalUser_UserId",
                 table: "AnimalUser",
                 column: "UserId");
@@ -368,9 +392,9 @@ namespace Entities.Migrations
                 column: "AreaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedingsSchedule_FoodId",
-                table: "FeedingsSchedule",
-                column: "FoodId");
+                name: "IX_Experience_UserId",
+                table: "Experience",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_News_CategoryId",
@@ -388,9 +412,9 @@ namespace Entities.Migrations
                 column: "TicketId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skill_UserId",
+                name: "IX_Skill_ExperienceId",
                 table: "Skill",
-                column: "UserId");
+                column: "ExperienceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
@@ -405,10 +429,10 @@ namespace Entities.Migrations
                 name: "AnimalCages");
 
             migrationBuilder.DropTable(
-                name: "AnimalUser");
+                name: "AnimalFood");
 
             migrationBuilder.DropTable(
-                name: "FeedingsSchedule");
+                name: "AnimalUser");
 
             migrationBuilder.DropTable(
                 name: "News");
@@ -423,10 +447,10 @@ namespace Entities.Migrations
                 name: "Cage");
 
             migrationBuilder.DropTable(
-                name: "Animal");
+                name: "Food");
 
             migrationBuilder.DropTable(
-                name: "Food");
+                name: "Animal");
 
             migrationBuilder.DropTable(
                 name: "NewsCategories");
@@ -438,7 +462,7 @@ namespace Entities.Migrations
                 name: "Ticket");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Experience");
 
             migrationBuilder.DropTable(
                 name: "Area");
@@ -448,6 +472,9 @@ namespace Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "Custommer");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Role");

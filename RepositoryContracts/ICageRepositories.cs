@@ -1,5 +1,5 @@
 ﻿using Entities.Models;
-
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -48,5 +48,19 @@ namespace RepositoryContracts
 		/// <param name="cageId">Cage ID to search</param>
 		/// <returns>Returns true if the deletion is successful otherwise false</returns>
 		Task<bool> DeleteCage(int AreaId);
+
+		/// <summary>
+		/// Get all Cage that have the same AreaId
+		/// </summary>
+		/// <param name="areaId">The area id</param>
+		/// <returns>Returns all matching cage </returns>
+		Task<List<Cage>> GetCageByAreaId(int areaId);
+
+		/// <summary>
+		/// Returns all Cage object base on the given expression
+		/// </summary>
+		/// <param name="predicate">Linq expression to check</param>
+		/// <returns>All areas that matching with given condition </returns>
+		Task<List<Cage>> GetFilteredCage(Expression<Func<Cage, bool>> predicate);
 	}
 }

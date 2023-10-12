@@ -41,5 +41,13 @@ namespace ServiceContracts
 		/// <param name="newsId">The news id to delete</param>
 		/// <returns>Returns true if delete success,otherwise return false</returns>
 		Task<bool> DeleteNews(int newsId);
+
+		/// <summary>
+		/// Returns all news obj that matches with the given
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching news base on the given search field and search string</returns>
+		Task<List<NewsResponse>> GetFiteredNews(string searchBy, string? searchString);
 	}
 }

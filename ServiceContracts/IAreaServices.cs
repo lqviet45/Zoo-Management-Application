@@ -39,5 +39,13 @@ namespace ServiceContracts
 		/// <param name="areaUpdateRequest">Area details to update, including Area ID</param>
 		/// <returns>Returns the Area response obj after updation</returns>
 		Task<AreaResponse> UpdateArea(AreaUpdateRequest? areaUpdateRequest);
+
+		/// <summary>
+		/// Returns all area objects that matches with the given search field and search string 
+		/// </summary>
+		/// <param name="searchBy">The field to search</param>
+		/// <param name="searchString">The string to search</param>
+		/// <returns>Returns all matching areas base on the given field</returns>
+		Task<List<AreaResponse>> GetFilteredArea(string searchBy, string? searchString);
 	}
 }

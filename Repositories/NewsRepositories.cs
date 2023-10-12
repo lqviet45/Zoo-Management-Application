@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -61,6 +62,11 @@ namespace Repositories
 									.ToListAsync();
 
 			return listNews;
+		}
+
+		public Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate)
+		{
+			return _dbContext.News.Include(news => news.NewsCategories).Where(predicate).ToListAsync();
 		}
 
 		public async Task<News?> GetNewsById(int id)

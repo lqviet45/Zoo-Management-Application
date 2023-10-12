@@ -1,6 +1,7 @@
 ﻿
 
 using Entities.Models;
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -65,5 +66,7 @@ namespace RepositoryContracts
 		/// <param name="animalFood">The id of animal, food, and feeding time</param>
 		/// <returns>Returns the matching AnimalFood obj</returns>
 		Task<AnimalFood?> GetAnimalFoodById(AnimalFood animalFood);
+
+		
 	}
 }

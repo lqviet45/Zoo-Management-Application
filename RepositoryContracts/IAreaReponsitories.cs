@@ -1,5 +1,5 @@
 ﻿using Entities.Models;
-
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -48,5 +48,12 @@ namespace RepositoryContracts
 		/// <param name="area">Area ID to delete</param>
 		/// <returns>Returns true if the deletion is successful otherwise false</returns>
 		Task<bool> DeleteArea(int AreaId);
+
+		/// <summary>
+		/// Returns all area obj base on the given expression
+		/// </summary>
+		/// <param name="predicate">Linq expression to check</param>
+		/// <returns>All matching areas with the given condition</returns>
+		Task<List<Area>> GetFilteredArea(Expression<Func<Area, bool>> predicate);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Linq.Expressions;
 
 namespace RepositoryContracts
 {
@@ -55,5 +56,12 @@ namespace RepositoryContracts
 		/// <param name="animal">An animal to update</param>
 		/// <returns>An animal after Updated</returns>
 		Task<Animal> UpdateAnimal(Animal animal);
+
+		/// <summary>
+		/// Returns all animal objects that matches with the given
+		/// </summary>
+		/// <param name="predicate">Linq exoression to check</param>
+		/// <returns>All matching Animal with given condition</returns>
+		Task<List<Animal>> GetFilteredAnimal(Expression<Func<Animal, bool>> predicate);
 	}
 }
