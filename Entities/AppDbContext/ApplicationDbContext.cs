@@ -106,7 +106,8 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<AnimalFood>(entity =>
 			{
-				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
+				entity.HasKey(e => new { e.AnimalUserId, e.FoodId, e.FeedingTime });
+				
 				entity.ToTable("FeedingsSchedule");
 			});
 
@@ -115,7 +116,8 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<AnimalUser>(entity =>
 			{
-				entity.HasKey(e => new { e.AnimalId, e.UserId });
+				entity.HasKey(e => e.AnimalUserId);
+				entity.HasIndex(e => new { e.AnimalId, e.UserId }).IsUnique();
 				entity.ToTable(nameof(AnimalUser));
 			});
 		}

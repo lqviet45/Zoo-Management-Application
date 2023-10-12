@@ -8,17 +8,19 @@ namespace Entities.Models
 
 	public class AnimalFood
 	{
-		[ForeignKey("Animal")]
-        public  long AnimalId { get; set; }
+		[ForeignKey("AnimalUser")]
+        public long AnimalUserId { get; set; }
+
 		[ForeignKey("Food")]
         public int FoodId { get; set; }
 
 		public string? Note { get; set; }
+
 		[NotNull]
 		[Column(TypeName = "Time(0)")]
 		public TimeSpan FeedingTime { get; set; }
 
-        public virtual Animal? Animal { get; set; }
+        public virtual AnimalUser? AnimalUser { get; set; }
 
         public virtual Food? Food { get; set; }
     }

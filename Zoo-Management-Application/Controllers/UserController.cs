@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.AuthenDTO;
@@ -26,6 +27,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost("login")]
+		[AllowAnonymous]
 		public async Task<IActionResult> Login(LoginUserDTO loginUser)
 		{
 			var userLogin = await _userServices.LoginUser(loginUser.UserName, loginUser.Password);
@@ -40,8 +42,10 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(authenUser);
 
 		}
-		
+
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "OfficeStaff")]
 		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
 		{
 			
