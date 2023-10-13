@@ -22,7 +22,7 @@ namespace Zoo_Management_Application.Controllers
 			
 			var mealResponse = await _mealServices.AddMeal(mealAddRequest);
 
-			var routeValues = new { Id = mealResponse.animalUser.AnimalId };
+			var routeValues = new { Id = mealResponse.AnimalUserId };
 
 			return CreatedAtAction("GetAnimalMealById", routeValues, mealResponse);
 		}

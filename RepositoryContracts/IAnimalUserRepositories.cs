@@ -43,7 +43,11 @@ namespace RepositoryContracts
 		/// <returns></returns>
 		Task<bool> Delete(long animalId, long userId);
 		
-
-
+		/// <summary>
+		/// Get AnimalUser by animalUserId
+		/// </summary>
+		/// <param name="animalUserId">Animal User Id</param>
+		/// <returns>Returns AnimalUser obj</returns>
+		Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId);
 	}
 }

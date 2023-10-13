@@ -23,7 +23,7 @@ namespace Repositories
 		}
 		public async Task<AnimalFood> Add(AnimalFood animalFood)
 		{
-			var animalUser = await _animalUserRepositories.GetAnimalUserRelationship(animalFood.AnimalUser.AnimalId, animalFood.AnimalUser.UserId);
+			var animalUser = await _animalUserRepositories.GetAnimalUserByAnimalIdAndUserId(animalFood.AnimalUserId);
 
 			if(animalUser is null)
 			{

@@ -81,5 +81,14 @@ namespace Repositories
 			return listZooTrainer;
 		}
 
+		public Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId)
+		{
+			var animalUser = _dbContext.AnimalUsers.Where(x => x.AnimalUserId == animalUserId)
+								.Include(a => a.Animal)
+								.Include(u => u.User)
+								.FirstOrDefaultAsync();
+
+			return animalUser;
+		}
 	}
 }
