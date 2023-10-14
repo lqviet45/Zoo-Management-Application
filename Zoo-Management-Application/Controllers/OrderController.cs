@@ -59,7 +59,7 @@ namespace Zoo_Management_Application.Controllers
 
 			await _orderSevices.UpdateOrderTotal(order.OrderId, total);
 
-			await SendMail(order);
+			_ = SendMail(order);
 
 			return Ok(order);
 		}

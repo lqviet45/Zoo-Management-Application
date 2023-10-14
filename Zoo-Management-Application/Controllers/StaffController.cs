@@ -9,7 +9,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
-	//[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin")]
 	public class StaffController : ControllerBase
 	{
 		private readonly IUserServices _userServices;

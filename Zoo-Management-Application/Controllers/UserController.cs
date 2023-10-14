@@ -44,8 +44,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = "Admin")]
-		[Authorize(Roles = "OfficeStaff")]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
 		{
 			
