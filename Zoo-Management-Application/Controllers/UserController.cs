@@ -72,6 +72,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
+		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainner")]
 		public async Task<ActionResult<UserResponse>> PutUser(UserUpdateRequest userUpdateRequest)
 		{
 			if (ModelState.IsValid)

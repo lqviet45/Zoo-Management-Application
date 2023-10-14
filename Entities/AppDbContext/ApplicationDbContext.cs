@@ -62,6 +62,23 @@ namespace Entities.AppDbContext
 			);
 
 			modelBuilder.Entity<User>().ToTable(nameof(User));
+
+			modelBuilder.Entity<User>().HasData(
+				new User()
+				{
+					UserId = 1,
+					UserName = "Admin",
+					RoleId = 1,
+					Password = "12345",
+					DateOfBirth = DateTime.Now,
+					Email = "VietNamZoo@gmail.com",
+					PhoneNumber = "12345",
+					FullName = "Admin",
+					IsDelete = false,
+					Gender = "Male"
+				}
+			);
+
 			modelBuilder.Entity<Custommer>().ToTable(nameof(Custommer));
 			modelBuilder.Entity<Order>().ToTable(nameof(Order));
 			modelBuilder.Entity<Ticket>().ToTable(nameof(Ticket));

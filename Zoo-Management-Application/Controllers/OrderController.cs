@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.CustommerDTO;
 using ServiceContracts.DTO.EmailDTO;
@@ -9,6 +10,7 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[AllowAnonymous]
 	public class OrderController : ControllerBase
 	{
 		private readonly ICustommerSevices _custommerSevices;
@@ -81,6 +83,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("TransReport")]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<IActionResult> GetTotalByDate(DateTime from, DateTime to, int ticketId = -1)
 		{
 
