@@ -84,6 +84,7 @@ namespace Repositories
 				.Include(od => od.Order)
 				.Include(od => od.Ticket)
 				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
+				.OrderBy(od => od.Order.PurchaseDate)
 				.ToListAsync();
 
 			return listOrderDetail;
@@ -95,6 +96,7 @@ namespace Repositories
 				.Include(od => od.Order)
 				.Include(od => od.Ticket)
 				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
+				.OrderBy(od => od.Order.PurchaseDate)
 				.ToListAsync();
 
 			return listOrderDetail;

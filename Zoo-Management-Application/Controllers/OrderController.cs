@@ -93,6 +93,7 @@ namespace Zoo_Management_Application.Controllers
 
 			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
 			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(to, from, ticketId);
+			
 			return Ok(new { total, listOrderDetail });
 		}
 
