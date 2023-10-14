@@ -10,7 +10,6 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[AllowAnonymous]
 	public class OrderController : ControllerBase
 	{
 		private readonly ICustommerSevices _custommerSevices;

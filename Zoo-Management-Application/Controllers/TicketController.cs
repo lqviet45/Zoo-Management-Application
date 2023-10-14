@@ -8,6 +8,7 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "Admin")]
 	public class TicketController : ControllerBase
 	{
 		private readonly ITicketServices _ticketServices;
@@ -26,6 +27,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllTicket()
 		{
 			var listTicket = await _ticketServices.GetAllTicket();
@@ -47,6 +49,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("{ticketId}")]
+		[AllowAnonymous]
 		public async Task<ActionResult<TicketResponse>> GetTicketById(int ticketId)
 		{
 			var ticket = await _ticketServices.GetTicketById(ticketId);

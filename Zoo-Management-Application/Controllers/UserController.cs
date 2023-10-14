@@ -98,6 +98,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpDelete("{userId}")]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<IActionResult> DeleteUser(long userId)
 		{
 			var isDeleted = await _userServices.DeleteUser(userId);
