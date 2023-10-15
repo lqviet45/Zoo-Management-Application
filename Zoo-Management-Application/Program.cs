@@ -10,11 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,12 +102,6 @@ builder.Services.AddCors(options =>
 });
 
 // Add authentication to Server
-//builder.Services.AddAuthentication(options =>
-//{
-//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-
-//	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{
@@ -128,19 +117,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
 		};
 	});
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//	.AddJwtBearer(options =>
-//	{
-//		options.TokenValidationParameters = new TokenValidationParameters
-//		{
-//			ValidateIssuerSigningKey = true,
-//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-//				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-//			ValidateIssuer = false,
-//			ValidateAudience = false
-//		};
-//	});
 
 builder.Services.AddAuthorization();
 
@@ -159,6 +135,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
