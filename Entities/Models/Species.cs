@@ -49,6 +49,6 @@ namespace Entities.Models
 		public IFormFile? ImageFile { get; set; }
 
 		[NotNull]
-		public bool? IsDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 	}
 }
