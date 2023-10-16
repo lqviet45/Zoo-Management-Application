@@ -65,25 +65,28 @@ namespace Repositories
 			return animalUser;
 		}
 
-		public Task<List<AnimalUser>> GetAnimalByZooTrainerId(long? userId)
+		public async Task<List<AnimalUser>> GetAnimalByZooTrainerId(long? userId)
 		{
-			var listAnimal = _dbContext.AnimalUsers.Where(x => x.UserId == userId)
-								.Include(a => a.Animal).ToListAsync();
+			var listAnimal = await _dbContext.AnimalUsers
+									.Include(a => a.Animal)
+									.Where(x => x.UserId == userId)
+									.ToListAsync();
 
 			return listAnimal;
 		}
 
-		public Task<List<AnimalUser>> GetZooTrainerByAnimalId(long? animalId)
+		public async Task<List<AnimalUser>> GetZooTrainerByAnimalId(long? animalId)
 		{
-			var listZooTrainer = _dbContext.AnimalUsers.Where(x => x.AnimalId == animalId)
-									.Include(u => u.User).ToListAsync();
-
+			var listZooTrainer = await _dbContext.AnimalUsers
+										.Include(u => u.User)
+										.Where(x => x.AnimalId == animalId)
+										.ToListAsync();
 			return listZooTrainer;
 		}
 
-		public Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId)
+		public async Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId)
 		{
-			var animalUser = _dbContext.AnimalUsers.Where(x => x.AnimalUserId == animalUserId)
+			var animalUser = await _dbContext.AnimalUsers.Where(x => x.AnimalUserId == animalUserId)
 								.Include(a => a.Animal)
 								.Include(u => u.User)
 								.FirstOrDefaultAsync();

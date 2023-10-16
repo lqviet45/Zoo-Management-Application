@@ -158,6 +158,13 @@ namespace Services
 			updatedNews.Author = newsUpdateRequest.Author;
 			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+
+			var existUser = await _userRepositories.GetUserById(newsUpdateRequest.UserId);
+			if(existUser is null)
+			{
+				throw new ArgumentException("The user is not exist!");
+			}
+
 			updatedNews.UserId = newsUpdateRequest.UserId;
 
 			if (newsUpdateRequest.ImageFile != null)
