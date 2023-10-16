@@ -86,35 +86,35 @@ namespace Services
 			{
 				nameof(SpeciesResponse.SpeciesName) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.SpeciesName.Contains(searchString)),
+					temp.SpeciesName.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Family) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.Family.Contains(searchString)),
+					temp.Family.Contains(searchString) && temp.IsDeleted == false),
 				
 				nameof(SpeciesResponse.Infomation) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.Infomation.Contains(searchString)),
+					temp.Infomation.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Characteristic) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.Characteristic.Contains(searchString)),
+					temp.Characteristic.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Allocation) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.Allocation.Contains(searchString)),
+					temp.Allocation.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Ecological) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-						temp.Ecological.Contains(searchString)),
+						temp.Ecological.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Diet) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-									temp.Diet.Contains(searchString)),
+									temp.Diet.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.BreedingAndReproduction) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.BreedingAndReproduction.Contains(searchString)),
+					temp.BreedingAndReproduction.Contains(searchString) && temp.IsDeleted == false),
 
 				_ => await _speciesRepositories.GetAllSpecies()
 			};
