@@ -69,15 +69,15 @@ namespace Services
 			{
 				nameof(UserResponse.FullName) =>
 				await _userRepositories.GetFilteredUsers(temp =>
-					temp.FullName.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
+					temp.FullName.Contains(searchString) && temp.RoleId == 2 && temp.IsDelete == false),
 
 				nameof(UserResponse.Email) =>
 				await _userRepositories.GetFilteredUsers(temp =>
-					temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
+					temp.Email.Contains(searchString) && temp.RoleId == 2 && temp.IsDelete == false),
 
 				nameof(UserResponse.PhoneNumber) => 
 				await _userRepositories.GetFilteredUsers(temp =>
-					temp.PhoneNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
+					temp.PhoneNumber.Contains(searchString) && temp.RoleId == 2 && temp.IsDelete == false),
 
 				_ => await _userRepositories.GetAllStaff()
 			};
