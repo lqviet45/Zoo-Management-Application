@@ -31,7 +31,7 @@ namespace Services
 				throw new ArgumentException("The news title is already exist!");
 			}
 
-			var userExist = await _userRepositories.GetStaffById(newsAddRequest.UserId);
+			var userExist = await _userRepositories.GetUserById(newsAddRequest.UserId);
 			if (userExist is null)
 			{
 				throw new ArgumentException("The user is not exist!");	
