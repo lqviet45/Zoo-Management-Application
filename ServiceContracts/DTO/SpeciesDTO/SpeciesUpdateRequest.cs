@@ -41,7 +41,7 @@ namespace ServiceContracts.DTO.SpeciesDTO
 		public IFormFile? ImageFile { get; set; }
 
 		[Required]
-		public bool? IsDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 
 		/// <summary>
 		/// Converts the current object of SpeciesUpdateRequest into a new object of Cage type
