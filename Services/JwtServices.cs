@@ -54,7 +54,8 @@ namespace Services
 			string token = handler.WriteToken(tokenGenerator);
 
 			return new AuthenticationResponse() 
-			{ 
+			{
+				UserId = user.UserId,
 				Token = token,
 				Email = user.Email,
 				UserName = user.UserName,
