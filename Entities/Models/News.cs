@@ -33,7 +33,13 @@ namespace Entities.Models
 		[NotNull]
 		public int CategoryId { get; set; }
 
+		[ForeignKey("User")]
+		[NotNull]
+		public long UserId { get; set; }
+
 		public NewsCategories NewsCategories { get; set; } = null!;
+
+		public User User { get; set; } = null!;
 
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
