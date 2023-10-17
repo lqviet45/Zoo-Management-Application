@@ -124,7 +124,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+	options.UseSqlServer(builder.Configuration.GetConnectionString("probConnection"));
 });
 
 var app = builder.Build();
