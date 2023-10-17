@@ -9,7 +9,7 @@ namespace ServiceContracts.DTO.NewsCategoriesDTO
 	public class NewsCategoryAddRequest
 	{
 		[Required(ErrorMessage = "Category Name can not be blank!")]
-		public string? CategoryName { get; set; } = string.Empty;
+		public string CategoryName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Converts the current object of NewsCategoryAddRequest into a new object of NewsCategories type

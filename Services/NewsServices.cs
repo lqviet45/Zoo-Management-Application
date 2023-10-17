@@ -31,7 +31,7 @@ namespace Services
 				throw new ArgumentException("The news title is already exist!");
 			}
 
-			var userExist = await _userRepositories.GetStaffById(newsAddRequest.UserId);
+			var userExist = await _userRepositories.GetUserById(newsAddRequest.UserId);
 			if (userExist is null)
 			{
 				throw new ArgumentException("The user is not exist!");	
@@ -158,6 +158,13 @@ namespace Services
 			updatedNews.Author = newsUpdateRequest.Author;
 			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+
+			var existUser = await _userRepositories.GetUserById(newsUpdateRequest.UserId);
+			if(existUser is null)
+			{
+				throw new ArgumentException("The user is not exist!");
+			}
+
 			updatedNews.UserId = newsUpdateRequest.UserId;
 
 			if (newsUpdateRequest.ImageFile != null)
