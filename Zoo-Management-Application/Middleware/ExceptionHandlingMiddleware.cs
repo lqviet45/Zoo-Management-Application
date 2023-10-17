@@ -8,16 +8,37 @@ namespace Zoo.Management.Application.Middleware
 	public class ExceptionHandlingMiddleware
 	{
 		private readonly RequestDelegate _next;
-
-		public ExceptionHandlingMiddleware(RequestDelegate next)
+		private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+		public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 		{
 			_next = next;
+			_logger = logger;
 		}
 
-		public Task Invoke(HttpContext httpContext)
+		public async Task Invoke(HttpContext httpContext)
 		{
+			try
+			{
+				await _next(httpContext);
+			}
+			catch (Exception ex)
+			{
+				if(ex.InnerException != null)
+				{
+					_logger.LogError("{ExceptionType} {ExceptionMessage}",
+						ex.InnerException.GetType().ToString(),
+						ex.InnerException.Message);
+				} 
+				else
+				{
+					_logger.LogError("{ExceptionType} {ExceptionMessage}",
+						ex.GetType().ToString(),
+						ex.Message);
+				}
 
-			return _next(httpContext);
+				httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				await httpContext.Response.WriteAsJsonAsync("Error occurred");
+			}
 		}
 	}
 
