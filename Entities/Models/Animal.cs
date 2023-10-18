@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,21 +9,18 @@ namespace Entities.Models
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		
 		public long AnimalId { get; set; }
 
 		[ForeignKey("Species")]
 		[NotNull]
 		public int SpeciesId { get; set; }
 
-		[ForeignKey("User")]
-		[NotNull]
-		public long ZooTrainerId { get; set; }
-
 		[StringLength(80)]
 		[NotNull]
 		public string? AnimalName { get; set;}
 
-		[Column(TypeName = "DateTime2")]
+		[Column(TypeName = "Date")]
 		[NotNull]
 		public DateTime DateArrive { get; set; }
 
@@ -30,12 +28,14 @@ namespace Entities.Models
 		[NotNull]
 		public string? Status { get; set; }
 
-		[ForeignKey("Cage")]
 		[NotNull]
-		public int CageId { get; set; }
-		public virtual Cage? Cage { get; set; }
+		public bool IsDelete { get; set; }
+		[NotNull]
 		public virtual Species? Species { get; set; }
+		
 
-		public virtual ICollection<User> ZooTrainers { get; set; } = new HashSet<User>();
+		public virtual ICollection<AnimalUser> AnimalZooTrainers { get; set; } = new List<AnimalUser>();
+
+		public virtual ICollection<AnimalCage> AnimalCages { get; set; } = new List<AnimalCage>();
 	}
 }

@@ -15,7 +15,7 @@ namespace Entities.Models
 		public int TicketId { get; set; }
 		[NotNull]
 		public int Quantity { get; set; }
-
+		public double TotalPrice { get; set; }
 		public virtual Ticket? Ticket { get; set; }
 		public virtual Order? Order { get; set; }
 	}

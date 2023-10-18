@@ -19,6 +19,9 @@ namespace Entities.Models
 		[NotNull]
 		public string? SkillName { get; set; }
 
-		public virtual ICollection<Experience> Experiences { get; set; } = new HashSet<Experience>();
+		[NotNull]
+		public long UserId { get; set; }
+		public virtual User? User { get; set; }
+
 	}
 }

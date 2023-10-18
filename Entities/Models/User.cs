@@ -15,8 +15,15 @@ namespace Entities.Models
 		public string? UserName { get; set; }
 
 		[NotNull]
+		[StringLength(80)]
+		public string? FullName { get; set; }
+
+		[NotNull]
 		[StringLength(20)]
 		public string? Password { get; set; }
+
+		[NotNull]
+		public bool IsDelete { get; set; }
 
 		[NotNull]
 		[StringLength(20)]
@@ -38,9 +45,7 @@ namespace Entities.Models
 		[ForeignKey("Role")]
 		public int RoleId { get; set; }
 		public virtual Role? Role { get; set; }
-
-		public virtual ICollection<Animal> Animals { get; set; } = new HashSet<Animal>();
-
-		public virtual Experience? Experience { get; set; }
+		public virtual List<Skill> Skills { get; set; } = new List<Skill>();
+		public virtual ICollection<AnimalUser> UserAnimals { get; set; } = new List<AnimalUser>();
 	}
 }
