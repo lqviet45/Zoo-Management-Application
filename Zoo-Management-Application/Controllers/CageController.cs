@@ -6,6 +6,7 @@ using ServiceContracts.DTO;
 using ServiceContracts.DTO.AreaDTO;
 using ServiceContracts.DTO.CageDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -23,6 +24,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<CageResponse>> PostCage(CageAddRequest cageAddRequest)
 		{
 			var cageResponse = await _cageServices.AddCage(cageAddRequest);

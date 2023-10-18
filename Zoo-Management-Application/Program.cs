@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Zoo.Management.Application.Middleware;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,10 @@ builder.Services.AddScoped<IAnimalCageServices, AnimalCageServices>();
 
 builder.Services.AddScoped<ISkillRepositories, SkillRepositories>();
 builder.Services.AddScoped<ISkillServices, SkillServices>();
+
+builder.Services.AddScoped<ValidationFilterAttribute>();
+
+
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -124,7 +129,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("probConnection"));
+	options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
 var app = builder.Build();
