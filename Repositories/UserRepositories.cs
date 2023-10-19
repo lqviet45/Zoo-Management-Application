@@ -82,18 +82,18 @@ namespace Repositories
 			return matchingUser;
 		}
 
-		public Task<User?> GetUserByUserName(string? userName)
+		public async Task<User?> GetUserByUserName(string? userName)
 		{
-		    return _dbContext.Users.Include(u => u.Skills)
+		    return await _dbContext.Users.Include(u => u.Skills)
 				.Include(u => u.Role)
 				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}
 
-		public Task<User?> GetUserLogin(string userName, string password)
+		public async Task<User?> GetUserLogin(string userName, string password)
 		{
-			return _dbContext.Users
+			return await _dbContext.Users
 				.Include(u => u.Role)
-				.FirstOrDefaultAsync(u => u.UserName == userName && u.Password == password);
+				.FirstOrDefaultAsync(u => u.UserName == userName && u.Password == password && u.IsDelete == false);
 		}
 
 		public async Task<User?> GetZooTrainerById(long zooTrainerId)
