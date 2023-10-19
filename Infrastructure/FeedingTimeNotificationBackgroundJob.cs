@@ -11,17 +11,16 @@ namespace Infrastructure
 	[DisallowConcurrentExecution]
 	public class FeedingTimeNotificationBackgroundJob : IJob
 	{
-		private readonly IConfiguration _configuration;
+		private readonly IAnimalServices _animalServices;
 		private readonly IEmailServices _emailServices;
 		private readonly IMealServices _mealServices;
 		private readonly IUserServices _userServices;
 		
 		
 
-		public FeedingTimeNotificationBackgroundJob(IConfiguration configuration, IEmailServices emailServices, IMealServices mealServices, IUserServices userServices)
+		public FeedingTimeNotificationBackgroundJob(IAnimalServices animalServices, IEmailServices emailServices, IMealServices mealServices, IUserServices userServices)
 		{
-			
-			_configuration = configuration;
+			_animalServices = animalServices;
 			_emailServices = emailServices;
 			_mealServices = mealServices;
 			_userServices = userServices;
@@ -37,12 +36,16 @@ namespace Infrastructure
 			// Calculate the time 30 minutes from now with seconds and milliseconds set to zero
 			DateTime notificationTime = currentTimeWithoutSeconds.AddMinutes(30);
 
+			// Calculate the start time and end time of the allowed range
+			DateTime startTime = currentTimeWithoutSeconds;
+			DateTime endTime = notificationTime;
+
 			// Get all meals
 			List<MealResponse> allMeals = await _mealServices.GetAllMeal();
 
-			// Filter meals with feeding times 30 minutes after the current time
+			// Filter meals with feeding times within the range
 			List<MealResponse> mealsToNotify = allMeals
-				.Where(meal => meal.FeedingTime == notificationTime.TimeOfDay)
+				.Where(meal => meal.FeedingTime >= startTime.TimeOfDay && meal.FeedingTime <= endTime.TimeOfDay)
 				.ToList();
 
 			// Extract unique user and animal IDs from the filtered meals
@@ -52,23 +55,27 @@ namespace Infrastructure
 			// Send email notifications to the unique users or take any other required actions
 			foreach (var userId in uniqueUserIds)
 			{
-				// Get the user based on userId if needed
 				var user = await _userServices.GetZooTrainerById(userId);
 
 				if (user != null)
 				{
-					// Send email notifications or take any other action for this user
-					// You can use the _emailServices to send emails
-					var emailDto = new EmailDto
+					var animalId = mealsToNotify.First(meal => meal.animalUser.UserId == userId).animalUser.AnimalId;
+					var animal = await _animalServices.GetAnimalById(animalId);
+
+					if (animal != null)
 					{
-						To = user.Email,
-						Subject = "Feeding Time Notification",
-						Body = $"Hello {user.FullName}, your assigned animal(s) will be fed at {notificationTime}."
-					};
+						var animalName = animal.AnimalName;
+						
+						var emailDto = new EmailDto
+						{
+							To = user.Email,
+							Subject = "Feeding Time Notification",
+							Body = $"Hello {user.FullName}, your assigned animal {animalName} will be fed at {notificationTime}."
+						};
 
-					await _emailServices.SendEmail(emailDto);
+						await _emailServices.SendEmail(emailDto);
+					}
 				}
-
 			}
 
 			await Task.CompletedTask;
