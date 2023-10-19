@@ -43,5 +43,11 @@ namespace ServiceContracts
 		/// <param name="deleteFood">The specified meal to delete</param>
 		/// <returns>Returns true if delete success, otherwise returns false</returns>
 		Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood);
+
+		/// <summary>
+		/// Get all meal in AnimalFood table
+		/// </summary>
+		/// <returns>A list of AnimalFoob obj</returns>
+		Task<List<MealResponse>> GetAllMeal();
 	}
 }
