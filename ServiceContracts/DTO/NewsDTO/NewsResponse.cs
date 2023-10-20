@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using ServiceContracts.DTO.NewsCategoriesDTO;
 using ServiceContracts.DTO.NewsDTO;
+using ServiceContracts.DTO.UserDTO;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -20,10 +21,19 @@ namespace ServiceContracts.DTO.NewsDTO
 		public string? Content { get; set; } = string.Empty;
 		[Required(ErrorMessage = "Author can not be blank!")]
 		public string? Author { get; set; } = string.Empty;
+		[Required(ErrorMessage = "Release Date can not be blank!")]
 		public DateTime ReleaseDate { get; set; }
+		[Required(ErrorMessage = "Category Id can not be blank!")]
 		public int? CategoryId { get; set; }
+		[Required(ErrorMessage = "User Id can not be blank!")]
+		public long UserId { get; set; }
+
+		[Required]
+		public string FullName { get; set; } = string.Empty;
 
 		public NewsCategoryResponse? NewsCategories { get; set; }
+
+		
 
 	}
 
@@ -47,7 +57,9 @@ namespace ServiceContracts.DTO.NewsDTO
 				Author = news.Author,
 				ReleaseDate = news.ReleaseDate,
 				CategoryId = news.CategoryId,
-				NewsCategories = news.NewsCategories.ToNewsCategoryResponse()
+				UserId = news.UserId,
+				NewsCategories = news.NewsCategories.ToNewsCategoryResponse(),
+				FullName = news.User.FullName,
 			};
 		}
 

@@ -58,7 +58,9 @@ namespace Repositories
 
 		public async Task<List<News>> GetAllNews()
 		{
-			var listNews = await _dbContext.News.Include(cate => cate.NewsCategories)
+			var listNews = await _dbContext.News
+									.Include(cate => cate.NewsCategories)
+									.Include(user => user.User)
 									.ToListAsync();
 
 			return listNews;
@@ -66,13 +68,18 @@ namespace Repositories
 
 		public Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate)
 		{
-			return _dbContext.News.Include(news => news.NewsCategories).Where(predicate).ToListAsync();
+			return _dbContext.News.Include(news => news.NewsCategories)
+								  .Include(user => user.User)	
+								  .Where(predicate).ToListAsync();
 		}
 
 		public async Task<News?> GetNewsById(int id)
 		{
-			var news = await _dbContext.News.Include(cate => cate.NewsCategories)
-				.Where(n => n.NewsId == id).FirstOrDefaultAsync();
+			var news = await _dbContext.News
+								.Include(cate => cate.NewsCategories)
+								.Include(user => user.User)
+								.Where(n => n.NewsId == id)
+								.FirstOrDefaultAsync();
 
 			return news;
 		}
@@ -98,6 +105,7 @@ namespace Repositories
 			updateNews.CategoryId = news.CategoryId;
 			updateNews.Image = news.Image;
 			updateNews.ReleaseDate = news.ReleaseDate;
+			updateNews.UserId = news.UserId;
 
 			int countUpdated = await _dbContext.SaveChangesAsync();
 

@@ -21,7 +21,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<SpeciesResponse>> PostSpecies(SpeciesAddRequest speciesAddRequest)
+		public async Task<ActionResult<SpeciesResponse>> PostSpecies([FromForm]SpeciesAddRequest speciesAddRequest)
 		{
 			var speciesResponse = await _speciesServices.AddSpecies(speciesAddRequest);
 			var id = new { id = speciesResponse.SpeciesId };
@@ -56,7 +56,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult<SpeciesResponse>> UpdateSpecies(SpeciesUpdateRequest speciesUpdateRequest)
+		public async Task<ActionResult<SpeciesResponse>> UpdateSpecies([FromForm]SpeciesUpdateRequest speciesUpdateRequest)
 		{
 			if (ModelState.IsValid)
 			{

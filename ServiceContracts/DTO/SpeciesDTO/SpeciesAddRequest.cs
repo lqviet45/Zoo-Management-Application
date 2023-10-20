@@ -37,6 +37,8 @@ namespace ServiceContracts.DTO.SpeciesDTO
 
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
+		[NotNull]
+		public bool IsDeleted { get; set; }
 
 		/// <summary>
 		/// Converts the current object of SpeciesAddRequest into a new object of Species type
@@ -53,7 +55,8 @@ namespace ServiceContracts.DTO.SpeciesDTO
 				Allocation = Allocation,
 				Ecological = Ecological,
 				Diet = Diet,
-				BreedingAndReproduction = BreedingAndReproduction
+				BreedingAndReproduction = BreedingAndReproduction,
+				IsDeleted = IsDeleted
             };
         }
     }

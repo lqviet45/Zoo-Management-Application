@@ -80,7 +80,7 @@ namespace Services
 			List<Area> areas = searchBy switch
 			{
 				nameof(AreaResponse.AreaName) => 
-				await _areaRepositories.GetFilteredArea(temp => temp.AreaName.Contains(searchString)),
+				await _areaRepositories.GetFilteredArea(temp => temp.AreaName.Contains(searchString) && temp.IsDelete == false),
 
 				_ => await _areaRepositories.GetAllArea()
 			};

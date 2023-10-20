@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zoo-Management-Application", "Zoo-Management-Application\Zoo-Management-Application.csproj", "{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zoo.Management.Application", "Zoo-Management-Application\Zoo.Management.Application.csproj", "{A394185E-0868-4F36-A6F9-BB6D3AD31AFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{07880957-15F3-48F8-B203-95CB575C9D7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{03E56A60-CEDF-4F94-AD03-9133444DEC23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{03E56A60-CEDF-4F94-AD03-9133444DEC23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{C09610B7-F4B5-42E3-B54A-3AB86218FE8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{C09610B7-F4B5-42E3-B54A-3AB86218FE8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{CBD3DED7-BB4C-4C79-B0BC-35DBEFBB4592}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{CBD3DED7-BB4C-4C79-B0BC-35DBEFBB4592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{7B2338A9-E8EB-40A9-9780-39BC3B97874E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{7B2338A9-E8EB-40A9-9780-39BC3B97874E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{263098AA-BE4D-4B42-841E-D3CCBC1EE757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{7B2338A9-E8EB-40A9-9780-39BC3B97874E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B2338A9-E8EB-40A9-9780-39BC3B97874E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B2338A9-E8EB-40A9-9780-39BC3B97874E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{263098AA-BE4D-4B42-841E-D3CCBC1EE757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{263098AA-BE4D-4B42-841E-D3CCBC1EE757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{263098AA-BE4D-4B42-841E-D3CCBC1EE757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{263098AA-BE4D-4B42-841E-D3CCBC1EE757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

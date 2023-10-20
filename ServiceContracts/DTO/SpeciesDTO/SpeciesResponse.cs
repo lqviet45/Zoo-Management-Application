@@ -37,6 +37,9 @@ namespace ServiceContracts.DTO.SpeciesDTO
 
         [Required(ErrorMessage = "Image can not be blank!")]
 		public string? Image { get; set; }
+
+        [Required(ErrorMessage = "IsDeleted can not be blank!")]
+        public bool IsDeleted { get; set; }
 	}
 
     public static class SpeciesExtension
@@ -59,7 +62,8 @@ namespace ServiceContracts.DTO.SpeciesDTO
                 Ecological = species.Ecological,
                 Diet = species.Diet,
                 BreedingAndReproduction = species.BreedingAndReproduction,
-                Image = species.Image
+                Image = species.Image,
+                IsDeleted = species.IsDeleted
             };
         }
     }

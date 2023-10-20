@@ -99,7 +99,7 @@ namespace Services
 
 		public async Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId)
 		{
-			var listUser = await _animalUserRepositories.GetAnimalByZooTrainerId(animalId);
+			var listUser = await _animalUserRepositories.GetZooTrainerByAnimalId(animalId);
 
 			var listUserResponse = listUser.Select(user => user.ToAnimalUserResponse()).ToList();
 

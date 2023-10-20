@@ -28,6 +28,7 @@ namespace Zoo_Management_Application.Controllers
 				return BadRequest();
 			}
 			var newsResponse = await _newsServices.AddNews(newsAddRequest);
+			
 			var id = new { id = newsResponse.NewsId };
 
 			return CreatedAtAction("GetNewsById", id, newsResponse);

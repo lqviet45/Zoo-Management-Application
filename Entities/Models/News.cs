@@ -15,10 +15,10 @@ namespace Entities.Models
 		[StringLength(100)]
 		public string? Title { get; set; }
 		[NotNull]
-		[StringLength(100)]
+		[MaxLength]
 		public string? Thumnail { get; set; }
 		[NotNull]
-		[StringLength(100)]
+		[MaxLength]
 		public string? Image { get; set; }
 		[NotNull]
 		[MaxLength]
@@ -33,7 +33,13 @@ namespace Entities.Models
 		[NotNull]
 		public int CategoryId { get; set; }
 
+		[ForeignKey("User")]
+		[NotNull]
+		public long UserId { get; set; }
+
 		public NewsCategories NewsCategories { get; set; } = null!;
+
+		public User User { get; set; } = null!;
 
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }

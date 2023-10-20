@@ -1,7 +1,6 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO.AnimalAddDTO;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using Services.Helper;
@@ -26,11 +25,11 @@ namespace Services
 			_cageRepositories = cageRepositories;
 			_animalCageRepositories = animalCageRepositories;
 		}
-		public async Task<AnimalResponse> AddAnimal(AnimalAdd animaladd)
+		public async Task<AnimalResponse> AddAnimal(AnimalAddRequest animaladd)
 		{
 			ArgumentNullException.ThrowIfNull(animaladd);
 
-			var ExistAnimal = await _animalRepositories.GetAnimalByName(animaladd.AnimalAddRequest.AnimalName);
+			var ExistAnimal = await _animalRepositories.GetAnimalByName(animaladd.AnimalName);
 
 			if (ExistAnimal != null)
 			{
@@ -39,7 +38,7 @@ namespace Services
 
 			ValidationHelper.ModelValidation(animaladd);
 
-			Animal animal = animaladd.AnimalAddRequest.MapToAnimal();
+			Animal animal = animaladd.MapToAnimal();
 			await _animalRepositories.Add(animal);
 
 			var zootrainer = await _userRepositories.GetUserById(animaladd.userId);

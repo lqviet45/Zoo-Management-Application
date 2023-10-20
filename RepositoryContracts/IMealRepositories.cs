@@ -28,7 +28,7 @@ namespace RepositoryContracts
 		/// Get all meal of animals
 		/// </summary>
 		/// <returns>List of meals or list of AnimalFood obj</returns>
-		Task<List<AnimalFood>> GetAllMeal();
+		Task<List<IGrouping<TimeSpan, AnimalFood>>> GetAllMeal();
 
 		/// <summary>
 		/// Update an existed meal

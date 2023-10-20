@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
-using ServiceContracts.DTO.AnimalAddDTO;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using ServiceContracts.DTO.WrapperDTO;
@@ -25,7 +24,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<AnimalResponse>> PostAnimal(AnimalAdd animaladd)
+		public async Task<ActionResult<AnimalResponse>> PostAnimal(AnimalAddRequest animaladd)
 		{
 			var animalResponse = await _animalServices.AddAnimal(animaladd);
 

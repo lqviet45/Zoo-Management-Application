@@ -11,12 +11,14 @@ namespace Services
 		// private fields
 		private readonly INewsRepositories _newsRepositories;
 		private readonly IFileServices _fileServices;
+		private readonly IUserRepositories _userRepositories;
 
 		// constructor
-		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices)
+		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices, IUserRepositories userRepositories)
 		{
 			_newsRepositories = newsRepositories;
 			_fileServices = fileServices;
+			_userRepositories = userRepositories;
 		}
 
 		public async Task<NewsResponse> AddNews(NewsAddrequest? newsAddRequest)
@@ -29,11 +31,15 @@ namespace Services
 				throw new ArgumentException("The news title is already exist!");
 			}
 
+			var userExist = await _userRepositories.GetUserById(newsAddRequest.UserId);
+			if (userExist is null)
+			{
+				throw new ArgumentException("The user is not exist!");	
+			}
+
 			ValidationHelper.ModelValidation(newsAddRequest);
 
 			News news = newsAddRequest.MapToNews();
-
-			
 
 			if(newsAddRequest.ImageFile != null)
 			{
@@ -54,7 +60,7 @@ namespace Services
 			}
 
 			await _newsRepositories.Add(news);
-			
+
 			return news.ToNewsResponse();
 		}
 
@@ -152,6 +158,14 @@ namespace Services
 			updatedNews.Author = newsUpdateRequest.Author;
 			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+
+			var existUser = await _userRepositories.GetUserById(newsUpdateRequest.UserId);
+			if(existUser is null)
+			{
+				throw new ArgumentException("The user is not exist!");
+			}
+
+			updatedNews.UserId = newsUpdateRequest.UserId;
 
 			if (newsUpdateRequest.ImageFile != null)
 			{

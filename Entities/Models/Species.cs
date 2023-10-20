@@ -11,11 +11,11 @@ namespace Entities.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int SpeciesId { get; set; }
 
-		[StringLength(50)]
+		[MaxLength]
 		[NotNull]
 		public string? SpeciesName { get; set;}
 
-		[StringLength(20)]
+		[StringLength(100)]
 		[NotNull]
 		public string? Family { get; set; }
 
@@ -42,13 +42,13 @@ namespace Entities.Models
 		[NotNull]
 		[MaxLength]
 		public string? BreedingAndReproduction { get; set; }
-
+		[MaxLength]
 		public string? Image { get; set; }
 
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
 
 		[NotNull]
-		public bool? IsDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 	}
 }

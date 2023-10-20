@@ -33,7 +33,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("animal/{animalId}")]
-		public async Task<ActionResult<UserResponse>> GetZooTrainerByAnimalId(long animalId)
+		public async Task<ActionResult<List<UserResponse>>> GetZooTrainerByAnimalId(long animalId)
 		{
 			var animalUserResponse = await _animalUserServices.GetZooTrainerByAnimalId(animalId);
 
@@ -47,7 +47,7 @@ namespace Zoo_Management_Application.Controllers
 
 
 		[HttpGet("user/{userId}")]
-		public async Task<ActionResult<AnimalResponse>> GetAnimalByZooTrainerId(long userId)
+		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalByZooTrainerId(long userId)
 		{
 			var animalUserResponse = await _animalUserServices.GetAnimalByZooTrainerId(userId);
 

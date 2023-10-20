@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Zoo.Management.Application.Middleware;
+using Zoo.Management.Application.Filters.ActionFilters;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +69,10 @@ builder.Services.AddScoped<IAnimalCageServices, AnimalCageServices>();
 
 builder.Services.AddScoped<ISkillRepositories, SkillRepositories>();
 builder.Services.AddScoped<ISkillServices, SkillServices>();
+
+builder.Services.AddScoped<ValidationFilterAttribute>();
+
+builder.Services.AddInfrastructure();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -133,6 +140,10 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
+}
+else
+{
+	app.UseExceptionHandlingMiddleware();
 }
 
 app.UseHsts();

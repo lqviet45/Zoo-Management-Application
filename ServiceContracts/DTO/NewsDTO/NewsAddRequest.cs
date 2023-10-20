@@ -21,7 +21,13 @@ namespace ServiceContracts.DTO.NewsDTO
 
 		[Required(ErrorMessage = "Category Id can not be blank!")]
 		public int CategoryId { get; set; }
+
+		[Required(ErrorMessage = "Release Date can not be blank!")]
 		public DateTime ReleaseDate { get; set; }
+
+		[Required(ErrorMessage = "User Id can not be blank!")]
+		public long UserId { get; set; }
+
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
 		[NotMapped]
@@ -40,8 +46,8 @@ namespace ServiceContracts.DTO.NewsDTO
 				Content = Content,
 				Author = Author,
 				CategoryId = CategoryId,
-				ReleaseDate = ReleaseDate
-			
+				ReleaseDate = ReleaseDate,
+				UserId = UserId
 			};
 		}
 		

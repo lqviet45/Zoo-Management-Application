@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using ServiceContracts.DTO.SpeciesDTO;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO.AnimalDTO
@@ -22,7 +23,9 @@ namespace ServiceContracts.DTO.AnimalDTO
 		[Required(ErrorMessage = "Status can not be blank!")]
 		public string? Status { get; set; }
 
-		public virtual Species? Species { get; set; }
+		[Required(ErrorMessage = "IsDelete can not be blank!")]
+		public SpeciesResponse? Species { get; set; } 
+
 
 	}
 
@@ -42,7 +45,7 @@ namespace ServiceContracts.DTO.AnimalDTO
 				DateArrive = animal.DateArrive,
 				Status = animal.Status,
 				SpeciesId = animal.SpeciesId,
-				Species = animal.Species
+				Species = animal.Species.ToSpeciesResponse()
 			};
 		}
     }

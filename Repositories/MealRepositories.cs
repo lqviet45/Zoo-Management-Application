@@ -83,12 +83,13 @@ namespace Repositories
 		}
 
 		// haven't use yet 
-		public async Task<List<AnimalFood>> GetAllMeal()
+		public async Task<List<IGrouping<TimeSpan, AnimalFood>>> GetAllMeal()
 		{
 			var listMeal = await _dbContext.AnimalFoods
 							.Include(f => f.Food)
 							.Include(a => a.AnimalUser.Animal)
 							.Include(u => u.AnimalUser.User)
+							.GroupBy(meal => meal.FeedingTime)
 							.ToListAsync();
 							
 

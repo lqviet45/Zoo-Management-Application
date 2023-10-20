@@ -62,5 +62,14 @@ namespace Zoo_Management_Application.Controllers
 			
 			return Ok(mealResponse);
 		}
+
+		[HttpGet("All")]
+		public async Task<ActionResult<List<MealResponse>>> GetAllMeal()
+		{
+			var mealResponse = await _mealServices.GetAllMeal();
+
+			return Ok(mealResponse);
+		}
+
 	}
 }

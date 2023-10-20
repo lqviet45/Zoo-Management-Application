@@ -68,6 +68,23 @@ namespace Services
 
 		}
 
+		public async Task<List<MealResponse>> GetAllMeal()
+		{
+			var listMeal = await _mealRepositories.GetAllMeal();
+
+			List<MealResponse> listMealResponse = new List<MealResponse>();
+
+			foreach (var meal in listMeal)
+			{
+				var mealResponse = meal.First().MapToResponse();
+				mealResponse.Food = meal.Select(m => m.Food.ToFoodResponse()).ToList();
+				listMealResponse.Add(mealResponse);
+			}
+
+
+			return listMealResponse;
+		}
+
 		public async Task<List<MealResponse>> GetAnimalMealById(long id)
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
