@@ -61,6 +61,7 @@ namespace Infrastructure
 				{
 					var animalId = mealsToNotify.First(meal => meal.animalUser.UserId == userId).animalUser.AnimalId;
 					var animal = await _animalServices.GetAnimalById(animalId);
+					var feedingTime = mealsToNotify.First(meal => meal.animalUser.UserId == userId).FeedingTime;
 
 					if (animal != null)
 					{
@@ -70,7 +71,7 @@ namespace Infrastructure
 						{
 							To = user.Email,
 							Subject = "Feeding Time Notification",
-							Body = $"Hello {user.FullName}, your assigned animal {animalName} will be fed at {notificationTime}."
+							Body = $"Hello {user.FullName}, your assigned animal {animalName} will be fed at {feedingTime}."
 						};
 
 						await _emailServices.SendEmail(emailDto);
