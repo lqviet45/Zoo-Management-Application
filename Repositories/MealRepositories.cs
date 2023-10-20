@@ -3,6 +3,7 @@ using RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
 using Entities.AppDbContext;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -11,34 +12,45 @@ namespace Repositories
 		// private field
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IFoodRepositories _foodRepositories;
+		private readonly IAnimalUserRepositories _animalUserRepositories;
 
 		// Constructor
-		public MealRepositories(ApplicationDbContext dbContext, IFoodRepositories foodRepositories)
+		public MealRepositories(ApplicationDbContext dbContext, IFoodRepositories foodRepositories, IAnimalUserRepositories animalUserRepositories)
 		{
 			_dbContext = dbContext;
 			_foodRepositories = foodRepositories;
+			_animalUserRepositories = animalUserRepositories;	
 		}
 		public async Task<AnimalFood> Add(AnimalFood animalFood)
 		{
-			var animal = await _dbContext.Animals.FindAsync(animalFood.AnimalId);
+			var animalUser = await _animalUserRepositories.GetAnimalUserByAnimalIdAndUserId(animalFood.AnimalUserId);
+
+			if(animalUser is null)
+			{
+				throw new ArgumentException("This Zoo Trainer don't take care of this animal");
+			}
 
 			var food = await _foodRepositories.GetFoodByFoodId(animalFood.FoodId);
-			if(food == null || animal == null) return animalFood;
+
+			if(food == null) return animalFood;
 
 			_dbContext.AnimalFoods.Add(animalFood);
 			await _dbContext.SaveChangesAsync();
 
 			animalFood.Food = food;
-			animalFood.Animal = animal;
+			animalFood.AnimalUser.Animal = animalUser.Animal;
+			animalFood.AnimalUser.User = animalUser.User;
 
 			return animalFood;
 		}
 
-		public async Task<bool> DeleteAMeal(long animalId, TimeSpan feedingTime)
+		public async Task<bool> DeleteAMeal(long animalUserId, TimeSpan feedingTime)
 		{
-			var deleteFood = await _dbContext.AnimalFoods.Where(x => x.AnimalId == animalId
-													&& x.FeedingTime == feedingTime)
-													.ToListAsync();
+			var deleteFood = await _dbContext.AnimalFoods
+								.Where(x => x.AnimalUserId == animalUserId
+								&& x.FeedingTime == feedingTime)
+								.ToListAsync();
+
 			if (deleteFood.IsNullOrEmpty())
 			{
 				return false;
@@ -55,7 +67,7 @@ namespace Repositories
 		public async Task<bool> DeleteFoodInAMeal(AnimalFood animalFood)
 		{
 			var deleteFood = await _dbContext.AnimalFoods
-							.Where(x => x.AnimalId == animalFood.AnimalId
+							.Where(x => x.AnimalUserId == animalFood.AnimalUserId
 							 && x.FoodId == animalFood.FoodId
 							 && x.FeedingTime == animalFood.FeedingTime)
 							.FirstOrDefaultAsync();
@@ -70,21 +82,23 @@ namespace Repositories
 
 		}
 
+		// haven't use yet 
 		public async Task<List<AnimalFood>> GetAllMeal()
 		{
 			var listMeal = await _dbContext.AnimalFoods
 							.Include(f => f.Food)
-							.Include(a => a.Animal)
+							.Include(a => a.AnimalUser.Animal)
+							.Include(u => u.AnimalUser.User)
 							.ToListAsync();
 							
 
 			return listMeal;
 		}
 
-		public async Task<AnimalFood?> GetAnimalFoodById(AnimalFood animalFood)
+		public async Task<AnimalFood?> GetSingleFoodInAnimalMeal(AnimalFood animalFood)
 		{
-			var matchingFood = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal)
-								.Where(x => x.AnimalId == animalFood.AnimalId
+			var matchingFood = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.AnimalUser.Animal).Include(u => u.AnimalUser.User)
+								.Where(x => x.AnimalUserId == animalFood.AnimalUserId
 								 && x.FoodId == animalFood.FoodId
 								&& x.FeedingTime == animalFood.FeedingTime)
 								.FirstOrDefaultAsync();
@@ -92,18 +106,26 @@ namespace Repositories
 			return matchingFood;
 		}
 
-		public async Task<List<AnimalFood>> GetAnimalMealById(long id)
+		public async Task<List<IGrouping<TimeSpan,AnimalFood>>> GetAnimalMealById(long id)
 		{
-			var listMeal = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal).
-						  Where(meal => meal.AnimalId == id).ToListAsync();
+			var listMeal = await _dbContext.AnimalFoods
+								.Include(f => f.Food)
+								.Include(a => a.AnimalUser.Animal)
+								.Include(u => u.AnimalUser.User)
+								.Where(meal => meal.AnimalUserId == id)
+								.GroupBy(meal => meal.FeedingTime)
+								.ToListAsync();
 
 			return listMeal;
 		}
 
-		public async Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long animalId, TimeSpan feedingTime)
+		public async Task<List<AnimalFood>> GetAnimalMealInASpecifiedTime(long animaUserlId, TimeSpan feedingTime)
 		{
-			var meal = await _dbContext.AnimalFoods.Include(f => f.Food).Include(a => a.Animal)
-								.Where(meal => meal.AnimalId == animalId
+			var meal = await _dbContext.AnimalFoods
+								.Include(f => f.Food)
+								.Include(a => a.AnimalUser.Animal)
+								.Include(u => u.AnimalUser.User)
+								.Where(meal => meal.AnimalUserId == animaUserlId
 								&& meal.FeedingTime == feedingTime)
 								.ToListAsync();
 

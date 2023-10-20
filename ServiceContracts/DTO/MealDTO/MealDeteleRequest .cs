@@ -9,7 +9,7 @@ namespace ServiceContracts.DTO.MealDTO
 	/// <summary>
 	/// Act as a DTO class for deleting a Meal
 	/// </summary>
-	public class MealDeleteRequest2
+	public class MealDeleteRequest
 	{
 		[Required(ErrorMessage = "Animal ID can't be blank")]
 		public long AnimalUserId { get; set; }
@@ -17,11 +17,8 @@ namespace ServiceContracts.DTO.MealDTO
 		[Required(ErrorMessage = "FeedingTime can't be blank")]
 		public TimeSpan FeedingTime { get; set; }
 
-		[Required(ErrorMessage = "Food ID can't be blank")]
-		public int FoodId { get; set; }
-
 		/// <summary>
-		/// Converts the current object of MealDeleteRequest2 into a new object of AnimalFood type
+		/// Converts the current object of MealDeleteRequest into a new object of AnimalFood type
 		/// </summary>
 		/// <returns></returns>
 		public AnimalFood MealToAnimalFood()
@@ -30,7 +27,6 @@ namespace ServiceContracts.DTO.MealDTO
 			{
 				AnimalUserId = AnimalUserId,
 				FeedingTime = FeedingTime,
-				FoodId = FoodId
 			};
 		}
 	}

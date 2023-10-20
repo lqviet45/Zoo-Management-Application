@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
-using ServiceContracts.DTO.ExperienceDTO;
+using ServiceContracts.DTO.AuthenDTO;
 using ServiceContracts.DTO.UserDTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,55 +14,50 @@ namespace Zoo_Management_Application.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserServices _userServices;
-		private readonly IExperienceServices _experienceService;
 		private readonly IConfiguration _configuration;
 		private readonly IJwtServices _jwtServices;
+		private readonly ISkillServices _skillServices;
 
-		public UserController(IUserServices userServices, IExperienceServices experienceService, IConfiguration configuration, IJwtServices jwtServices)
+		public UserController(IUserServices userServices, IConfiguration configuration, IJwtServices jwtServices, ISkillServices skillServices)
 		{
 			_userServices = userServices;
-			_experienceService = experienceService;
 			_configuration = configuration;
 			_jwtServices = jwtServices;
+			_skillServices = skillServices;
 		}
 
 		[HttpPost("login")]
-		public async Task<ActionResult<string>> Login(string username, string password)
+		[AllowAnonymous]
+		public async Task<IActionResult> Login(LoginUserDTO loginUser)
 		{
-			var userLogin = await _userServices.LoginUser(username, password);
+			var userLogin = await _userServices.LoginUser(loginUser.UserName, loginUser.Password);
 
 			if (userLogin is null || userLogin.Email is null || userLogin.Role is null)
 			{
 				return BadRequest("Username or password is not correct!");
 			}
 
-			//string token = CreateToken(userLogin);
-			//AuthenticationResponse authenUser = new() 
-			//{ 
-			//	UserName = userLogin.UserName,
-			//	Email = userLogin.Email,
-			//	Role = userLogin.Role.RoleName,
-			//	Token = token,
-			//	Expiration = DateTime.UtcNow.AddMinutes(10)
-			//};
-
 			var authenUser = _jwtServices.CreateToken(userLogin);
 
 			return Ok(authenUser);
 
 		}
-		
+
 		[HttpPost]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<ActionResult<UserResponse>> PostUser(UserAddRequest userAddRequest)
 		{
 			
 			var userResponse = await _userServices.AddUser(userAddRequest);
-			if (userAddRequest.ExperienceAddRequest != null)
+
+			foreach (var skill in userAddRequest.Skills)
 			{
-				userAddRequest.ExperienceAddRequest.UserId = userResponse.UserId;
-				var experienceResponse = await _experienceService.AddExperience(userAddRequest.ExperienceAddRequest);
-				userResponse.ExperienceResponses = new List<ExperienceResponse>() { experienceResponse };
+				skill.UserId = userResponse.UserId;
 			}
+
+			var listSkill = await _skillServices.AddSkills(userAddRequest.Skills);
+
+			userResponse.skills = listSkill;
 
 			var routeValues = new { Id = userResponse.UserId };
 			if (userResponse.RoleId == 2)
@@ -76,13 +72,25 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
+		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainner")]
 		public async Task<ActionResult<UserResponse>> PutUser(UserUpdateRequest userUpdateRequest)
 		{
 			if (ModelState.IsValid)
 			{
 				var userUpdate = await _userServices.UpdateUser(userUpdateRequest);
-				var experience = await _experienceService.AddExperience(userUpdateRequest.ExperienceAddRequest);
-				userUpdate.ExperienceResponses.Add(experience);
+
+				if (userUpdateRequest.Skills.Count > 0)
+				{
+					userUpdateRequest.Skills.ForEach(s =>
+					{
+						s.UserId = userUpdate.UserId;
+					});
+					
+					var listSkillUpdate = await _skillServices.UpdateSkills(userUpdateRequest.Skills);
+
+					userUpdate.skills = listSkillUpdate;
+				}
+
 				return Ok(userUpdate);
 			}
 
@@ -90,38 +98,13 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpDelete("{userId}")]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<IActionResult> DeleteUser(long userId)
 		{
 			var isDeleted = await _userServices.DeleteUser(userId);
 			if (!isDeleted) return NotFound("Delete Fail by some error!!");
 
 			return NoContent();
-		}
-
-		private string CreateToken(UserResponse user)
-		{
-			List<Claim> claims = new()
-			{
-				new Claim(ClaimTypes.Name, user.UserName),
-				new Claim(ClaimTypes.Role, user.Role.RoleName)
-			};
-
-			var key = new SymmetricSecurityKey(
-				System.Text.Encoding.UTF8.GetBytes(
-					_configuration.GetSection("AppSettings:Token").Value
-					));
-
-			var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-			var token = new JwtSecurityToken(
-				claims: claims,		
-				expires: DateTime.Now.AddDays(1),
-				signingCredentials: cred);
-
-			var jwt = new JwtSecurityTokenHandler()
-				.WriteToken(token);
-
-			return jwt;
 		}
 	}
 }

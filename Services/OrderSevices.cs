@@ -1,4 +1,5 @@
-﻿using RepositoryContracts;
+﻿using Entities.Models;
+using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.OrderDTO;
 using Services.Helper;
@@ -36,10 +37,11 @@ namespace Services
 			ValidationHelper.ModelValidation(orderDetailAddRequests);
 
 			var orderDetail = orderDetailAddRequests.Select(od => od.MapToOrderDetail()).ToList();
+			var ticketList = await _ticketReponsitories.GetAllTicket();
 			orderDetail.ForEach(od =>
 			{
 				double total = 0;
-				var ticket = _ticketReponsitories.GetTicketById(od.TicketId).Result;
+				var ticket = ticketList.Find(t => t.TicketId == od.TicketId);
 				if (ticket is not null)
 					total += od.Quantity * ticket.Price;
 
@@ -71,6 +73,30 @@ namespace Services
 		{
 			double total = await _orderReponsitories.GetTotalByDay(from, to);
 			return total;
+		}
+
+		public async Task<List<OrderDetailResponse>> GetOrderDetailsByDate(DateTime from, DateTime to)
+		{
+			var listOrderDetail = await _orderReponsitories.GetOrderDeatilByDate(from, to);
+			
+			var listResponse = listOrderDetail.Select(od => od.ToOrderDetailResopnse()).ToList();
+
+			return listResponse;
+		}
+
+		public async Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId)
+		{
+			double total = await _orderReponsitories.GetTotalByDay(from, to, ticketId);
+			return total;
+		}
+
+		public async Task<List<OrderDetailResponse>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId)
+		{
+			var listOrderDetail = await _orderReponsitories.GetOrderDeatilByDate(from, to, ticketId);
+
+			var listResponse = listOrderDetail.Select(od => od.ToOrderDetailResopnse()).ToList();
+
+			return listResponse;
 		}
 	}
 }

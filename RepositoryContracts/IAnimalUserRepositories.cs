@@ -26,6 +26,28 @@ namespace RepositoryContracts
 		/// </summary>
 		/// <param name="userId">The id of the zoo trainer</param>
 		/// <returns>A list of animalUser</returns>
-		Task<AnimalUser> GetTrainedAnimal(long? userId);
+		Task<List<AnimalUser>> GetAnimalByZooTrainerId(long? userId);
+
+		/// <summary>
+		/// Get all zoo trainer of an animal
+		/// </summary>
+		/// <param name="animalId">Animal Id</param>
+		/// <returns>A list of AnimalUser</returns>
+		Task<List<AnimalUser>> GetZooTrainerByAnimalId(long? animalId);
+
+		/// <summary>
+		/// Delete the relationship between animal and user
+		/// </summary>
+		/// <param name="animalId">The id of an animal</param>
+		/// <param name="userId">The id of the zoo trainer</param>
+		/// <returns></returns>
+		Task<bool> Delete(long animalId, long userId);
+		
+		/// <summary>
+		/// Get AnimalUser by animalUserId
+		/// </summary>
+		/// <param name="animalUserId">Animal User Id</param>
+		/// <returns>Returns AnimalUser obj</returns>
+		Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId);
 	}
 }

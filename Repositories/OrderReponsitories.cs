@@ -28,10 +28,10 @@ namespace Repositories
 			_context.OrderDetails.AddRange(orderDetails);
 			
 			await _context.SaveChangesAsync();
-
+			var listTicket = await _ticketReponsitories.GetAllTicket();
 			orderDetails.ForEach(od =>
 			{
-				od.Ticket = _ticketReponsitories.GetTicketById(od.TicketId).Result;
+				od.Ticket = listTicket.Find(t => t.TicketId == od.TicketId);
 			});
 
 			return orderDetails;
@@ -65,6 +65,41 @@ namespace Repositories
 				.SumAsync(o => o.TotalPrice);
 
 			return total;
+		}
+
+		public async Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId)
+		{
+			double total = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Include(od => od.Ticket)
+				.Where(o => o.Order != null && o.Order.PurchaseDate >= from && o.Order.PurchaseDate <= to && o.TicketId == ticketId)
+				.SumAsync(o => o.TotalPrice);
+
+			return total;
+		}
+
+		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to)
+		{
+			List<OrderDetail> listOrderDetail = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Include(od => od.Ticket)
+				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
+				.OrderBy(od => od.Order.PurchaseDate)
+				.ToListAsync();
+
+			return listOrderDetail;
+		}
+
+		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to, int ticketId)
+		{
+			List<OrderDetail> listOrderDetail = await _context.OrderDetails
+				.Include(od => od.Order)
+				.Include(od => od.Ticket)
+				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
+				.OrderBy(od => od.Order.PurchaseDate)
+				.ToListAsync();
+
+			return listOrderDetail;
 		}
 	}
 }

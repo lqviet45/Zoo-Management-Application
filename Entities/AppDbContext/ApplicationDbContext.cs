@@ -19,8 +19,6 @@ namespace Entities.AppDbContext
 
 		public virtual DbSet<Cage> Cages { get; set; }
 
-		public virtual DbSet<Experience> Experiences { get; set; }
-
 		public virtual DbSet<Custommer> Custommers { get; set; }
 
 		public virtual DbSet<Order> Orders { get; set; }
@@ -56,7 +54,31 @@ namespace Entities.AppDbContext
 				entity.HasKey(e => e.RoleId);
 				entity.ToTable(nameof(Role));
 			});
+
+			modelBuilder.Entity<Role>().HasData(
+				new Role() { RoleId = 1, RoleName = "Admin" },
+				new Role() { RoleId = 2, RoleName = "OfficeStaff" },
+				new Role() { RoleId = 3, RoleName = "ZooTrainner" }
+			);
+
 			modelBuilder.Entity<User>().ToTable(nameof(User));
+
+			modelBuilder.Entity<User>().HasData(
+				new User()
+				{
+					UserId = 1,
+					UserName = "Admin",
+					RoleId = 1,
+					Password = "12345",
+					DateOfBirth = DateTime.Now,
+					Email = "VietNamZoo@gmail.com",
+					PhoneNumber = "12345",
+					FullName = "Admin",
+					IsDelete = false,
+					Gender = "Male"
+				}
+			);
+
 			modelBuilder.Entity<Custommer>().ToTable(nameof(Custommer));
 			modelBuilder.Entity<Order>().ToTable(nameof(Order));
 			modelBuilder.Entity<Ticket>().ToTable(nameof(Ticket));
@@ -88,15 +110,22 @@ namespace Entities.AppDbContext
 				.WithMany(c => c.AnimalCages)
 				.HasForeignKey(ac => ac.CageId);
 
-			modelBuilder.Entity<Experience>().ToTable(nameof(Experience));
-			modelBuilder.Entity<Skill>().ToTable(nameof(Skill));
+			modelBuilder.Entity<Skill>(entity =>
+			{
+				entity.HasKey(s => s.SkillId);
+				entity.HasOne(s => s.User)
+				.WithMany(u => u.Skills)
+				.HasForeignKey(s => s.UserId);
+				entity.ToTable(nameof(Skill));
+			});
 
 			modelBuilder.Entity<Food>().ToTable(nameof(Food));
 
 			modelBuilder.Entity<AnimalFood>(entity =>
 			{
-				entity.HasKey(e => new { e.AnimalId, e.FoodId, e.FeedingTime });
-				entity.ToTable(nameof(AnimalFood));
+				entity.HasKey(e => new { e.AnimalUserId, e.FoodId, e.FeedingTime });
+				
+				entity.ToTable("FeedingsSchedule");
 			});
 
 			modelBuilder.Entity<NewsCategories>().ToTable(nameof(NewsCategories));
@@ -104,7 +133,8 @@ namespace Entities.AppDbContext
 
 			modelBuilder.Entity<AnimalUser>(entity =>
 			{
-				entity.HasKey(e => new { e.AnimalId, e.UserId });
+				entity.HasKey(e => e.AnimalUserId);
+				entity.HasIndex(e => new { e.AnimalId, e.UserId }).IsUnique();
 				entity.ToTable(nameof(AnimalUser));
 			});
 		}

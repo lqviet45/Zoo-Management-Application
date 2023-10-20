@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
+using ServiceContracts.DTO.FoodDTO;
 using ServiceContracts.DTO.MealDTO;
 
 namespace Zoo_Management_Application.Controllers
@@ -16,13 +17,13 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<MealResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
+		public async Task<ActionResult<AnimalFoodResponse>> PostMeal(List<MealAddRequest> mealAddRequest)
 		{
 			
-
 			var mealResponse = await _mealServices.AddMeal(mealAddRequest);
 
-			var routeValues = new { Id = mealResponse.AnimalId };
+			var routeValues = new { Id = mealResponse.AnimalUserId };
+
 			return CreatedAtAction("GetAnimalMealById", routeValues, mealResponse);
 		}
 
@@ -30,10 +31,11 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<List<MealResponse>>> GetAnimalMealById(long id)
 		{
 			var mealResponse = await _mealServices.GetAnimalMealById(id);
+
 			return Ok(mealResponse);
 		}
 
-		[HttpDelete]
+		[HttpDelete("AllMeal")]
 		public async Task<ActionResult<bool>> DeleteAMeal(MealDeleteRequest mealDeleteRequest)
 		{
 			var isDeleted = await _mealServices.DeleteAMeal(mealDeleteRequest);
@@ -43,7 +45,7 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(isDeleted);
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("Meal")]
 		public async Task<ActionResult<bool>> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
 			var isDeleted = await _mealServices.DeleteAFoodInAMeal(deleteFood);
@@ -54,9 +56,9 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<MealResponse>>> GetMealAtATime(long animalId, TimeSpan feedingTime)
+		public async Task<ActionResult<List<FoodResponse>>> GetMealAtATime(long animalUserId, TimeSpan feedingTime)
 		{
-			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalId, feedingTime);
+			var mealResponse = await _mealServices.GetAnimalMealByIdAndTime(animalUserId, feedingTime);
 			
 			return Ok(mealResponse);
 		}

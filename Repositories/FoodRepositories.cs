@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -33,6 +34,11 @@ namespace Repositories
 		{
 			var listFoods = await _dbContext.Foods.ToListAsync();
 			return listFoods;
+		}
+
+		public async Task<List<Food>> GetFiteredFood(Expression<Func<Food, bool>> predicate)
+		{
+			return await _dbContext.Foods.Where(predicate).ToListAsync();
 		}
 
 		public async Task<Food?> GetFoodByFoodId(int foodId)

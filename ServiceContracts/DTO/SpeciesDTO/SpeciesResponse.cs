@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -12,7 +13,31 @@ namespace ServiceContracts.DTO.SpeciesDTO
         public int SpeciesId { get; set; }
         [Required(ErrorMessage = "Species Name can not be blank!")]
         public string? SpeciesName { get; set; }
-    }
+
+		[Required(ErrorMessage = "Family can not be blank!")]
+		public string? Family { get; set; }
+
+		[Required(ErrorMessage = "Information can not be blank!")]
+		public string? Infomation { get; set; }
+
+		[Required(ErrorMessage = "Characteristic can not be blank!")]
+		public string? Characteristic { get; set; }
+
+		[Required(ErrorMessage = "Allocation can not be blank!")]
+		public string? Allocation { get; set; }
+
+		[Required(ErrorMessage = "Ecological can not be blank!")]
+		public string? Ecological { get; set; }
+
+		[Required(ErrorMessage = "Diet can not be blank!")]
+		public string? Diet { get; set; }
+
+		[Required(ErrorMessage = "Breeding and reproduction can not be blank!")]
+		public string? BreedingAndReproduction { get; set; }
+
+        [Required(ErrorMessage = "Image can not be blank!")]
+		public string? Image { get; set; }
+	}
 
     public static class SpeciesExtension
     {
@@ -26,7 +51,15 @@ namespace ServiceContracts.DTO.SpeciesDTO
             return new SpeciesResponse()
             {
                 SpeciesId = species.SpeciesId,
-                SpeciesName = species.SpeciesName
+                SpeciesName = species.SpeciesName,
+                Family = species.Family,
+                Infomation = species.Infomation,
+                Characteristic = species.Characteristic,
+                Allocation = species.Allocation,
+                Ecological = species.Ecological,
+                Diet = species.Diet,
+                BreedingAndReproduction = species.BreedingAndReproduction,
+                Image = species.Image
             };
         }
     }

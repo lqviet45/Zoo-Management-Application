@@ -50,18 +50,23 @@ namespace Repositories
 		{
 			var listZooTrainer = await _dbContext.Users.Where(user => user.RoleId == 3 && user.IsDelete == false)
 				.Include(u => u.Role)
+				.Include(u => u.Skills)
 				.ToListAsync();
+
 			return listZooTrainer;
 		}
 
 		public async Task<List<User>> GetFilteredUsers(Expression<Func<User, bool>> predicate)
 		{
-			return await _dbContext.Users.Where(predicate).ToListAsync();
+			return await _dbContext.Users
+				.Include(u => u.Skills)
+				.Where(predicate).ToListAsync();
 		}
 
 		public async Task<User?> GetStaffById(long staffId)
 		{
 			var matchingStaff = await _dbContext.Users.Include(u => u.Role)
+				.Include(u => u.Skills)
 				.FirstOrDefaultAsync(staff => staff.UserId == staffId && staff.IsDelete == false);
 			
 			return matchingStaff;
@@ -71,6 +76,7 @@ namespace Repositories
 		{
 			var matchingUser = await _dbContext.Users
 				.Include(u => u.Role)
+				.Include (u => u.Skills)
 				.FirstOrDefaultAsync(user => user.UserId == id && user.IsDelete == false);
 
 			return matchingUser;
@@ -78,7 +84,7 @@ namespace Repositories
 
 		public Task<User?> GetUserByUserName(string? userName)
 		{
-		    return _dbContext.Users
+		    return _dbContext.Users.Include(u => u.Skills)
 				.Include(u => u.Role)
 				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}
@@ -94,6 +100,7 @@ namespace Repositories
 		{
 			var matchingZooTrainer = await _dbContext.Users
 				.Include(u => u.Role)
+				.Include(u => u.Skills)
 				.FirstOrDefaultAsync(zooTrainer => zooTrainer.UserId == zooTrainerId && zooTrainer.IsDelete == false);
 
 			return matchingZooTrainer;

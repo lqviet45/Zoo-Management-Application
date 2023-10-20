@@ -23,15 +23,15 @@ namespace ServiceContracts.DTO.NewsDTO
 
 		[Required(ErrorMessage = "Content can not be blank!")]
 		public string? Content { get; set; }
-
-		public string? Author { get; set; }	
-
+		[Required(ErrorMessage = "Author can not be blank!")]
+		public string? Author { get; set; }
+		[Required(ErrorMessage = "Release Date can not be blank!")]
 		public DateTime ReleaseDate { get; set; }
 
 		[Required(ErrorMessage = "Category ID can not be blank!")]
 		public int CategoryId { get; set; }
-
-		
+		[Required]
+		public virtual NewsCategories? Category { get; set; }
 
 		/// <summary>
 		/// Converts the current object of NewsAddRequest into a new object of News type

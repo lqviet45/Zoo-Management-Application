@@ -18,12 +18,12 @@ namespace Services
 			_mealRepositories = mealRepositories;
 			_foodRepositories = foodRepositories;
 		}
-		public async Task<MealResponse> AddMeal(List<MealAddRequest> mealAddRequest)
+		public async Task<AnimalFoodResponse> AddMeal(List<MealAddRequest> mealAddRequest)
 		{
 			List<AnimalFood> animalFoods = new List<AnimalFood>();
 
-			var mealResponse = new MealResponse();
-			mealResponse.AnimalId = mealAddRequest.First().AnimalId;
+			var mealResponse = new AnimalFoodResponse();
+			mealResponse.AnimalUserId = mealAddRequest.First().AnimalUserId;
 			mealResponse.Note = mealAddRequest.First().Note;
 			mealResponse.FeedingTime = mealAddRequest.First().FeedingTime;
 
@@ -37,24 +37,16 @@ namespace Services
 			animalFoods.ForEach(af =>
 			{
 				if (af.Food is not null)
-					mealResponse.Foods.Add(af.Food.ToFoodResponse());
+					mealResponse.FoodId = af.FoodId;
 
 			});
 
 			return mealResponse;
-			//var food = await _foodRepositories.GetFoodByFoodId(mealAddRequest.FoodId);
-			//if(food == null)
-			//{
-			//	throw new ArgumentNullException("The given food id doesn't exist!");
-			//}
-			//var meal = mealAddRequest.MealToAnimalFood();
-			//await _mealRepositories.Add(meal);
-			//return meal.MapToResponse();
- 		}
+		}
 
 		public async Task<bool> DeleteAFoodInAMeal(MealDeleteRequest2 deleteFood)
 		{
-			var food = await _mealRepositories.GetAnimalFoodById(deleteFood.MealToAnimalFood());
+			var food = await _mealRepositories.GetSingleFoodInAnimalMeal(deleteFood.MealToAnimalFood());
 
 			if (food is null) return false;
 
@@ -66,11 +58,11 @@ namespace Services
 		public async Task<bool> DeleteAMeal(MealDeleteRequest deleteMeal)
 		{
 			var meal = await _mealRepositories
-				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+				.GetAnimalMealInASpecifiedTime(deleteMeal.AnimalUserId, deleteMeal.FeedingTime);
 
 			if(meal is null) return false;
 
-			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalId, deleteMeal.FeedingTime);
+			var isDelete = await _mealRepositories.DeleteAMeal(deleteMeal.AnimalUserId, deleteMeal.FeedingTime);
 
 			return isDelete;
 
@@ -80,14 +72,42 @@ namespace Services
 		{
 			var listMeal = await _mealRepositories.GetAnimalMealById(id);
 
-			return listMeal.Select(m => m.MapToResponse()).ToList();
+			List<MealResponse> listMealResponse = new List<MealResponse>();
+
+			foreach(var meal in listMeal)
+			{
+				var mealResponse = meal.First().MapToResponse();
+				mealResponse.Food = meal.Select(m => m.Food.ToFoodResponse()).ToList();
+				listMealResponse.Add(mealResponse);
+			}
+		
+
+			return listMealResponse;
 		}
 
-		public async Task<List<MealResponse>> GetAnimalMealByIdAndTime(long id, TimeSpan time)
+	
+
+		public async Task<List<FoodResponse>> GetAnimalMealByIdAndTime(long animalUserid, TimeSpan time)
 		{
-			var listMeal = await _mealRepositories.GetAnimalMealInASpecifiedTime(id, time);
+			var listFood = await _mealRepositories.GetAnimalMealInASpecifiedTime(animalUserid, time);
 
-			return listMeal.Select(m => m.MapToResponse()).ToList();
+			var foodResponse = listFood.Select(m => m.MapToAnimalFoodResponse()).ToList();
+
+			List<FoodResponse> foodList = new List<FoodResponse>();
+
+			foodResponse.ForEach(food =>
+			{
+				var foodDetail = _foodRepositories.GetFoodByFoodId(food.FoodId).Result;
+
+				if(foodDetail != null)
+				{
+					foodList.Add(foodDetail.ToFoodResponse());
+				}
+
+			});
+
+			return foodList;
 		}
+
 	}
 }

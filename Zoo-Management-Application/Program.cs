@@ -10,8 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +23,6 @@ builder.Services.AddScoped<IUserServices, UserServices>();
 
 builder.Services.AddScoped<IAreaRepositories, AreaRepositories>();
 builder.Services.AddScoped<IAreaServices, AreaServices>();
-
-builder.Services.AddScoped<IExperienceServices, ExperienceServices>();
-builder.Services.AddScoped<IExperienceRepositories, ExperienceRepositories>();
 
 builder.Services.AddScoped<ICageRepositories, CageRepositories>();
 builder.Services.AddScoped<ICageServices, CageServices>();
@@ -58,7 +53,6 @@ builder.Services.AddScoped<INewsServices, NewsServices>();
 builder.Services.AddScoped<INewsCategoriesRepositories, NewsCategoriesRepositories>();
 builder.Services.AddScoped<INewsCategoriesServices, NewsCategoriesServices>();
 
-builder.Services.AddScoped<IJwtServices, JwtServices>();
 builder.Services.AddScoped<IAnimalRepositories, AnimalRepositories>();
 builder.Services.AddScoped<IAnimalServices, AnimalServices>();
 
@@ -67,17 +61,18 @@ builder.Services.AddScoped<IJwtServices, JwtServices>();
 builder.Services.AddScoped<IAnimalUserRepositories, AnimalUserRepositories>();
 builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
 
-builder.Services.AddScoped<IAnimalUserRepositories, AnimalUserRepositories>();
-builder.Services.AddScoped<IAnimalUserServices, AnimalUserServices>();
-
 builder.Services.AddScoped<IAnimalCageRepositories, AnimalCageRepositories>();
 builder.Services.AddScoped<IAnimalCageServices, AnimalCageServices>();
+
+builder.Services.AddScoped<ISkillRepositories, SkillRepositories>();
+builder.Services.AddScoped<ISkillServices, SkillServices>();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 	options.JsonSerializerOptions.WriteIndented = true;
+	
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -98,19 +93,15 @@ builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(policyBuider =>
 	{
-		policyBuider.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
+		policyBuider
+		.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
 		.WithHeaders("Authorization", "origin", "accept", "content-type")
-		.WithMethods("GET", "POST", "PUT", "DELETE");
+		.WithMethods("GET", "POST", "PUT", "DELETE")
+		.AllowCredentials();
 	});
 });
 
 // Add authentication to Server
-builder.Services.AddAuthentication(options =>
-{
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-
-	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{
@@ -126,19 +117,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
 		};
 	});
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//	.AddJwtBearer(options =>
-//	{
-//		options.TokenValidationParameters = new TokenValidationParameters
-//		{
-//			ValidateIssuerSigningKey = true,
-//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-//				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-//			ValidateIssuer = false,
-//			ValidateAudience = false
-//		};
-//	});
 
 builder.Services.AddAuthorization();
 
@@ -157,10 +135,11 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 

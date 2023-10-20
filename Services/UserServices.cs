@@ -1,23 +1,22 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO.ExperienceDTO;
 using ServiceContracts.DTO.UserDTO;
 using Services.Helper;
 
 
 namespace Services
 {
-    public class UserServices : IUserServices
+	public class UserServices : IUserServices
 	{
 		private readonly IUserRepositories _userRepositories;
-		private readonly IExperienceRepositories _experienceRepositories;
 
-		public UserServices(IUserRepositories userRepositories, IExperienceRepositories experienceRepositories)
+		public UserServices(IUserRepositories userRepositories)
 		{
 			_userRepositories = userRepositories;
-			_experienceRepositories = experienceRepositories;
+
 		}
+
 
 		public async Task<UserResponse> AddUser(UserAddRequest? userAddRequest)
 		{
@@ -25,7 +24,8 @@ namespace Services
 
 
 			var userExist = await _userRepositories.GetUserByUserName(userAddRequest.UserName);
-			if (userExist != null) {
+			if (userExist != null)
+			{
 				throw new ArgumentException("The userName is exist!");
 			}
 
@@ -49,7 +49,7 @@ namespace Services
 
 		public async Task<List<UserResponse>> GetAllStaff()
 		{
-		 	var listStaff = await _userRepositories.GetAllStaff();
+			var listStaff = await _userRepositories.GetAllStaff();
 			var listStaffResponse = listStaff.Select(user => user.ToUserResponse()).ToList();
 			return listStaffResponse;
 		}
@@ -58,10 +58,6 @@ namespace Services
 		{
 			var listZooTrainer = await _userRepositories.GetAllZooTrainer();
 			var listZooTrainerresponse = listZooTrainer.Select(user => user.ToUserResponse()).ToList();
-			listZooTrainerresponse.ForEach(user => { 
-				var experiences = _experienceRepositories.GetExperienceByUserId(user.UserId);
-				user.ExperienceResponses = experiences.Result.Select(ex => ex.ToExperienceResponse()).ToList();
-			});
 			return listZooTrainerresponse;
 		}
 
@@ -72,12 +68,16 @@ namespace Services
 			List<User> users = searchBy switch
 			{
 				nameof(UserResponse.FullName) =>
-				await _userRepositories.GetFilteredUsers(temp => 
-					temp.FullName.Contains(searchString) && temp.RoleId == 2),
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.FullName.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
 
-				nameof(UserResponse.Email) => 
-				await _userRepositories.GetFilteredUsers(temp => 
-					temp.Email.Contains(searchString) && temp.RoleId == 2),
+				nameof(UserResponse.Email) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
+
+				nameof(UserResponse.PhoneNumber) => 
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.PhoneNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase) && temp.RoleId == 2 && temp.IsDelete == false),
 
 				_ => await _userRepositories.GetAllStaff()
 			};
@@ -93,11 +93,15 @@ namespace Services
 			{
 				nameof(UserResponse.FullName) =>
 				await _userRepositories.GetFilteredUsers(temp =>
-					temp.FullName.Contains(searchString) && temp.RoleId == 3),
+					temp.FullName.Contains(searchString) && temp.RoleId == 3 && temp.IsDelete == false),
 
 				nameof(UserResponse.Email) =>
 				await _userRepositories.GetFilteredUsers(temp =>
-					temp.Email.Contains(searchString) && temp.RoleId == 3),
+					temp.Email.Contains(searchString) && temp.RoleId == 3 && temp.IsDelete == false),
+
+				nameof(UserResponse.PhoneNumber) =>
+				await _userRepositories.GetFilteredUsers(temp =>
+					temp.PhoneNumber.Contains(searchString) && temp.RoleId == 3 && temp.IsDelete == false),
 
 				_ => await _userRepositories.GetAllZooTrainer()
 			};
@@ -133,7 +137,7 @@ namespace Services
 
 		public async Task<UserResponse> UpdateUser(UserUpdateRequest? userUpdateRequest)
 		{
-			if(userUpdateRequest is null)
+			if (userUpdateRequest is null)
 			{
 				throw new ArgumentNullException(nameof(userUpdateRequest));
 			}

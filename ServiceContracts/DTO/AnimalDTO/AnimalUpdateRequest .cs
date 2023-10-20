@@ -24,6 +24,9 @@ namespace ServiceContracts.DTO.AnimalDTO
 		[Required(ErrorMessage = "Status can not be blank!")]
 		public string? Status { get; set; }
 
+		[Required(ErrorMessage = "IsDeleted can not be blank!")]
+		public bool IsDelete { get; set; }
+
 		/// <summary>
 		/// Converts the current object of AnimalUserUpdateRequest into a new object of AnimalUser type
 		/// </summary>
@@ -36,7 +39,8 @@ namespace ServiceContracts.DTO.AnimalDTO
 				AnimalName = AnimalName,
 				DateArrive = DateArrive,
 				Status = Status,
-				SpeciesId = SpeciesId
+				SpeciesId = SpeciesId,
+				IsDelete = IsDelete
 			};
 		}
 	}

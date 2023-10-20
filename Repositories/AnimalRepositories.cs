@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
-
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -56,7 +56,6 @@ namespace Repositories
 		{
 			var listAnimal = _dbContext.Animals.Where(animal => animal.IsDelete == false)
 				.Include(a => a.Species)
-				.Include(a => a.AnimalLink)
 				.Include(a => a.AnimalZooTrainers)
 				.Include(a => a.AnimalCages)
 				.ToListAsync();
@@ -70,7 +69,6 @@ namespace Repositories
 									.Where(animal => animal.AnimalId == animalId 
 											&& animal.IsDelete == false)
 									.Include(a => a.Species)
-									.Include(a => a.AnimalLink)
 									.Include(a => a.AnimalZooTrainers)
 									.Include(a => a.AnimalCages)
 									.FirstOrDefaultAsync();
@@ -93,11 +91,19 @@ namespace Repositories
 									.Where(animal => animal.SpeciesId == speciesId 
 											&& animal.IsDelete == false)
 									.Include(a => a.Species)
-									.Include(a => a.AnimalLink)
 									.Include(a => a.AnimalZooTrainers)
 									.Include(a => a.AnimalCages)
 									.ToListAsync();
 			return matchingAnimal;
+		}
+
+		public async Task<List<Animal>> GetFilteredAnimal(Expression<Func<Animal, bool>> predicate)
+		{
+			return await _dbContext.Animals
+				.Include(a => a.Species)
+				.Include(a => a.AnimalZooTrainers)
+				.Include(a => a.AnimalCages)
+				.Where(predicate).ToListAsync();
 		}
 
 		public async Task<Animal> UpdateAnimal(Animal animal)
@@ -117,7 +123,7 @@ namespace Repositories
 			updateAnimal.SpeciesId = animal.SpeciesId;
 			updateAnimal.IsDelete = animal.IsDelete;
 			//updateAnimal.AnimalZooTrainers = animal.AnimalZooTrainers;
-			//updateAnimal.AnimalLink = animal.AnimalLink;
+			//updateAnimal.AnimalFood = animal.AnimalFood;
 			//updateAnimal.AnimalCages = animal.AnimalCages;
 
 			await _dbContext.SaveChangesAsync();

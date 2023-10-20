@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO.AreaDTO;
+using ServiceContracts.DTO.WrapperDTO;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -28,10 +30,17 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<AreaResponse>>> GetAllArea()
+		public async Task<ActionResult<List<AreaResponse>>> GetAllArea(int? pageNumber, string searchBy = "AreaName", string? searchString = null)
 		{
-			var listArea = await _areaServices.GetAllArea();
-			return Ok(listArea);
+			var listArea = await _areaServices.GetFilteredArea(searchBy, searchString);
+
+			int pageSize = 5;
+
+			var pagingList = PaginatedList<AreaResponse>.CreateAsync(listArea.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
+
+			var response = new { pagingList, pagingList.TotalPages };
+
+			return Ok(response);
 		}
 
 		[HttpGet("{id}")]

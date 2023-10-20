@@ -16,7 +16,6 @@ namespace Entities.Models
 		[StringLength(100)]
 		public string? FoodName { get; set; }
 		
-		public virtual ICollection<AnimalFood> FoodLink { get; set; } = null!;
 
 		
 	}

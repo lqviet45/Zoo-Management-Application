@@ -37,6 +37,20 @@ namespace Repositories
 			return animalUser;
 		}
 
+		public async Task<bool> Delete(long animalId, long userId)
+		{
+			var deleteAnimalUser = await _dbContext.AnimalUsers.Where(x => x.AnimalId == animalId && x.UserId == userId)
+									.FirstOrDefaultAsync();
+
+			if(deleteAnimalUser == null) { return false; }
+
+			_dbContext.AnimalUsers.Remove(deleteAnimalUser);
+
+			int rowsDeleted = await _dbContext.SaveChangesAsync();
+
+			return rowsDeleted > 0;
+		}
+
 		public async Task<AnimalUser?> GetAnimalUserRelationship(long? animalId, long? userId)
 		{
 			if(animalId == null || userId == null)
@@ -51,9 +65,30 @@ namespace Repositories
 			return animalUser;
 		}
 
-		public Task<AnimalUser> GetTrainedAnimal(long? userId)
+		public Task<List<AnimalUser>> GetAnimalByZooTrainerId(long? userId)
 		{
-			throw new NotImplementedException();
+			var listAnimal = _dbContext.AnimalUsers.Where(x => x.UserId == userId)
+								.Include(a => a.Animal).ToListAsync();
+
+			return listAnimal;
+		}
+
+		public Task<List<AnimalUser>> GetZooTrainerByAnimalId(long? animalId)
+		{
+			var listZooTrainer = _dbContext.AnimalUsers.Where(x => x.AnimalId == animalId)
+									.Include(u => u.User).ToListAsync();
+
+			return listZooTrainer;
+		}
+
+		public Task<AnimalUser?> GetAnimalUserByAnimalIdAndUserId(long animalUserId)
+		{
+			var animalUser = _dbContext.AnimalUsers.Where(x => x.AnimalUserId == animalUserId)
+								.Include(a => a.Animal)
+								.Include(u => u.User)
+								.FirstOrDefaultAsync();
+
+			return animalUser;
 		}
 	}
 }

@@ -67,6 +67,19 @@ namespace Services
 				return false;
 			}
 
+			if (existNews is not null)
+			{
+				if (!string.IsNullOrEmpty(existNews.Image))
+				{
+					_fileServices.DeleteImage(existNews.Image);
+				}
+
+				if (!string.IsNullOrEmpty(existNews.Thumnail))
+				{
+					_fileServices.DeleteImage(existNews.Thumnail);
+				}
+			}
+
 			var isDeleted = await _newsRepositories.DeleteNews(newsId);
 
 			return isDeleted;
@@ -81,6 +94,31 @@ namespace Services
 			return listNewsResponse;
 		}
 
+		public async Task<List<NewsResponse>> GetFiteredNews(string searchBy, string? searchString)
+		{
+			if(string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<News> news = searchBy switch
+			{
+				nameof(NewsResponse.Title) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Title.Contains(searchString)),
+
+				nameof(NewsResponse.Author) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Author.Contains(searchString)),
+
+				nameof(NewsResponse.Content) =>
+				await _newsRepositories.GetFilteredNews(temp =>
+					temp.Content.Contains(searchString)),
+
+				_ => await _newsRepositories.GetAllNews()
+			};
+
+			return news.Select(news => news.ToNewsResponse()).ToList();
+
+		}
+
 		public async Task<NewsResponse?> GetNewsById(int newsId)
 		{
 			var matchingNews = await _newsRepositories.GetNewsById(newsId);
@@ -90,22 +128,7 @@ namespace Services
 				return null;
 			}
 			
-		
-
 			return matchingNews.ToNewsResponse();
-		}
-
-
-
-		public byte[]? GetImage(string sBase64String)
-		{
-
-			byte[]? bytes = null;
-			if (!string.IsNullOrEmpty(sBase64String))
-			{
-				bytes = Convert.FromBase64String(sBase64String);
-			}
-			return bytes;
 		}
 
 		public async Task<NewsResponse> UpdateNews(NewsUpdateRequest? newsUpdateRequest)
@@ -133,15 +156,28 @@ namespace Services
 			if (newsUpdateRequest.ImageFile != null)
 			{
 				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ImageFile);
+
+				if (!string.IsNullOrEmpty(updatedNews.Image))
+				{
+					_fileServices.DeleteImage(updatedNews.Image); // delete old image
+				}
+
 				if (fileResult.Item1 == 1)
 				{
 					updatedNews.Image = fileResult.Item2; // getting name of image
 				}
+
 			}
 
 			if (newsUpdateRequest.ThumnailFile != null)
 			{
 				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ThumnailFile);
+
+				if (!string.IsNullOrEmpty(updatedNews.Thumnail))
+				{
+					_fileServices.DeleteImage(updatedNews.Thumnail); // delete old image
+				}
+
 				if (fileResult.Item1 == 1)
 				{
 					updatedNews.Thumnail = fileResult.Item2; // getting name of thumbnail
