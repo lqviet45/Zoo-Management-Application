@@ -13,7 +13,6 @@ namespace ServiceContracts.DTO.CageDTO
 		public int? CageId { get; set; }
 		[Required(ErrorMessage = "Cage Name can not be blank!")]
 		public string CageName { get; set; } = string.Empty;
-		public int AreaId { get; set; }
 
 		public AreaResponse? Area { get; set; }
 	}
@@ -31,7 +30,6 @@ namespace ServiceContracts.DTO.CageDTO
 			{
 				CageId = cage.CageId,
 				CageName = cage.CageName,
-				AreaId = cage.AreaId,
 				Area = cage.Area.ToAreaResponse()
 			};
 		}

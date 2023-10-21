@@ -23,13 +23,12 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		//[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AreaResponse>> PostArea(AreaAddRequest areaAddRequest)
 		{
 			var areaResponse = await _areaServices.AddArea(areaAddRequest);
-			var id = new { id = areaResponse.AreaId };
-
-			return CreatedAtAction("GetAreaById", id, areaResponse);
+			var AreaId = new { AreaId = areaResponse.AreaId };
+			return CreatedAtAction("GetAreaById", AreaId, areaResponse);
 		}
 
 		[HttpGet]
@@ -65,7 +64,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
-		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		//[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AreaResponse>> UpdateArea(AreaUpdateRequest areaUpdateRequest)
 		{
 			if (ModelState.IsValid)

@@ -59,10 +59,10 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(animalUserResponse);
 		}
 
-		[HttpDelete("{animalId}/{userId}")]
-		public async Task<ActionResult<bool>> DeleteAnimalUser(long animalId, long userId)
+		[HttpDelete("{animalUserId}")]
+		public async Task<ActionResult<bool>> DeleteAnimalUser(long animalUserId)
 		{
-			var isDeleted = await _animalUserServices.DeleteAnimalUser(animalId, userId);
+			var isDeleted = await _animalUserServices.DeleteAnimalUser(animalUserId);
 
 			if (!isDeleted)
 			{

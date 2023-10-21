@@ -61,16 +61,16 @@ namespace Services
 
 		}
 
-		public async Task<bool> DeleteAnimalUser(long animalId, long userId)
+		public async Task<bool> DeleteAnimalUser(long animalUserId)
 		{
-			var animalUser = await _animalUserRepositories.GetAnimalUserRelationship(animalId, userId);
+			var animalUser = await _animalUserRepositories.GetAnimalUserByAnimalIdAndUserId(animalUserId);
 
 			if (animalUser == null)
 			{
 				return false;
 			}
 
-			await _animalUserRepositories.Delete(animalId, userId);
+			await _animalUserRepositories.Delete(animalUserId);
 
 			return true;
 

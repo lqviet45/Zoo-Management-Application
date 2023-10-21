@@ -37,9 +37,9 @@ namespace Repositories
 			return animalUser;
 		}
 
-		public async Task<bool> Delete(long animalId, long userId)
+		public async Task<bool> Delete(long animalUserId)
 		{
-			var deleteAnimalUser = await _dbContext.AnimalUsers.Where(x => x.AnimalId == animalId && x.UserId == userId)
+			var deleteAnimalUser = await _dbContext.AnimalUsers.Where(x => x.AnimalUserId == animalUserId)
 									.FirstOrDefaultAsync();
 
 			if(deleteAnimalUser == null) { return false; }
