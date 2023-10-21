@@ -12,7 +12,7 @@ namespace ServiceContracts.DTO.SpeciesDTO
     public class SpeciesAddRequest
     {
         [Required(ErrorMessage = "Species Name can not be blank!")]
-        public string SpeciesName { get; set; } = string.Empty;
+        public string? SpeciesName { get; set; } = string.Empty;
 
         [Required(ErrorMessage ="Family can not be blank!")]
         public string? Family { get; set; }

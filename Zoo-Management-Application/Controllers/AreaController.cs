@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "OfficeStaff")]
 	public class AreasController : ControllerBase
 	{
 		// private field
@@ -23,7 +25,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
-		//[ServiceFilter(typeof(ValidationFilterAttribute))]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AreaResponse>> PostArea(AreaAddRequest areaAddRequest)
 		{
 			var areaResponse = await _areaServices.AddArea(areaAddRequest);
@@ -56,15 +58,16 @@ namespace Zoo_Management_Application.Controllers
 
 
 		[HttpDelete("{AreaId}")]
-		public async Task<ActionResult<bool>> DeleteArea(int? id)
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Area>), Arguments = new object[] { "AreaId", typeof(int) })]
+		public async Task<ActionResult<bool>> DeleteArea(int? AreaId)
 		{
-			var result = await _areaServices.DeleteArea(id);
+			var result = await _areaServices.DeleteArea(AreaId);
 			if (result == false) return NotFound();
 			return Ok(result);
 		}
 
 		[HttpPut]
-		//[ServiceFilter(typeof(ValidationFilterAttribute))]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AreaResponse>> UpdateArea(AreaUpdateRequest areaUpdateRequest)
 		{
 			if (ModelState.IsValid)
