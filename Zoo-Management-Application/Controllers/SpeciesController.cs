@@ -35,6 +35,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<ActionResult<List<SpeciesResponse>>> GetAllSpecies(int? pageNumber, string searchBy = "SpeciesName", string? searchString = null)
 		{
 			var listSpecies = await _speciesServices.GetFilteredSpecies(searchBy, searchString);
@@ -46,6 +47,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpGet("{SpeciesId}")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<Species>), Arguments = new object[] { "SpeciesId", typeof(int) })]
+		[AllowAnonymous]
 		public async Task<ActionResult<SpeciesResponse>> GetSpeciesById(int? SpeciesId)
 		{
 			var species = await _speciesServices.GetSpeciesById(SpeciesId);
