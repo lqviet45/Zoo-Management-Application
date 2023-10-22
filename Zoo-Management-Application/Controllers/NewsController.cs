@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO.NewsDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles ="OfficeStaff")]
 	public class NewsController : ControllerBase
 	{
 		// private field
@@ -21,20 +25,18 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<NewsResponse>> PostNews([FromForm]NewsAddrequest newsAddRequest)
 		{
-			if(!ModelState.IsValid)
-			{
-				return BadRequest();
-			}
 			var newsResponse = await _newsServices.AddNews(newsAddRequest);
 			
-			var id = new { id = newsResponse.NewsId };
+			var NewsId = new { NewsId = newsResponse.NewsId };
 
-			return CreatedAtAction("GetNewsById", id, newsResponse);
+			return CreatedAtAction("GetNewsById", NewsId, newsResponse);
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<ActionResult<List<NewsResponse>>> GetAllNews(int? pageNumber, string searchBy = "Title", string? searchString = null)
 		{
 			var listNews = await _newsServices.GetFiteredNews(searchBy, searchString);
@@ -44,23 +46,26 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<NewsResponse>> GetNewsById(int id)
+		[HttpGet("{NewsId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<News>), Arguments = new object[] { "NewsId", typeof(int) })]
+		public async Task<ActionResult<NewsResponse>> GetNewsById(int NewsId)
 		{
-			var news = await _newsServices.GetNewsById(id);
+			var news = await _newsServices.GetNewsById(NewsId);
 			if (news == null) return NotFound();
 			return Ok(news);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> DeleteNews(int id)
+		[HttpDelete("{NewsId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<News>), Arguments = new object[] { "NewsId", typeof(int) })]
+		public async Task<ActionResult<bool>> DeleteNews(int NewsId)
 		{
-			var result = await _newsServices.DeleteNews(id);
+			var result = await _newsServices.DeleteNews(NewsId);
 			if (result == false) return NotFound();
 			return Ok(result);
 		}
 
 		[HttpPut]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<NewsResponse>> UpdateNews([FromForm]NewsUpdateRequest newsUpdateRequest)
 		{
 			if (ModelState.IsValid)
