@@ -1,30 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using ServiceContracts.DTO.UserDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "OfficeStaff")]
 	public class AnimalUserController : ControllerBase
 	{
 		// private fields
 		private readonly IAnimalUserServices _animalUserServices;
-		private readonly IAnimalServices _animalServices;
-		private readonly IUserServices _userServices;
+	
 
 		// constructor
-		public AnimalUserController(IAnimalUserServices animalUserServices, IAnimalServices animalServices, IUserServices userServices)
+		public AnimalUserController(IAnimalUserServices animalUserServices)
 		{
 			_animalUserServices = animalUserServices;
-			_animalServices = animalServices;
-			_userServices = userServices;
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AnimalUserResponse>> PostAnimalUser(AnimalUserAddRequest animalUserAddRequest)
 		{
 			var animalUserResponse = await _animalUserServices.AddAnimalUser(animalUserAddRequest);
@@ -32,10 +34,11 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(animalUserResponse);
 		}
 
-		[HttpGet("animal/{animalId}")]
-		public async Task<ActionResult<List<UserResponse>>> GetZooTrainerByAnimalId(long animalId)
+		[HttpGet("animal/{AnimalId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
+		public async Task<ActionResult<List<UserResponse>>> GetZooTrainerByAnimalId(long AnimalId)
 		{
-			var animalUserResponse = await _animalUserServices.GetZooTrainerByAnimalId(animalId);
+			var animalUserResponse = await _animalUserServices.GetZooTrainerByAnimalId(AnimalId);
 
 			if(animalUserResponse == null)
 			{
@@ -46,10 +49,12 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 
-		[HttpGet("user/{userId}")]
-		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalByZooTrainerId(long userId)
+		[HttpGet("user/{UserId}")]
+		[Authorize(Roles = "ZooTrainner,OfficeStaff")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
+		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalByZooTrainerId(long UserId)
 		{
-			var animalUserResponse = await _animalUserServices.GetAnimalByZooTrainerId(userId);
+			var animalUserResponse = await _animalUserServices.GetAnimalByZooTrainerId(UserId);
 
 			if (animalUserResponse == null)
 			{
@@ -59,10 +64,11 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(animalUserResponse);
 		}
 
-		[HttpDelete("{animalUserId}")]
-		public async Task<ActionResult<bool>> DeleteAnimalUser(long animalUserId)
+		[HttpDelete("{AnimalUserId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<AnimalUser>), Arguments = new object[] { "AnimalUserId", typeof(long) })]
+		public async Task<ActionResult<bool>> DeleteAnimalUser(long AnimalUserId)
 		{
-			var isDeleted = await _animalUserServices.DeleteAnimalUser(animalUserId);
+			var isDeleted = await _animalUserServices.DeleteAnimalUser(AnimalUserId);
 
 			if (!isDeleted)
 			{
