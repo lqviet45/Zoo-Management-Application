@@ -34,17 +34,11 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<AreaResponse>>> GetAllArea(int? pageNumber, string searchBy = "AreaName", string? searchString = null)
+		public async Task<ActionResult<List<AreaResponse>>> GetAllArea()
 		{
-			var listArea = await _areaServices.GetFilteredArea(searchBy, searchString);
+			var listArea = await _areaServices.GetAllArea();
 
-			int pageSize = 5;
-
-			var pagingList = PaginatedList<AreaResponse>.CreateAsync(listArea.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
-
-			var response = new { pagingList, pagingList.TotalPages };
-
-			return Ok(response);
+			return Ok(listArea);
 		}
 
 		[HttpGet("{AreaId}")]
