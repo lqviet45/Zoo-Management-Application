@@ -17,13 +17,11 @@ namespace Zoo_Management_Application.Controllers
 	{
 		// private field
 		private readonly IAnimalServices _animalServices;
-		private readonly IAnimalUserServices _animalUserServices;
 
 		// constructor
-		public AnimalController(IAnimalServices animalServices, IAnimalUserServices animalUserServices)
+		public AnimalController(IAnimalServices animalServices)
 		{
 			_animalServices = animalServices;
-			_animalUserServices = animalUserServices;
 		}
 
 		[HttpPost]
