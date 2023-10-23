@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.TicketDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -19,6 +21,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<TicketResponse>> PostTicket(TicketAddRequest ticketAddRequest)
 		{
 			var ticketResponse = await _ticketServices.AddTicket(ticketAddRequest);
@@ -36,6 +39,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<IActionResult> PutTicket(TicketUpdateRequest ticketUpdateRequest)
 		{
 			if (ModelState.IsValid)
@@ -48,23 +52,25 @@ namespace Zoo_Management_Application.Controllers
 			return NotFound();
 		}
 
-		[HttpGet("{ticketId}")]
+		[HttpGet("{TicketId}")]
 		[AllowAnonymous]
-		public async Task<ActionResult<TicketResponse>> GetTicketById(int ticketId)
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Ticket>), Arguments = new object[] { "TicketId", typeof(int) })]
+		public async Task<ActionResult<TicketResponse>> GetTicketById(int TicketId)
 		{
-			var ticket = await _ticketServices.GetTicketById(ticketId);
+			var ticket = await _ticketServices.GetTicketById(TicketId);
 			if (ticket is null) return NotFound("The given ticket Id doesn't exist!");
 
 			return Ok(ticket);
 		}
 
-		[HttpDelete("{ticketId}")]
-		public async Task<IActionResult> DeleteTicket(int ticketId)
+		[HttpDelete("{TicketId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Ticket>), Arguments = new object[] { "TicketId", typeof(int) })]
+		public async Task<IActionResult> DeleteTicket(int TicketId)
 		{
-			var ticket = await _ticketServices.GetTicketById(ticketId);
-			if (ticket is null) return NotFound($"The ticket Id: {ticketId} doesn't exist!");
+			var ticket = await _ticketServices.GetTicketById(TicketId);
+			if (ticket is null) return NotFound($"The ticket Id: {TicketId} doesn't exist!");
 
-			var isDelete = await _ticketServices.DeleteTicket(ticketId);
+			var isDelete = await _ticketServices.DeleteTicket(TicketId);
 
 			if (!isDelete) return BadRequest("Can not delete by some error!");
 

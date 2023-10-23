@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContracts;
 using ServiceContracts.DTO.UserDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -33,10 +35,11 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(resopnse);
 		}
 
-		[HttpGet("{Id}")]
-		public async Task<IActionResult> GetZooTrainer(long Id)
+		[HttpGet("{UserId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
+		public async Task<IActionResult> GetZooTrainer(long UserId)
 		{
-			var mathcingZooTrainer = await _userServices.GetZooTrainerById(Id);
+			var mathcingZooTrainer = await _userServices.GetZooTrainerById(UserId);
 			
 			if (mathcingZooTrainer == null || mathcingZooTrainer.RoleId != 3)
 			{
