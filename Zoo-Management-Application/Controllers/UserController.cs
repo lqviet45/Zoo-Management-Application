@@ -112,5 +112,29 @@ namespace Zoo_Management_Application.Controllers
 
 			return NoContent();
 		}
+
+		[HttpPut("password")]
+		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainner")]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		public async Task<IActionResult> PutPassword(long userId, string oldPassword, string newPassword, string confirmPassword)
+		{
+			if (string.IsNullOrEmpty(oldPassword))
+			{
+				throw new ArgumentException($"'{nameof(oldPassword)}' cannot be null or empty.", nameof(oldPassword));
+			}
+
+			if (string.IsNullOrEmpty(newPassword))
+			{
+				throw new ArgumentException($"'{nameof(newPassword)}' cannot be null or empty.", nameof(newPassword));
+			}
+
+			if (newPassword != confirmPassword)
+			{
+				throw new ArgumentException($"{nameof(confirmPassword)} is not match the new password!");
+			}
+			var user = await _userServices.ChangePassword(userId, oldPassword, newPassword);
+
+			return Ok(user);
+		}
 	}
 }
