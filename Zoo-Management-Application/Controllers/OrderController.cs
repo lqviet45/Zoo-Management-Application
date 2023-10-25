@@ -98,9 +98,27 @@ namespace Zoo_Management_Application.Controllers
 			}
 
 			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
-			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(to, from, ticketId);
+			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(from, to, ticketId);
 			
 			return Ok(new { total, listOrderDetail });
+		}
+
+		[HttpGet("transhistory")]
+		[AllowAnonymous]
+		public async Task<IActionResult> GetOrderByDate(DateTime from, DateTime to, int ticketId = -1)
+		{
+
+			if (ticketId is -1)
+			{
+				var totalAll = await _orderSevices.GetTotalByDay(from, to);
+				var listOrderDetails = await _orderSevices.GetOrderByDate(from, to);
+				return Ok(new { totalAll, listOrderDetails });
+			}
+
+			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
+			var listOrder = await _orderSevices.GetOrderByDate(from, to, ticketId);
+
+			return Ok(new { total, listOrder });
 		}
 
 		#region Send Mail
