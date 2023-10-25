@@ -56,7 +56,7 @@ namespace RepositoryContracts
 		/// <param name="from">The from day</param>
 		/// <param name="to">The to day</param>
 		/// <returns>A list of orderDetail object that between the given date</returns>
-		Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to);
+		Task<List<OrderDetail>> GetOrderDetailByDate(DateTime from, DateTime to);
 
 		///<summary>
 		/// Get list of order detail between the From and To day and have the same ticketId
@@ -65,6 +65,6 @@ namespace RepositoryContracts
 		/// <param name="to">The to day</param>
 		/// <param name="ticketId">The ticketId user want to search</param>
 		/// <returns>A list of matching orderDetails object that between the given date</returns>
-		Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to, int ticketId);
+		Task<List<OrderDetail>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId);
 	}
 }

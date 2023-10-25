@@ -68,7 +68,8 @@ namespace Repositories
 
 		public async Task<User?> GetStaffById(long staffId)
 		{
-			var matchingStaff = await _dbContext.Users.Include(u => u.Role)
+			var matchingStaff = await _dbContext.Users
+				.Include(u => u.Role)
 				.Include(u => u.Skills)
 				.FirstOrDefaultAsync(staff => staff.UserId == staffId && staff.IsDelete == false);
 			
@@ -87,7 +88,8 @@ namespace Repositories
 
 		public async Task<User?> GetUserByUserName(string? userName)
 		{
-		    return await _dbContext.Users.Include(u => u.Skills)
+		    return await _dbContext.Users
+				.Include(u => u.Skills)
 				.Include(u => u.Role)
 				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}

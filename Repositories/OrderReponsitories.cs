@@ -78,7 +78,7 @@ namespace Repositories
 			return total;
 		}
 
-		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to)
+		public async Task<List<OrderDetail>> GetOrderDetailByDate(DateTime from, DateTime to)
 		{
 			List<OrderDetail> listOrderDetail = await _context.OrderDetails
 				.Include(od => od.Order)
@@ -90,7 +90,7 @@ namespace Repositories
 			return listOrderDetail;
 		}
 
-		public async Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to, int ticketId)
+		public async Task<List<OrderDetail>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId)
 		{
 			List<OrderDetail> listOrderDetail = await _context.OrderDetails
 				.Include(od => od.Order)

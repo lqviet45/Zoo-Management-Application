@@ -77,7 +77,7 @@ namespace Services
 
 		public async Task<List<OrderDetailResponse>> GetOrderDetailsByDate(DateTime from, DateTime to)
 		{
-			var listOrderDetail = await _orderReponsitories.GetOrderDeatilByDate(from, to);
+			var listOrderDetail = await _orderReponsitories.GetOrderDetailByDate(from, to);
 			
 			var listResponse = listOrderDetail.Select(od => od.ToOrderDetailResopnse()).ToList();
 
@@ -92,7 +92,7 @@ namespace Services
 
 		public async Task<List<OrderDetailResponse>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId)
 		{
-			var listOrderDetail = await _orderReponsitories.GetOrderDeatilByDate(from, to, ticketId);
+			var listOrderDetail = await _orderReponsitories.GetOrderDetailByDate(from, to, ticketId);
 
 			var listResponse = listOrderDetail.Select(od => od.ToOrderDetailResopnse()).ToList();
 
