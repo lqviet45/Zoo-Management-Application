@@ -28,16 +28,19 @@ namespace Zoo.Management.Application.Middleware
 					_logger.LogError("{ExceptionType} {ExceptionMessage}",
 						ex.InnerException.GetType().ToString(),
 						ex.InnerException.Message);
+					httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+					await httpContext.Response.WriteAsJsonAsync("Error occurred");
 				} 
 				else
 				{
 					_logger.LogError("{ExceptionType} {ExceptionMessage}",
 						ex.GetType().ToString(),
 						ex.Message);
+					httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+					await httpContext.Response.WriteAsJsonAsync(ex.Message);
 				}
 
-				httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-				await httpContext.Response.WriteAsJsonAsync("Error occurred");
+				
 			}
 		}
 	}
