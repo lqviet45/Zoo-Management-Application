@@ -26,6 +26,7 @@ namespace ServiceContracts.DTO.AnimalDTO
 		[Required(ErrorMessage = "IsDelete can not be blank!")]
 		public SpeciesResponse? Species { get; set; } 
 
+
 	}
 
     public static class AnimalExtension

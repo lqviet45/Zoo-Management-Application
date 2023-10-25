@@ -21,7 +21,7 @@ namespace Entities.Models
 
 		[NotNull]
 		[MaxLength]
-		public string? Infomation { get; set; }
+		public string? Information { get; set; }
 
 		[NotNull]
 		[MaxLength]

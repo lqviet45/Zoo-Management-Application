@@ -14,10 +14,10 @@ namespace ServiceContracts.DTO.NewsDTO
 		public string Title { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "Content can not be blank!")]
-		public string Content { get; set; } = string.Empty;
+		public string? Content { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "Author can not be blank!")]
-		public string Author { get; set; } = string.Empty;
+		public string? Author { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "Category Id can not be blank!")]
 		public int CategoryId { get; set; }

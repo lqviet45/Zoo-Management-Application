@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Zoo.Management.Application.Middleware;
 using Zoo.Management.Application.Filters.ActionFilters;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +72,7 @@ builder.Services.AddScoped<ISkillServices, SkillServices>();
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
-
+builder.Services.AddInfrastructure();
 #endregion
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -120,7 +121,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			ValidateLifetime = true,
 			ValidateIssuerSigningKey = true,
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+				.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Get<string>()))
 		};
 	});
 

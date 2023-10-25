@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
-using ServiceContracts.DTO.AnimalAddDTO;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -15,26 +17,27 @@ namespace Zoo_Management_Application.Controllers
 	{
 		// private field
 		private readonly IAnimalServices _animalServices;
-		private readonly IAnimalUserServices _animalUserServices;
 
 		// constructor
-		public AnimalController(IAnimalServices animalServices, IAnimalUserServices animalUserServices)
+		public AnimalController(IAnimalServices animalServices)
 		{
 			_animalServices = animalServices;
-			_animalUserServices = animalUserServices;
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<AnimalResponse>> PostAnimal(AnimalAdd animaladd)
+		[Authorize(Roles ="OfficeStaff")]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		public async Task<ActionResult<AnimalResponse>> PostAnimal(AnimalAddRequest addrequest)
 		{
-			var animalResponse = await _animalServices.AddAnimal(animaladd);
+			var animalResponse = await _animalServices.AddAnimal(addrequest);
 
-			var id = new { id = animalResponse.AnimalId };
+			var AnimalId = new { AnimalId = animalResponse.AnimalId };
 
-			return CreatedAtAction("GetAnimalById", id, animalResponse);
+			return CreatedAtAction("GetAnimalById", AnimalId, animalResponse);
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
 		public async Task<ActionResult<List<AnimalResponse>>> GetAllAnimal(int? pageNumber, string searchBy = "AnimalName", string? searchString = null)
 		{
 			var listAnimal = await _animalServices.GetFiteredAnimal(searchBy, searchString);
@@ -44,23 +47,29 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<AnimalResponse>> GetAnimalById(int id)
+		[HttpGet("{AnimalId}")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
+		public async Task<ActionResult<AnimalResponse>> GetAnimalById(long AnimalId)
 		{
-			var animal = await _animalServices.GetAnimalById(id);
+			var animal = await _animalServices.GetAnimalById(AnimalId);
 			if (animal == null) return NotFound();
 			return Ok(animal);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> DeleteAnimal(int id)
+		[HttpDelete("{AnimalId}")]
+		[Authorize(Roles = "OfficeStaff")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
+		public async Task<ActionResult<bool>> DeleteAnimal(long AnimalId)
 		{
-			var result = await _animalServices.DeleteAnimal(id);
+			var result = await _animalServices.DeleteAnimal(AnimalId);
 			if (result == false) return NotFound();
 			return Ok(result);
 		}
 
 		[HttpPut]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AnimalResponse>> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest)
 		{
 			if (ModelState.IsValid)

@@ -1,7 +1,6 @@
 ﻿using Entities.Models;
 using RepositoryContracts;
 using ServiceContracts;
-using ServiceContracts.DTO.AnimalAddDTO;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.AnimalUserDTO;
 using Services.Helper;
@@ -16,21 +15,23 @@ namespace Services
 		private readonly IUserRepositories _userRepositories;
 		private readonly ICageRepositories _cageRepositories;
 		private readonly IAnimalCageRepositories _animalCageRepositories;
+		private readonly ISpeciesRepositories _speciesRepositories;
 
 		// constructor
-		public AnimalServices(IAnimalRepositories animalRepositories, IAnimalUserRepositories animalUserRepositories, IUserRepositories userRepositories, ICageRepositories cageRepositories, IAnimalCageRepositories animalCageRepositories)
+		public AnimalServices(IAnimalRepositories animalRepositories, IAnimalUserRepositories animalUserRepositories, IUserRepositories userRepositories, ICageRepositories cageRepositories, IAnimalCageRepositories animalCageRepositories, ISpeciesRepositories speciesRepositories)
 		{
 			_animalRepositories = animalRepositories;
 			_animalUserRepositories = animalUserRepositories;
 			_userRepositories = userRepositories;
 			_cageRepositories = cageRepositories;
 			_animalCageRepositories = animalCageRepositories;
+			_speciesRepositories = speciesRepositories;
 		}
-		public async Task<AnimalResponse> AddAnimal(AnimalAdd animaladd)
+		public async Task<AnimalResponse> AddAnimal(AnimalAddRequest animaladd)
 		{
 			ArgumentNullException.ThrowIfNull(animaladd);
 
-			var ExistAnimal = await _animalRepositories.GetAnimalByName(animaladd.AnimalAddRequest.AnimalName);
+			var ExistAnimal = await _animalRepositories.GetAnimalByName(animaladd.AnimalName);
 
 			if (ExistAnimal != null)
 			{
@@ -39,7 +40,7 @@ namespace Services
 
 			ValidationHelper.ModelValidation(animaladd);
 
-			Animal animal = animaladd.AnimalAddRequest.MapToAnimal();
+			Animal animal = animaladd.MapToAnimal();
 			await _animalRepositories.Add(animal);
 
 			var zootrainer = await _userRepositories.GetUserById(animaladd.userId);
@@ -149,6 +150,12 @@ namespace Services
 			}
 
 			updateAnimal.AnimalName = animalUpdateRequest.AnimalName;
+
+			var species = await _speciesRepositories.GetSpeciesById(animalUpdateRequest.SpeciesId);
+			if(species == null)
+			{
+				throw new ArgumentException("Given species doesn't exsit");
+			}
 			updateAnimal.SpeciesId = animalUpdateRequest.SpeciesId;
 			updateAnimal.DateArrive = animalUpdateRequest.DateArrive;
 			updateAnimal.Status = animalUpdateRequest.Status;

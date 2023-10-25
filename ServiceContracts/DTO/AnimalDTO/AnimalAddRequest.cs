@@ -21,6 +21,12 @@ namespace ServiceContracts.DTO.AnimalDTO
 		[Required(ErrorMessage = "Status can not be blank!")]
 		public string? Status { get; set; }
 
+		[Required(ErrorMessage = "Zoo Trainer ID Can not be blank!")]
+		public long userId { get; set; }
+
+		[Required(ErrorMessage = "Cage ID Can not be blank!")]
+		public int cageId { get; set; }
+
 		/// <summary>
 		/// Converts the current object of AnimalUserUpdateRequest into a new object of AnimalUser type
 		/// </summary>

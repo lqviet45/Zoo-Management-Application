@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "OfficeStaff")]
 	public class AreasController : ControllerBase
 	{
 		// private field
@@ -27,23 +29,16 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<AreaResponse>> PostArea(AreaAddRequest areaAddRequest)
 		{
 			var areaResponse = await _areaServices.AddArea(areaAddRequest);
-			var id = new { id = areaResponse.AreaId };
-
-			return CreatedAtAction("GetAreaById", id, areaResponse);
+			var AreaId = new { AreaId = areaResponse.AreaId };
+			return CreatedAtAction("GetAreaById", AreaId, areaResponse);
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<AreaResponse>>> GetAllArea(int? pageNumber, string searchBy = "AreaName", string? searchString = null)
+		public async Task<ActionResult<List<AreaResponse>>> GetAllArea()
 		{
-			var listArea = await _areaServices.GetFilteredArea(searchBy, searchString);
+			var listArea = await _areaServices.GetAllArea();
 
-			int pageSize = 5;
-
-			var pagingList = PaginatedList<AreaResponse>.CreateAsync(listArea.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
-
-			var response = new { pagingList, pagingList.TotalPages };
-
-			return Ok(response);
+			return Ok(listArea);
 		}
 
 		[HttpGet("{AreaId}")]
@@ -57,9 +52,10 @@ namespace Zoo_Management_Application.Controllers
 
 
 		[HttpDelete("{AreaId}")]
-		public async Task<ActionResult<bool>> DeleteArea(int? id)
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Area>), Arguments = new object[] { "AreaId", typeof(int) })]
+		public async Task<ActionResult<bool>> DeleteArea(int? AreaId)
 		{
-			var result = await _areaServices.DeleteArea(id);
+			var result = await _areaServices.DeleteArea(AreaId);
 			if (result == false) return NotFound();
 			return Ok(result);
 		}

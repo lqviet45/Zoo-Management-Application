@@ -12,13 +12,13 @@ namespace ServiceContracts.DTO.SpeciesDTO
     public class SpeciesAddRequest
     {
         [Required(ErrorMessage = "Species Name can not be blank!")]
-        public string SpeciesName { get; set; } = string.Empty;
+        public string? SpeciesName { get; set; } = string.Empty;
 
         [Required(ErrorMessage ="Family can not be blank!")]
         public string? Family { get; set; }
 
 		[Required(ErrorMessage ="Information can not be blank!")]
-		public string? Infomation { get; set; }
+		public string? Information { get; set; }
 
 		[Required(ErrorMessage ="Characteristic can not be blank!")]
 		public string? Characteristic { get; set; }
@@ -37,8 +37,6 @@ namespace ServiceContracts.DTO.SpeciesDTO
 
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
-		[NotNull]
-		public bool IsDeleted { get; set; }
 
 		/// <summary>
 		/// Converts the current object of SpeciesAddRequest into a new object of Species type
@@ -50,13 +48,12 @@ namespace ServiceContracts.DTO.SpeciesDTO
             {
                 SpeciesName = SpeciesName,
                 Family = Family,
-				Infomation = Infomation,
+				Information = Information,
 				Characteristic = Characteristic,
 				Allocation = Allocation,
 				Ecological = Ecological,
 				Diet = Diet,
-				BreedingAndReproduction = BreedingAndReproduction,
-				IsDeleted = IsDeleted
+				BreedingAndReproduction = BreedingAndReproduction
             };
         }
     }

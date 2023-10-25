@@ -23,7 +23,7 @@ namespace Repositories
 
 		public async Task<News> Add(News news)
 		{
-			var cate = await _newsCategoriesRepositories.GetCategoryById(news.CategoryId);
+			var cate = await _newsCategoriesRepositories.GetCategoryById(news.CategoryId.Value);
 
 			if(cate == null)
 			{

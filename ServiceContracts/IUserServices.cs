@@ -1,4 +1,5 @@
-﻿using ServiceContracts.DTO.UserDTO;
+﻿using Entities.Models;
+using ServiceContracts.DTO.UserDTO;
 
 namespace ServiceContracts
 {
@@ -83,5 +84,12 @@ namespace ServiceContracts
 		/// <param name="userId">The user id to delete</param>
 		/// <returns>True if delete success, else False</returns>
 		Task<bool> DeleteUser(long userId);
+
+		/// <summary>
+		/// Change the password of an user
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		Task<UserResponse> ChangePassword(long userId, string oldPassword, string newPassword);
 	}
 }

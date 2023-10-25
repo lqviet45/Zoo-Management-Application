@@ -1,5 +1,4 @@
-﻿using ServiceContracts.DTO.AnimalAddDTO;
-using ServiceContracts.DTO.AnimalDTO;
+﻿using ServiceContracts.DTO.AnimalDTO;
 
 
 namespace ServiceContracts
@@ -13,7 +12,7 @@ namespace ServiceContracts
 		/// <returns>AnimalResponse object base on the animal adding</returns>
 		/// <exception cref="ArgumentNullException"></exception>
 		/// <exception cref="ArgumentException"></exception>
-		Task<AnimalResponse> AddAnimal(AnimalAdd animalAdd);
+		Task<AnimalResponse> AddAnimal(AnimalAddRequest animalAdd);
 
 		/// <summary>
 		/// Get All the Animal having in Animal table

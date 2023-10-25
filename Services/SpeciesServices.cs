@@ -92,9 +92,9 @@ namespace Services
 				await _speciesRepositories.GetFilteredSpecies(temp => 
 					temp.Family.Contains(searchString) && temp.IsDeleted == false),
 				
-				nameof(SpeciesResponse.Infomation) =>
+				nameof(SpeciesResponse.Information) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
-					temp.Infomation.Contains(searchString) && temp.IsDeleted == false),
+					temp.Information.Contains(searchString) && temp.IsDeleted == false),
 
 				nameof(SpeciesResponse.Characteristic) =>
 				await _speciesRepositories.GetFilteredSpecies(temp => 
@@ -152,7 +152,7 @@ namespace Services
 
 			matchingSpecies.SpeciesName = speciesUpdateRequest.SpeciesName;
 			matchingSpecies.Family = speciesUpdateRequest.Family;
-			matchingSpecies.Infomation = speciesUpdateRequest.Infomation;
+			matchingSpecies.Information = speciesUpdateRequest.Information;
 			matchingSpecies.Characteristic = speciesUpdateRequest.Characteristic;
 			matchingSpecies.Ecological = speciesUpdateRequest.Ecological;
 			matchingSpecies.Allocation = speciesUpdateRequest.Allocation;
