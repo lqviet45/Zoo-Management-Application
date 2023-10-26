@@ -12,13 +12,15 @@ namespace Services
 		private readonly INewsRepositories _newsRepositories;
 		private readonly IFileServices _fileServices;
 		private readonly IUserRepositories _userRepositories;
+		private readonly INewsCategoriesRepositories _newsCategoriesRepositories;
 
 		// constructor
-		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices, IUserRepositories userRepositories)
+		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices, IUserRepositories userRepositories, INewsCategoriesRepositories newsCategoriesRepositories)
 		{
 			_newsRepositories = newsRepositories;
 			_fileServices = fileServices;
 			_userRepositories = userRepositories;
+			_newsCategoriesRepositories = newsCategoriesRepositories;
 		}
 
 		public async Task<NewsResponse> AddNews(NewsAddrequest? newsAddRequest)
@@ -156,8 +158,11 @@ namespace Services
 			updatedNews.Title = newsUpdateRequest.Title;
 			updatedNews.Content = newsUpdateRequest.Content;
 			updatedNews.Author = newsUpdateRequest.Author;
-			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+
+			var existCategory = await _newsCategoriesRepositories.GetCategoryById(newsUpdateRequest.CategoryId);
+
+			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 
 			var existUser = await _userRepositories.GetUserById(newsUpdateRequest.UserId);
 			if(existUser is null)

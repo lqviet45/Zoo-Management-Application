@@ -11,23 +11,17 @@ namespace Zoo.Management.Application.Filters.ActionFilters
 		{
 			foreach (var argument in context.ActionArguments.Values)
 			{
-				if (argument != null && argument.GetType().IsClass && argument.GetType() != typeof(string))
+				if (argument is null)
 				{
-					var properties = argument.GetType().GetProperties();
-					foreach (var property in properties)
-					{
-						if (property.GetValue(argument) == null)
-						{
-							context.ModelState.AddModelError(property.Name, "Property cannot be null.");
-						}
-					}
+					context.Result = new BadRequestObjectResult("The request object is null.");
+					return;
 				}
-			}
 
-			if (!context.ModelState.IsValid)
-			{
-				context.Result = new BadRequestObjectResult(context.ModelState);
-				return;
+				if (!context.ModelState.IsValid)
+				{
+					context.Result = new BadRequestObjectResult(context.ModelState);
+					return;
+				}
 			}
 
 			await next(); // Continue to the action method

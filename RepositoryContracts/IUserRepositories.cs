@@ -83,5 +83,12 @@ namespace RepositoryContracts
 		/// <param name="userId">The id to delete</param>
 		/// <returns>True if delete is success, else False</returns>
 		Task<bool> Delete(long userId);
+
+		/// <summary>
+		/// Change password of an user
+		/// </summary>
+		/// <param name="user">The user to changePassword</param>
+		/// <returns>A user after change pass</returns>
+		Task<User> ChangePassword(User user);
 	}
 }

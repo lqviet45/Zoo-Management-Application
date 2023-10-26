@@ -16,12 +16,11 @@ namespace ServiceContracts
 		Task<AnimalUserResponse> AddAnimalUser(AnimalUserAddRequest animalUserAddRequest);
 
 		/// <summary>
-		/// 
+		/// Delete the relationship between animal and user
 		/// </summary>
-		/// <param name="animalId"></param>
-		/// <param name="userId"></param>
+		/// <param name="animalUserId">The id in the animalUser table</param>
 		/// <returns></returns>
-		Task<bool> DeleteAnimalUser(long animalId, long userId);
+		Task<bool> DeleteAnimalUser(long animalUserId);
 
 		/// <summary>
 		/// Get all animals that the zoo trainer is training

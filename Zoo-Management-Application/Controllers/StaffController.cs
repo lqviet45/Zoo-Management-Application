@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO.UserDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -29,10 +31,11 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("{Id}")]
-		public async Task<IActionResult> GetStaff(long Id)
+		[HttpGet("{UserId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
+		public async Task<IActionResult> GetStaff(long UserId)
 		{
-			var mathcingStaff = await _userServices.GetStaffById(Id);
+			var mathcingStaff = await _userServices.GetStaffById(UserId);
 			if (mathcingStaff == null || mathcingStaff.RoleId != 2)
 			{
 				return NotFound("The Staff Id dosen't exist!");

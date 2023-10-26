@@ -18,7 +18,7 @@ namespace ServiceContracts.DTO.SpeciesDTO
 		public string? Family { get; set; }
 
 		[Required(ErrorMessage = "Information can not be blank!")]
-		public string? Infomation { get; set; }
+		public string? Information { get; set; }
 
 		[Required(ErrorMessage = "Characteristic can not be blank!")]
 		public string? Characteristic { get; set; }
@@ -38,8 +38,6 @@ namespace ServiceContracts.DTO.SpeciesDTO
         [Required(ErrorMessage = "Image can not be blank!")]
 		public string? Image { get; set; }
 
-        [Required(ErrorMessage = "IsDeleted can not be blank!")]
-        public bool IsDeleted { get; set; }
 	}
 
     public static class SpeciesExtension
@@ -56,14 +54,14 @@ namespace ServiceContracts.DTO.SpeciesDTO
                 SpeciesId = species.SpeciesId,
                 SpeciesName = species.SpeciesName,
                 Family = species.Family,
-                Infomation = species.Infomation,
+                Information = species.Information,
                 Characteristic = species.Characteristic,
                 Allocation = species.Allocation,
                 Ecological = species.Ecological,
                 Diet = species.Diet,
                 BreedingAndReproduction = species.BreedingAndReproduction,
-                Image = species.Image,
-                IsDeleted = species.IsDeleted
+                Image = species.Image
+               
             };
         }
     }

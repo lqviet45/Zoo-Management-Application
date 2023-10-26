@@ -14,6 +14,7 @@ namespace ServiceContracts.DTO.AreaDTO
         [Required(ErrorMessage = "Area Name Can not be blank!")]
         public string AreaName { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "IsDelete can not be blank!")]
         public bool IsDelete { get; set; }
 
         /// <summary>

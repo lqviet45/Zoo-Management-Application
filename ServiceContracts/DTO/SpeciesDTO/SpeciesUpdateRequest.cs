@@ -20,7 +20,7 @@ namespace ServiceContracts.DTO.SpeciesDTO
 		public string? Family { get; set; }
 
 		[Required(ErrorMessage = "Information can not be blank!")]
-		public string? Infomation { get; set; }
+		public string? Information { get; set; }
 
 		[Required(ErrorMessage = "Characteristic can not be blank!")]
 		public string? Characteristic { get; set; }
@@ -54,7 +54,7 @@ namespace ServiceContracts.DTO.SpeciesDTO
                 SpeciesId = SpeciesId,
                 SpeciesName = SpeciesName,
                 Family = Family,
-				Infomation = Infomation,
+				Information = Information,
 				Characteristic = Characteristic,
 				Allocation = Allocation,
 				Ecological = Ecological,

@@ -67,5 +67,7 @@ namespace ServiceContracts
 		/// <param name="ticketId">The ticketId user want to search</param>
 		/// <returns>A list of matching orderDetails object that between the given date</returns>
 		Task<List<OrderDetailResponse>> GetOrderDetailByDate(DateTime from, DateTime to, int ticketId);
+		Task<List<OrderResponse>> GetOrderByDate(DateTime from, DateTime to);
+		Task<List<OrderResponse>> GetOrderByDate(DateTime from, DateTime to, int ticketId);
 	}
 }

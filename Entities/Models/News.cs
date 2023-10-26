@@ -31,11 +31,11 @@ namespace Entities.Models
 
 		[ForeignKey("NewsCategories")]
 		[NotNull]
-		public int CategoryId { get; set; }
+		public int? CategoryId { get; set; }
 
 		[ForeignKey("User")]
 		[NotNull]
-		public long UserId { get; set; }
+		public long? UserId { get; set; }
 
 		public NewsCategories NewsCategories { get; set; } = null!;
 

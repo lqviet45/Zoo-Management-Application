@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.AnimalCageDTO;
 using ServiceContracts.DTO.AnimalDTO;
 using ServiceContracts.DTO.CageDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -13,30 +16,31 @@ namespace Zoo_Management_Application.Controllers
 	{
 		// private fields
 		private readonly IAnimalCageServices _animalCageServices;
-		private readonly IAnimalServices _animalServices;
-		private readonly ICageServices _cageServices;
 
 		// constructor
-		public AnimalCageController(IAnimalCageServices animalCageServices, IAnimalServices animalServices, ICageServices cageServices)
+		public AnimalCageController(IAnimalCageServices animalCageServices)
 		{
 			_animalCageServices = animalCageServices;
-			_animalServices = animalServices;
-			_cageServices = cageServices;
 		}
 
-		[HttpPost]
-		public async Task<ActionResult<AnimalCageResponse>> PostAnimalCage(AnimalCageAddRequest animalCageAddRequest)
+		[HttpPut]
+		[Authorize(Roles = "OfficeStaff")]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		// Move Animal to Another Cage
+		public async Task<ActionResult<AnimalCageResponse>> PostAnimalCage(AnimalCageUpdateRequest animalCageUpdateRequest)
 		{
-			var animalCageResponse = await _animalCageServices.Add(animalCageAddRequest);
+			var animalCageResponse = await _animalCageServices.UpdateAnimalCage(animalCageUpdateRequest);
 
 			return Ok(animalCageResponse);
 		}
 
 
-		[HttpGet("animal/{animalId}")]
-		public async Task<ActionResult<List<CageResponse>>> GetAnimalCageHistory(long animalId)
+		[HttpGet("animal/{AnimalId}")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
+		public async Task<ActionResult<List<CageResponse>>> GetAnimalCageHistory(long AnimalId)
 		{
-			var cageResponse = await _animalCageServices.GetAnimalCageHistory(animalId);
+			var cageResponse = await _animalCageServices.GetAnimalCageHistory(AnimalId);
 
 			if (cageResponse == null)
 			{
@@ -46,10 +50,12 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(cageResponse);
 		}
 
-		[HttpGet("cage/{cageId}")]
-		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalInTheCage(int cageId)
+		[HttpGet("cage/{CageId}")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Cage>), Arguments = new object[] { "CageId", typeof(int) })]
+		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalInTheCage(int CageId)
 		{
-			var animalResponse = await _animalCageServices.GetAllAnimalInTheCage(cageId);
+			var animalResponse = await _animalCageServices.GetAllAnimalInTheCage(CageId);
 
 			if (animalResponse == null)
 			{
@@ -60,10 +66,12 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 
-		[HttpGet("present/{animalId}")]
-		public async Task<ActionResult<CageResponse>> GetAnimalPresentCage(long animalId)
+		[HttpGet("present/{AnimalId}")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
+		public async Task<ActionResult<CageResponse>> GetAnimalPresentCage(long AnimalId)
 		{
-			var cageResponse = await _animalCageServices.GetAnimalPresentCage(animalId);
+			var cageResponse = await _animalCageServices.GetAnimalPresentCage(AnimalId);
 
 			if (cageResponse == null)
 			{

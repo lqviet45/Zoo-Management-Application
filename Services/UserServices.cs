@@ -37,6 +37,25 @@ namespace Services
 			return user.ToUserResponse();
 		}
 
+		public async Task<UserResponse> ChangePassword(long userId, string oldPassword, string newPassword)
+		{
+			var user = await _userRepositories.GetUserById(userId);
+
+			if (user == null)
+			{
+				throw new ArgumentException("User is not valid");
+			}
+
+			if (user.Password != oldPassword)
+			{
+				throw new ArgumentException("The password is not correct!");
+			}
+			user.Password = newPassword;
+			var updateUser = await _userRepositories.ChangePassword(user);
+
+			return updateUser.ToUserResponse();
+		}
+
 		public async Task<bool> DeleteUser(long userId)
 		{
 			var userExist = await _userRepositories.GetUserById(userId);

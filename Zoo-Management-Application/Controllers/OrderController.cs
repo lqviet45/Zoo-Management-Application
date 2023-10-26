@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO.CustommerDTO;
 using ServiceContracts.DTO.EmailDTO;
 using ServiceContracts.DTO.OrderDTO;
 using ServiceContracts.DTO.TransReportDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
@@ -24,6 +26,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<IActionResult> PostOrder(CustommerAddRequest custommerAddRequest)
 		{
 			var custommer = await _custommerSevices.Add(custommerAddRequest);
@@ -65,11 +68,12 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(order);
 		}
 
-		[HttpGet("{orderId}")]
-		public async Task<ActionResult<OrderResponse>> GetOrderById(long orderId)
+		[HttpGet("{OrderId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Order>), Arguments = new object[] { "OrderId", typeof(long) })]
+		public async Task<ActionResult<OrderResponse>> GetOrderById(long OrderId)
 		{
-			var order = await _orderSevices.GetOrderById(orderId);
-			if (order == null) return NotFound($"The order Id: {orderId} doesn't exist!");
+			var order = await _orderSevices.GetOrderById(OrderId);
+			if (order == null) return NotFound($"The order Id: {OrderId} doesn't exist!");
 
 			double total = 0;
 			foreach (var orderResponse in order.OrderDetailResponses)
@@ -94,9 +98,27 @@ namespace Zoo_Management_Application.Controllers
 			}
 
 			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
-			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(to, from, ticketId);
+			var listOrderDetail = await _orderSevices.GetOrderDetailByDate(from, to, ticketId);
 			
 			return Ok(new { total, listOrderDetail });
+		}
+
+		[HttpGet("transhistory")]
+		[AllowAnonymous]
+		public async Task<IActionResult> GetOrderByDate(DateTime from, DateTime to, int ticketId = -1)
+		{
+
+			if (ticketId is -1)
+			{
+				var totalAll = await _orderSevices.GetTotalByDay(from, to);
+				var listOrderDetails = await _orderSevices.GetOrderByDate(from, to);
+				return Ok(new { totalAll, listOrderDetails });
+			}
+
+			var total = await _orderSevices.GetTotalByDay(from, to, ticketId);
+			var listOrder = await _orderSevices.GetOrderByDate(from, to, ticketId);
+
+			return Ok(new { total, listOrder });
 		}
 
 		#region Send Mail
@@ -120,7 +142,7 @@ namespace Zoo_Management_Application.Controllers
 				email.To = order.Custommer.Email;
 				email.Subject = "Thảo cầm viên";
 
-				string emailBodySend = emailBody.Replace("orderId", order.OrderId.ToString())
+				string emailBodySend = emailBody.Replace("OrderId", order.OrderId.ToString())
 					.Replace("custommerName", order.Custommer.Name)
 					.Replace("custommerPhone", order.Custommer.PhoneNumber)
 					.Replace("custommerEmail", order.Custommer.Email)
@@ -135,7 +157,7 @@ namespace Zoo_Management_Application.Controllers
 
 		private readonly string emailBody = $"<div>\r\n" +
 			"        <p>Cảm ơn quý khách đã mau vé</p>\r\n" +
-			"        <p style=\"color: #02ACEA;\">Thông tin đơn hàng Order ID: orderId</p>\r\n" +
+			"        <p style=\"color: #02ACEA;\">Thông tin đơn hàng Order ID: OrderId</p>\r\n" +
 			"		 <p>Bạn có thể dùng order Id để lên web tìm kiếm thông tin đơn hàng của bạn ở trên đó</p>" +
 			"        <div>\r\n" +
 			"            <p>Thông tin khách hàng</p>\r\n" +

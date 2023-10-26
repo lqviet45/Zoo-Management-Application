@@ -71,7 +71,6 @@ namespace Repositories
 		{
 			double total = await _context.OrderDetails
 				.Include(od => od.Order)
-				.Include(od => od.Ticket)
 				.Where(o => o.Order != null && o.Order.PurchaseDate >= from && o.Order.PurchaseDate <= to && o.TicketId == ticketId)
 				.SumAsync(o => o.TotalPrice);
 
@@ -82,9 +81,11 @@ namespace Repositories
 		{
 			List<OrderDetail> listOrderDetail = await _context.OrderDetails
 				.Include(od => od.Order)
-				.Include(od => od.Ticket)
+				.Include(o => o.Ticket)
 				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
 				.OrderBy(od => od.Order.PurchaseDate)
+				.AsSplitQuery()
+				.AsNoTracking()
 				.ToListAsync();
 
 			return listOrderDetail;
@@ -94,12 +95,40 @@ namespace Repositories
 		{
 			List<OrderDetail> listOrderDetail = await _context.OrderDetails
 				.Include(od => od.Order)
-				.Include(od => od.Ticket)
-				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
+				.Include(o => o.Ticket)
+				.Where(o => o.Order != null && o.Order.PurchaseDate >= from && o.Order.PurchaseDate <= to && o.TicketId == ticketId)
 				.OrderBy(od => od.Order.PurchaseDate)
+				.AsSplitQuery()
+				.AsNoTracking()
 				.ToListAsync();
 
 			return listOrderDetail;
+		}
+
+		public async Task<List<Order>> GetOrdersByDate(DateTime from, DateTime to)
+		{
+			var list = await _context.Orders
+				.Include(o => o.Custommer)
+				.Where(o => o.PurchaseDate >= from && o.PurchaseDate <= to)
+				.AsNoTracking()
+				.ToListAsync();
+
+			return list;
+		}
+
+		public async Task<List<Order>> GetOrdersByDate(DateTime from, DateTime to, int ticketId)
+		{
+			List<Order> list = await _context.OrderDetails.Include(od => od.Order)
+				.ThenInclude(o => o.Custommer)
+				.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
+				.AsNoTracking()
+				.AsSplitQuery()
+				.Select(o => o.Order ?? new Order())
+				.ToListAsync();
+
+			//List<Order> listOrder = list.Select(od => od.Order ?? new Order()).ToList();
+
+			return list;
 		}
 	}
 }

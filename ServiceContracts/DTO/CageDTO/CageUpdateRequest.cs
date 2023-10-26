@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceContracts.DTO.CageDTO
 {
@@ -16,8 +17,6 @@ namespace ServiceContracts.DTO.CageDTO
 
 		[Required(ErrorMessage = "Area ID can not be blank!")]
 		public int AreaId { get; set; }
-
-		public virtual Area? Area { get; set; }
 
 		[Required]
 		public bool IsDelete { get; set; }

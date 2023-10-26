@@ -42,6 +42,7 @@ namespace Repositories
 		{
 			var listStaff = await _dbContext.Users.Where(user => user.RoleId == 2 && user.IsDelete == false)
 				.Include(u => u.Role)
+				.AsNoTracking()
 				.ToListAsync();
 			return listStaff;
 		}
@@ -60,12 +61,15 @@ namespace Repositories
 		{
 			return await _dbContext.Users
 				.Include(u => u.Skills)
-				.Where(predicate).ToListAsync();
+				.Where(predicate)
+				.AsNoTracking()
+				.ToListAsync();
 		}
 
 		public async Task<User?> GetStaffById(long staffId)
 		{
-			var matchingStaff = await _dbContext.Users.Include(u => u.Role)
+			var matchingStaff = await _dbContext.Users
+				.Include(u => u.Role)
 				.Include(u => u.Skills)
 				.FirstOrDefaultAsync(staff => staff.UserId == staffId && staff.IsDelete == false);
 			
@@ -84,7 +88,8 @@ namespace Repositories
 
 		public async Task<User?> GetUserByUserName(string? userName)
 		{
-		    return await _dbContext.Users.Include(u => u.Skills)
+		    return await _dbContext.Users
+				.Include(u => u.Skills)
 				.Include(u => u.Role)
 				.FirstOrDefaultAsync(user => user.UserName == userName && user.IsDelete == false);
 		}
@@ -121,6 +126,19 @@ namespace Repositories
 			userUpdate.PhoneNumber = user.PhoneNumber;
 			userUpdate.DateOfBirth = user.DateOfBirth;
 			userUpdate.IsDelete = user.IsDelete;
+
+			await _dbContext.SaveChangesAsync();
+			return userUpdate;
+		}
+
+		public async Task<User> ChangePassword(User user)
+		{
+			var userUpdate = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == user.UserId);
+			if (userUpdate is null)
+			{
+				return user;
+			}
+			userUpdate.Password = user.Password;
 
 			await _dbContext.SaveChangesAsync();
 			return userUpdate;

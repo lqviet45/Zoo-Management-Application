@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO.SpeciesDTO;
 using ServiceContracts.DTO.WrapperDTO;
+using Zoo.Management.Application.Filters.ActionFilters;
 
 namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "Admin")]
 	public class SpeciesController : ControllerBase
 	{
 		// private field
@@ -21,15 +25,17 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPost]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<SpeciesResponse>> PostSpecies([FromForm]SpeciesAddRequest speciesAddRequest)
 		{
 			var speciesResponse = await _speciesServices.AddSpecies(speciesAddRequest);
-			var id = new { id = speciesResponse.SpeciesId };
+			var SpeciesId = new { SpeciesId = speciesResponse.SpeciesId };
 
-			return CreatedAtAction("GetSpeciesById", id, speciesResponse);
+			return CreatedAtAction("GetSpeciesById", SpeciesId, speciesResponse);
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<ActionResult<List<SpeciesResponse>>> GetAllSpecies(int? pageNumber, string searchBy = "SpeciesName", string? searchString = null)
 		{
 			var listSpecies = await _speciesServices.GetFilteredSpecies(searchBy, searchString);
@@ -39,23 +45,27 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<SpeciesResponse>> GetSpeciesById(int? id)
+		[HttpGet("{SpeciesId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Species>), Arguments = new object[] { "SpeciesId", typeof(int) })]
+		[AllowAnonymous]
+		public async Task<ActionResult<SpeciesResponse>> GetSpeciesById(int? SpeciesId)
 		{
-			var species = await _speciesServices.GetSpeciesById(id);
+			var species = await _speciesServices.GetSpeciesById(SpeciesId);
 			if (species == null) return NotFound();
 			return Ok(species);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> DeleteSpecies(int? id)
+		[HttpDelete("{SpeciesId}")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<Species>), Arguments = new object[] { "SpeciesId", typeof(int) })]
+		public async Task<ActionResult<bool>> DeleteSpecies(int? SpeciesId)
 		{
-			var result = await _speciesServices.DeleteSpecies(id);
+			var result = await _speciesServices.DeleteSpecies(SpeciesId);
 			if (result == false) return NotFound();
 			return Ok(result);
 		}
 
 		[HttpPut]
+		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<SpeciesResponse>> UpdateSpecies([FromForm]SpeciesUpdateRequest speciesUpdateRequest)
 		{
 			if (ModelState.IsValid)

@@ -36,7 +36,7 @@ namespace Services
 			};
 
 			SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
-				Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]));
+				Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Get<string>()));
 
 			SigningCredentials signingCredentials = new SigningCredentials(
 				securityKey, SecurityAlgorithms.HmacSha256Signature);

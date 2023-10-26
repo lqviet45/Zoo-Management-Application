@@ -85,7 +85,7 @@ namespace Repositories
 
 			matchingSpecies.SpeciesName = species.SpeciesName;
 			matchingSpecies.Family = species.Family;
-			matchingSpecies.Infomation = species.Infomation;
+			matchingSpecies.Information = species.Information;
 			matchingSpecies.Characteristic = species.Characteristic;
 			matchingSpecies.Ecological = species.Ecological;
 			matchingSpecies.Allocation = species.Allocation;
