@@ -25,10 +25,9 @@ namespace Zoo.Management.Application.Filters.ActionFilters
 
 		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{
-
 			if (!_context.Model.FindEntityType(typeof(T)).GetProperties().Any(p => p.Name == _keyName))
 			{
-				context.Result = new BadRequestObjectResult("Invalid key name.");
+				await next();
 				return;
 			}
 
@@ -46,23 +45,11 @@ namespace Zoo.Management.Application.Filters.ActionFilters
 
 					var entity = await _context.Set<T>().Where(lambda).FirstOrDefaultAsync();
 
-					if (entity == null)
-					{
-						context.Result = new NotFoundResult();
-					}
-					else
+					if (entity != null)
 					{
 						context.HttpContext.Items.Add("entity", entity);
 					}
 				}
-				else
-				{
-					context.Result = new BadRequestObjectResult($"Bad {_keyName} parameter");
-				}
-			}
-			else
-			{
-				context.Result = new BadRequestObjectResult($"No {_keyName} parameter");
 			}
 
 			await next();
