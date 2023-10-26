@@ -36,7 +36,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpGet]
 		[AllowAnonymous]
-		public async Task<ActionResult<List<SpeciesResponse>>> GetAllSpecies(int? pageNumber, string searchBy = "SpeciesName", string? searchString = null)
+		public async Task<ActionResult<List<SpeciesResponse>>> GetAllSpeciesWithPaging(int? pageNumber, string searchBy = "SpeciesName", string? searchString = null)
 		{
 			var listSpecies = await _speciesServices.GetFilteredSpecies(searchBy, searchString);
 			int pageSize = 5;
@@ -75,6 +75,15 @@ namespace Zoo_Management_Application.Controllers
 			}
 
 			return BadRequest();
+		}
+
+		[HttpGet("GetAllSpecies")]
+		[AllowAnonymous]
+		public async Task<ActionResult<List<SpeciesResponse>>> GetAllSpecies()
+		{
+			var listSpecies = await _speciesServices.GetAllSpecies();
+			
+			return Ok(listSpecies);
 		}
 	}
 }
