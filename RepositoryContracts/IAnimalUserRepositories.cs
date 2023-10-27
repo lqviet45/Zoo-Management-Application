@@ -38,9 +38,10 @@ namespace RepositoryContracts
 		/// <summary>
 		/// Delete the relationship between animal and user
 		/// </summary>
-		/// <param name="animalUserId">The animalUser id</param>
+		/// <param name="animalId">The if of Animal</param>
+		/// <param name="userId">The id of Zoo Trainer</param>
 		/// <returns></returns>
-		Task<bool> Delete(long animalUserId);
+		Task<bool> Delete(long animalId, long userId);
 		
 		/// <summary>
 		/// Get AnimalUser by animalUserId

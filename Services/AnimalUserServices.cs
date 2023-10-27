@@ -61,18 +61,26 @@ namespace Services
 
 		}
 
-		public async Task<bool> DeleteAnimalUser(long animalUserId)
+		public async Task<bool> DeleteAnimalUser(long animalId, long userId)
 		{
-			var animalUser = await _animalUserRepositories.GetAnimalUserByAnimalIdAndUserId(animalUserId);
+			var animal = await _animalRepositories.GetAnimalById(animalId);
+
+			if (animal == null) throw new ArgumentException("Animal is not exsit!");
+
+			var zooTrainer = await _userRepositories.GetZooTrainerById(userId);
+
+			if (zooTrainer == null) throw new ArgumentException("Zoo Trainer is not exsit!");
+
+			var animalUser = await _animalUserRepositories.GetAnimalUserRelationship(animalId, userId);
 
 			if (animalUser == null)
 			{
 				return false;
 			}
 
-			await _animalUserRepositories.Delete(animalUserId);
+			var isDeleted = await _animalUserRepositories.Delete(animalId, userId);
 
-			return true;
+			return isDeleted;
 
 		}
 

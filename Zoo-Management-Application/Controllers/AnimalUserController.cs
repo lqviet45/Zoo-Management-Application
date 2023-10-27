@@ -64,15 +64,15 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(animalUserResponse);
 		}
 
-		[HttpDelete("{AnimalUserId}")]
-		[TypeFilter(typeof(ValidateEntityExistsAttribute<AnimalUser>), Arguments = new object[] { "AnimalUserId", typeof(long) })]
-		public async Task<ActionResult<bool>> DeleteAnimalUser(long AnimalUserId)
+		[HttpDelete("animal-trainer")]
+		//[TypeFilter(typeof(ValidateEntityExistsAttribute<AnimalUser>), Arguments = new object[] { "AnimalUserId", typeof(long) })]
+		public async Task<ActionResult<bool>> DeleteAnimalUser(long animalId, long userId)
 		{
-			var isDeleted = await _animalUserServices.DeleteAnimalUser(AnimalUserId);
+			var isDeleted = await _animalUserServices.DeleteAnimalUser(animalId, userId);
 
 			if (!isDeleted)
 			{
-				return BadRequest("This Animal is not being trained by this Zoo Trainer!");
+				return BadRequest("Delete Fails");
 			}
 
 			return Ok(isDeleted);
