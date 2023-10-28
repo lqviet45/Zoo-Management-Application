@@ -1,5 +1,7 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceContracts.DTO.TicketDTO
 {
@@ -14,6 +16,9 @@ namespace ServiceContracts.DTO.TicketDTO
 
 		[Required(ErrorMessage = "Release date can not be blank!")]
 		public DateTime ReleaseDate { get; set; } = DateTime.Now;
+
+		[NotMapped]
+		public IFormFile? Image { get; set; }
 
 		/// <summary>
 		/// Convert a TicketAddRequest to Ticket object

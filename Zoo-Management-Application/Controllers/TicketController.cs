@@ -22,7 +22,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpPost]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
-		public async Task<ActionResult<TicketResponse>> PostTicket(TicketAddRequest ticketAddRequest)
+		public async Task<ActionResult<TicketResponse>> PostTicket([FromForm]TicketAddRequest ticketAddRequest)
 		{
 			var ticketResponse = await _ticketServices.AddTicket(ticketAddRequest);
 
