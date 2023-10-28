@@ -23,11 +23,11 @@ namespace Zoo_Management_Application.Controllers
 			_animalCageServices = animalCageServices;
 		}
 
-		[HttpPut]
+		[HttpPut("move-animal")]
 		[Authorize(Roles = "OfficeStaff")]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		// Move Animal to Another Cage
-		public async Task<ActionResult<AnimalCageResponse>> PostAnimalCage(AnimalCageUpdateRequest animalCageUpdateRequest)
+		public async Task<ActionResult<AnimalCageResponse>> MoveAnimalToOtherCage(AnimalCageUpdateRequest animalCageUpdateRequest)
 		{
 			var animalCageResponse = await _animalCageServices.UpdateAnimalCage(animalCageUpdateRequest);
 
