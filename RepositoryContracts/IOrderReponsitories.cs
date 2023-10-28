@@ -66,5 +66,7 @@ namespace RepositoryContracts
 		/// <param name="ticketId">The ticketId user want to search</param>
 		/// <returns>A list of matching orderDetails object that between the given date</returns>
 		Task<List<OrderDetail>> GetOrderDeatilByDate(DateTime from, DateTime to, int ticketId);
+		Task<List<Order>> GetOrdersByDate(DateTime from, DateTime to);
+		Task<List<Order>> GetOrdersByDate(DateTime from, DateTime to, int ticketId);
 	}
 }

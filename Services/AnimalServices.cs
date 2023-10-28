@@ -40,9 +40,6 @@ namespace Services
 
 			ValidationHelper.ModelValidation(animaladd);
 
-			Animal animal = animaladd.MapToAnimal();
-			await _animalRepositories.Add(animal);
-
 			var zootrainer = await _userRepositories.GetUserById(animaladd.userId);
 
 			if (zootrainer == null)
@@ -56,6 +53,10 @@ namespace Services
 			{
 				throw new ArgumentException("The cage id doesn't exist!");
 			}
+
+			Animal animal = animaladd.MapToAnimal();
+
+			await _animalRepositories.Add(animal);
 
 			await _animalUserRepositories.Add(new AnimalUser
 			{

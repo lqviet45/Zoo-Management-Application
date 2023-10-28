@@ -18,9 +18,10 @@ namespace ServiceContracts
 		/// <summary>
 		/// Delete the relationship between animal and user
 		/// </summary>
-		/// <param name="animalUserId">The id in the animalUser table</param>
+		/// <param name="animalId">The id of the Animal</param>
+		/// <param name="userId">The id of the Zoo Trainer</param>
 		/// <returns></returns>
-		Task<bool> DeleteAnimalUser(long animalUserId);
+		Task<bool> DeleteAnimalUser(long animalId, long userId);
 
 		/// <summary>
 		/// Get all animals that the zoo trainer is training

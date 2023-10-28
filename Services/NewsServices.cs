@@ -139,6 +139,15 @@ namespace Services
 			return matchingNews.ToNewsResponse();
 		}
 
+		public async Task<List<NewsResponse>> GetTop3News()
+		{
+			var list= await _newsRepositories.GetAllNews();
+			var listNews = list.OrderBy(n => n.ReleaseDate)
+				.Take(3);
+
+			return listNews.Select(n => n.ToNewsResponse()).ToList();
+		}
+
 		public async Task<NewsResponse> UpdateNews(NewsUpdateRequest? newsUpdateRequest)
 		{
 			if (newsUpdateRequest is null)
@@ -208,5 +217,8 @@ namespace Services
 			return updatedNews.ToNewsResponse();
 
 		}
+
+		
+
 	}
 }

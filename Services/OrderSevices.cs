@@ -98,5 +98,19 @@ namespace Services
 
 			return listResponse;
 		}
+
+		public async Task<List<OrderResponse>> GetOrderByDate(DateTime from, DateTime to)
+		{
+			var list = await _orderReponsitories.GetOrdersByDate(from, to);
+
+			return list.Select(o => o.ToOrderResopnse()).ToList();
+		}
+
+		public async Task<List<OrderResponse>> GetOrderByDate(DateTime from, DateTime to, int ticketId)
+		{
+			var list = await _orderReponsitories.GetOrdersByDate(from, to, ticketId);
+
+			return list.Select(o => o.ToOrderResopnse()).ToList();
+		}
 	}
 }

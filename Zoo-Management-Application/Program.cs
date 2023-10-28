@@ -146,6 +146,7 @@ else
 	app.UseExceptionHandlingMiddleware();
 }
 
+
 app.UseHsts();
 app.UseHttpsRedirection();
 

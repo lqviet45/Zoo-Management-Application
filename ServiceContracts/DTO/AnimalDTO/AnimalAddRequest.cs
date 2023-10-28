@@ -38,7 +38,7 @@ namespace ServiceContracts.DTO.AnimalDTO
 				AnimalName = AnimalName,
 				DateArrive = DateArrive,
 				Status = Status,
-				SpeciesId = SpeciesId
+				SpeciesId = SpeciesId,
 			};
 		}
 	}
