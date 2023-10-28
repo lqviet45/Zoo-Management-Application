@@ -49,5 +49,11 @@ namespace ServiceContracts
 		/// <param name="searchString">Search string to search</param>
 		/// <returns>Returns all matching news base on the given search field and search string</returns>
 		Task<List<NewsResponse>> GetFiteredNews(string searchBy, string? searchString);
+
+		/// <summary>
+		/// Get 3 newest news of the zoo
+		/// </summary>
+		/// <returns>Return a list of news</returns>
+		Task<List<NewsResponse>> GetTop3News();
 	}
 }

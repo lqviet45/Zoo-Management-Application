@@ -76,5 +76,13 @@ namespace Zoo_Management_Application.Controllers
 			return BadRequest();
 		}
 
+		[HttpGet("get-top-news")]
+		[AllowAnonymous]
+		public async Task<ActionResult<List<NewsResponse>>> GetTopNews()
+		{
+			var listNews = await _newsServices.GetTop3News();
+			
+			return Ok(listNews);
+		}
 	}
 }
