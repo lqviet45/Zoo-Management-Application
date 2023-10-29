@@ -44,7 +44,7 @@ namespace Services
 
 			// Uploading image to FireBase
 			var image = await _storageClient.UploadObjectAsync(BucketName,
-				$"{folderSave}/{name}-{randomGuid}", file.ContentType, stream);
+				$"images/{folderSave}/{name}-{randomGuid}", file.ContentType, stream);
 
 			//Get the image URI to get on the client the img
 			var photoUri = image.MediaLink;
