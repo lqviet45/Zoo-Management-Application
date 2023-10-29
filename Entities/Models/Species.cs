@@ -45,9 +45,6 @@ namespace Entities.Models
 		[MaxLength]
 		public string? Image { get; set; }
 
-		[NotMapped]
-		public IFormFile? ImageFile { get; set; }
-
 		[NotNull]
 		public bool IsDeleted { get; set; }
 	}
