@@ -105,6 +105,18 @@ namespace Services
 			return animaList;
 		}
 
+		public async Task<AnimalUserResponse?> GetAnimalUserRelationship(long animalId, long userId)
+		{
+			var animalUser = await _animalUserRepositories.GetAnimalUserRelationship(animalId, userId);
+
+			if(animalUser is null)
+			{
+				return null;
+			}
+
+			return animalUser.ToAnimalUserResponse();
+		}
+
 		public async Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId)
 		{
 			var listUser = await _animalUserRepositories.GetZooTrainerByAnimalId(animalId);
