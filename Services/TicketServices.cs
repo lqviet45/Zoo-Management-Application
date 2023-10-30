@@ -8,10 +8,12 @@ namespace Services
 	public class TicketServices : ITicketServices
 	{
 		private readonly ITicketReponsitories _ticketReponsitories;
+		private readonly IFirebaseStorageService _firebaseStorageService;
 
-		public TicketServices(ITicketReponsitories ticketReponsitories)
+		public TicketServices(ITicketReponsitories ticketReponsitories, IFirebaseStorageService firebaseStorageService)
 		{
 			_ticketReponsitories = ticketReponsitories;
+			_firebaseStorageService = firebaseStorageService;
 		}
 
 		public async Task<TicketResponse> AddTicket(TicketAddRequest? ticketAddRequest)
@@ -24,6 +26,13 @@ namespace Services
 			ValidationHelper.ModelValidation(ticketAddRequest);
 
 			var ticket = ticketAddRequest.MapToTicket();
+
+			if (ticketAddRequest.Image != null && ticketAddRequest.TicketName != null)
+			{
+				var imageUri = await _firebaseStorageService
+					.UploadFile(ticketAddRequest.TicketName, ticketAddRequest.Image);
+				ticket.Image = imageUri;
+			}
 
 			await _ticketReponsitories.Add(ticket);
 

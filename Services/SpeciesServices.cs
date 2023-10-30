@@ -10,13 +10,14 @@ namespace Services
 	{
 		// private field
 		private readonly ISpeciesRepositories _speciesRepositories;
-		private readonly IFileServices _fileServices;
+		private readonly IFirebaseStorageService _firebaseStorageService;
+		private const string _folder = "animal";
 
 		// constructor
-		public SpeciesServices(ISpeciesRepositories speciesRepositories, IFileServices fileServices)
+		public SpeciesServices(ISpeciesRepositories speciesRepositories,IFirebaseStorageService firebaseStorageService)
 		{
 			_speciesRepositories = speciesRepositories;
-			_fileServices = fileServices;
+			_firebaseStorageService = firebaseStorageService;
 		}
 		public async Task<SpeciesResponse> AddSpecies(SpeciesAddRequest? speciesAddRequest)
 		{
@@ -35,11 +36,8 @@ namespace Services
 
 			if(speciesAddRequest.ImageFile != null)
 			{
-				var fileResult = _fileServices.SaveImage(speciesAddRequest.ImageFile);
-				if(fileResult.Item1 == 1)
-				{
-					species.Image = fileResult.Item2; // getting name of image
-				}
+				var imageUri = await _firebaseStorageService.UploadFile(speciesAddRequest.SpeciesName, speciesAddRequest.ImageFile, _folder);
+				species.Image = imageUri;
 			}
 
 			await _speciesRepositories.Add(species);
@@ -56,14 +54,6 @@ namespace Services
 			if (species == null)
 			{
 				return false;
-			}
-
-			if(species is not null)
-			{
-				if(!string.IsNullOrEmpty(species.Image))
-				{
-					_fileServices.DeleteImage(species.Image); // delete old image
-				}
 			}
 
 			await _speciesRepositories.Delete(id.Value);
@@ -162,17 +152,10 @@ namespace Services
 			
 			if(speciesUpdateRequest.ImageFile != null)
 			{
-				var fileResult = _fileServices.SaveImage(speciesUpdateRequest.ImageFile);
 
-				if(!string.IsNullOrEmpty(matchingSpecies.Image))
-				{
-					_fileServices.DeleteImage(matchingSpecies.Image); // delete old image
-				}
+				var imageUri = await _firebaseStorageService.UploadFile(speciesUpdateRequest.SpeciesName, speciesUpdateRequest.ImageFile, _folder);
+				matchingSpecies.Image = imageUri;
 
-				if(fileResult.Item1 == 1)
-				{
-					matchingSpecies.Image = fileResult.Item2; // getting name of image
-				}
 			}
 
 			await _speciesRepositories.Update(matchingSpecies);

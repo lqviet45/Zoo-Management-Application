@@ -8,6 +8,9 @@ namespace ServiceContracts.DTO.AnimalUserDTO
 	/// </summary>
 	public class AnimalUserResponse
 	{
+		[Required]
+		public long AnimalUserId { get; set; }
+
 		[Required(ErrorMessage = "AnimalId can not be blank!")]
 		public long AnimalId { get; set; }
 
@@ -27,6 +30,7 @@ namespace ServiceContracts.DTO.AnimalUserDTO
 		{
 			return new AnimalUserResponse()
 			{
+				AnimalUserId = animalUser.AnimalUserId,
 				AnimalId = animalUser.AnimalId,
 				UserId = animalUser.UserId
 			};

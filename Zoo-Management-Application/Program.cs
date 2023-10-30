@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Zoo.Management.Application.Middleware;
 using Zoo.Management.Application.Filters.ActionFilters;
 using Infrastructure;
+using Google.Cloud.Storage.V1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,7 +74,12 @@ builder.Services.AddScoped<ISkillServices, SkillServices>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
 builder.Services.AddInfrastructure();
+
+builder.Services.AddSingleton<IFirebaseStorageService>(s => new FirebaseStorageService(StorageClient.Create()));
 #endregion
+
+var fileName = "zoo-management-application-firebase-adminsdk-t3giu-6f89ab8d64.json";
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", @Path.Combine(Environment.CurrentDirectory, fileName));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

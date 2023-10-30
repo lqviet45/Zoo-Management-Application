@@ -78,5 +78,14 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(isDeleted);
 		}
 
+		[HttpGet("animal-trainer-relationship")]
+		[Authorize(Roles = "ZooTrainner,OfficeStaff")]
+		public async Task<ActionResult<AnimalUserResponse>> GetAnimalUserRelationship(long animalId, long userId)
+		{
+			var animalUser = await _animalUserServices.GetAnimalUserRelationship(animalId, userId);
+			if (animalUser == null) return NotFound();
+			return Ok(animalUser);
+			
+		}
 	}
 }

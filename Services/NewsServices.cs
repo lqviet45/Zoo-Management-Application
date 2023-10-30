@@ -10,15 +10,16 @@ namespace Services
 	{
 		// private fields
 		private readonly INewsRepositories _newsRepositories;
-		private readonly IFileServices _fileServices;
+		private readonly IFirebaseStorageService _firebaseStorageService;
 		private readonly IUserRepositories _userRepositories;
 		private readonly INewsCategoriesRepositories _newsCategoriesRepositories;
+		private const string _folder = "news";
 
 		// constructor
-		public NewsServices(INewsRepositories newsRepositories, IFileServices fileServices, IUserRepositories userRepositories, INewsCategoriesRepositories newsCategoriesRepositories)
+		public NewsServices(INewsRepositories newsRepositories, IFirebaseStorageService firebaseStorageService, IUserRepositories userRepositories, INewsCategoriesRepositories newsCategoriesRepositories)
 		{
 			_newsRepositories = newsRepositories;
-			_fileServices = fileServices;
+			_firebaseStorageService = firebaseStorageService;
 			_userRepositories = userRepositories;
 			_newsCategoriesRepositories = newsCategoriesRepositories;
 		}
@@ -43,22 +44,16 @@ namespace Services
 
 			News news = newsAddRequest.MapToNews();
 
-			if(newsAddRequest.ImageFile != null)
+			if(newsAddRequest.ImageFile != null && newsAddRequest.Title != null)
 			{
-				var fileResult = _fileServices.SaveImage(newsAddRequest.ImageFile);
-				if(fileResult.Item1 == 1)
-				{
-					news.Image = fileResult.Item2; // getting name of image
-				}
+				var imageUri = await _firebaseStorageService.UploadFile(newsAddRequest.Title, newsAddRequest.ImageFile, _folder);
+				news.Image = imageUri;
 			}
 
-			if(newsAddRequest.ThumnailFile != null)
+			if(newsAddRequest.ThumnailFile != null && newsAddRequest.Title != null)
 			{
-				var fileResult = _fileServices.SaveImage(newsAddRequest.ThumnailFile);
-				if(fileResult.Item1 == 1)
-				{
-					news.Thumnail = fileResult.Item2; // getting name of thumbnail
-				}
+				var imageUri = await _firebaseStorageService.UploadFile(newsAddRequest.Title, newsAddRequest.ThumnailFile, _folder);
+				news.Thumnail = imageUri;
 			}
 
 			await _newsRepositories.Add(news);
@@ -73,19 +68,6 @@ namespace Services
 			if (existNews is null)
 			{
 				return false;
-			}
-
-			if (existNews is not null)
-			{
-				if (!string.IsNullOrEmpty(existNews.Image))
-				{
-					_fileServices.DeleteImage(existNews.Image);
-				}
-
-				if (!string.IsNullOrEmpty(existNews.Thumnail))
-				{
-					_fileServices.DeleteImage(existNews.Thumnail);
-				}
 			}
 
 			var isDeleted = await _newsRepositories.DeleteNews(newsId);
@@ -173,43 +155,16 @@ namespace Services
 
 			updatedNews.CategoryId = newsUpdateRequest.CategoryId;
 
-			var existUser = await _userRepositories.GetUserById(newsUpdateRequest.UserId);
-			if(existUser is null)
+			if (newsUpdateRequest.ImageFile != null && newsUpdateRequest.Title != null)
 			{
-				throw new ArgumentException("The user is not exist!");
+				var imageUri = await _firebaseStorageService.UploadFile(newsUpdateRequest.Title, newsUpdateRequest.ImageFile, _folder);
+				updatedNews.Image = imageUri;
 			}
 
-			updatedNews.UserId = newsUpdateRequest.UserId;
-
-			if (newsUpdateRequest.ImageFile != null)
+			if (newsUpdateRequest.ThumnailFile != null && newsUpdateRequest.Title != null)
 			{
-				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ImageFile);
-
-				if (!string.IsNullOrEmpty(updatedNews.Image))
-				{
-					_fileServices.DeleteImage(updatedNews.Image); // delete old image
-				}
-
-				if (fileResult.Item1 == 1)
-				{
-					updatedNews.Image = fileResult.Item2; // getting name of image
-				}
-
-			}
-
-			if (newsUpdateRequest.ThumnailFile != null)
-			{
-				var fileResult = _fileServices.SaveImage(newsUpdateRequest.ThumnailFile);
-
-				if (!string.IsNullOrEmpty(updatedNews.Thumnail))
-				{
-					_fileServices.DeleteImage(updatedNews.Thumnail); // delete old image
-				}
-
-				if (fileResult.Item1 == 1)
-				{
-					updatedNews.Thumnail = fileResult.Item2; // getting name of thumbnail
-				}
+				var imageUri = await _firebaseStorageService.UploadFile(newsUpdateRequest.Title, newsUpdateRequest.ThumnailFile, _folder);
+				updatedNews.Thumnail = imageUri;
 			}
 
 			await _newsRepositories.UpdateNews(updatedNews);

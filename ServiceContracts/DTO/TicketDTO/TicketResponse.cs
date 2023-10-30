@@ -16,6 +16,8 @@ namespace ServiceContracts.DTO.TicketDTO
 		public double Price { get; set; }
 
 		public DateTime ReleaseDate { get; set; }
+
+		public string? Image { get; set; }
 	}
 
 	public static class TicketExtension
@@ -32,7 +34,8 @@ namespace ServiceContracts.DTO.TicketDTO
 				TicketId = ticket.TicketId,
 				TicketName = ticket.TicketName,
 				Price = ticket.Price,
-				ReleaseDate = ticket.ReleaseDate
+				ReleaseDate = ticket.ReleaseDate,
+				Image = ticket.Image
 			};
 		}
 	}
