@@ -15,8 +15,8 @@ namespace Infrastructure
 		private readonly IEmailServices _emailServices;
 		private readonly IMealServices _mealServices;
 		private readonly IUserServices _userServices;
-		
-		
+
+
 
 		public FeedingTimeNotificationBackgroundJob(IAnimalServices animalServices, IEmailServices emailServices, IMealServices mealServices, IUserServices userServices)
 		{
@@ -48,39 +48,41 @@ namespace Infrastructure
 				.Where(meal => meal.FeedingTime >= startTime.TimeOfDay && meal.FeedingTime <= endTime.TimeOfDay)
 				.ToList();
 
-			// Extract unique user and animal IDs from the filtered meals
-			var uniqueUserIds = mealsToNotify.Select(meal => meal.animalUser.UserId).Distinct();
-			var uniqueAnimalIds = mealsToNotify.Select(meal => meal.animalUser.AnimalId).Distinct();
 
-			// Send email notifications to the unique users or take any other required actions
-			foreach (var userId in uniqueUserIds)
+			var mealsByUser = mealsToNotify.GroupBy(meal => meal.animalUser.UserId);
+
+			foreach (var userGroup in mealsByUser)
 			{
+				var userId = userGroup.Key;
 				var user = await _userServices.GetZooTrainerById(userId);
 
 				if (user != null)
 				{
-					var animalId = mealsToNotify.First(meal => meal.animalUser.UserId == userId).animalUser.AnimalId;
-					var animal = await _animalServices.GetAnimalById(animalId);
-					var feedingTime = mealsToNotify.First(meal => meal.animalUser.UserId == userId).FeedingTime;
-
-					if (animal != null)
+					foreach (var meal in userGroup)
 					{
-						var animalName = animal.AnimalName;
-						
-						var emailDto = new EmailDto
-						{
-							To = user.Email,
-							Subject = "Feeding Time Notification",
-							Body = $"Hello {user.FullName}, your assigned animal {animalName} will be fed at {feedingTime}."
-						};
+						var animalId = meal.animalUser.AnimalId;
+						var animal = await _animalServices.GetAnimalById(animalId);
+						var feedingTime = meal.FeedingTime;
 
-						await _emailServices.SendEmail(emailDto);
+						if (animal != null)
+						{
+							var animalName = animal.AnimalName;
+
+							var emailDto = new EmailDto
+							{
+								To = user.Email,
+								Subject = "Feeding Time Notification",
+								Body = $"Hello {user.FullName}, your assigned animal {animalName} will be fed at {feedingTime}."
+							};
+
+							await _emailServices.SendEmail(emailDto);
+						}
 					}
 				}
+
+				await Task.CompletedTask;
 			}
 
-			await Task.CompletedTask;
 		}
-
 	}
 }
