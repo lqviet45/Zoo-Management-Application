@@ -31,8 +31,6 @@ namespace ServiceContracts.DTO.NewsDTO
 		[Required(ErrorMessage = "Category ID can not be blank!")]
 		public int CategoryId { get; set; }
 
-		[Required(ErrorMessage = "User ID can not be blank!")]
-		public long UserId { get; set; }
 
 		/// <summary>
 		/// Converts the current object of NewsAddRequest into a new object of News type
@@ -48,7 +46,7 @@ namespace ServiceContracts.DTO.NewsDTO
 				Author = Author,
 				ReleaseDate = ReleaseDate,
 				CategoryId = CategoryId,
-				UserId = UserId
+			
 			};
 		}
 	}

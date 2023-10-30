@@ -20,5 +20,9 @@ namespace Entities.Models
 		[NotNull]
 		[Column(TypeName = "DateTime2")]
 		public DateTime ReleaseDate { get; set; }
+
+		[MaxLength]
+		[AllowNull]
+		public string? Image { get; set; }
 	}
 }

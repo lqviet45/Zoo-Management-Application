@@ -37,6 +37,12 @@ namespace ServiceContracts
 		/// <returns>A list of AnimalUserResponse</returns>
 		Task<List<UserResponse>> GetZooTrainerByAnimalId(long? animalId);
 
-
+		/// <summary>
+		/// Get Animal and User Relationship
+		/// </summary>
+		/// <param name="animalId">The Id of an animal</param>
+		/// <param name="userId">The Id of an user</param>
+		/// <returns>Return the animaluserId</returns>
+		Task<AnimalUserResponse?> GetAnimalUserRelationship(long animalId, long userId);
 	}
 }

@@ -133,6 +133,7 @@ namespace Zoo_Management_Application.Controllers
 						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.TicketName}</td>\r\n" +
 						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.Price}</td>\r\n" +
 						$"              <td style=\"padding-right: 50px;\">{orderDetail.Quantity}</td>\r\n" +
+						$"				<td style=\"padding-right: 50px;\">{orderDetail.TotalPrice}</td>\r\n" +
 						"        </tr>";
 				}
 			}
@@ -140,7 +141,7 @@ namespace Zoo_Management_Application.Controllers
 			if (order.Custommer != null)
 			{
 				email.To = order.Custommer.Email;
-				email.Subject = "Thảo cầm viên";
+				email.Subject = "SaiGonZoo";
 
 				string emailBodySend = emailBody.Replace("OrderId", order.OrderId.ToString())
 					.Replace("custommerName", order.Custommer.Name)
@@ -181,7 +182,7 @@ namespace Zoo_Management_Application.Controllers
 			"                    </tbody>\r\n" +
 			"                    <tfoot>\r\n" +
 			"                        <tr>\r\n" +
-			"                            <td colspan=\"1\"></td>\r\n" +
+			"                            <td colspan=\"2\"></td>\r\n" +
 			"                            <td style=\"padding-right: 20px;\">Tổng giá trị đơn hàng</td>\r\n" +
 			"                            <td>allTotal</td>\r\n" +
 			"                        </tr>\r\n" +

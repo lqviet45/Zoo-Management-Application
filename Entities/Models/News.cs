@@ -41,10 +41,6 @@ namespace Entities.Models
 
 		public User User { get; set; } = null!;
 
-		[NotMapped]
-		public IFormFile? ImageFile { get; set; }
-		[NotMapped]
-		public IFormFile? ThumnailFile { get; set; } 
 
 	}
 }
