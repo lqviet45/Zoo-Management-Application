@@ -12,7 +12,6 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "Admin")]
 	public class SpeciesController : ControllerBase
 	{
 		// private field
@@ -26,6 +25,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpPost]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		[Authorize(Roles = "Admin")]
 		public async Task<ActionResult<SpeciesResponse>> PostSpecies([FromForm]SpeciesAddRequest speciesAddRequest)
 		{
 			var speciesResponse = await _speciesServices.AddSpecies(speciesAddRequest);
@@ -57,6 +57,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpDelete("{SpeciesId}")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<Species>), Arguments = new object[] { "SpeciesId", typeof(int) })]
+		[Authorize(Roles = "Admin")]
 		public async Task<ActionResult<bool>> DeleteSpecies(int? SpeciesId)
 		{
 			var result = await _speciesServices.DeleteSpecies(SpeciesId);
@@ -66,6 +67,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpPut]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
+		[Authorize(Roles = "Admin")]
 		public async Task<ActionResult<SpeciesResponse>> UpdateSpecies([FromForm]SpeciesUpdateRequest speciesUpdateRequest)
 		{
 			if (ModelState.IsValid)
