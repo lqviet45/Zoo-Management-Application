@@ -130,10 +130,10 @@ namespace Zoo_Management_Application.Controllers
 				if (orderDetail.Ticket != null)
 				{
 					orderBody += "<tr>\r\n" +
-						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.TicketName}</td>\r\n" +
-						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.Price}</td>\r\n" +
-						$"              <td style=\"padding-right: 50px;\">{orderDetail.Quantity}</td>\r\n" +
-						$"				<td style=\"padding-right: 50px;\">{orderDetail.TotalPrice}</td>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.TicketName}$</td>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Ticket.Price}$</td>\r\n" +
+						$"              <td style=\"padding-right: 50px;\">{orderDetail.Quantity}$</td>\r\n" +
+						$"				<td style=\"padding-right: 50px;\">{orderDetail.TotalPrice}$</td>\r\n" +
 						"        </tr>";
 				}
 			}
@@ -184,7 +184,7 @@ namespace Zoo_Management_Application.Controllers
 			"                        <tr>\r\n" +
 			"                            <td colspan=\"2\"></td>\r\n" +
 			"                            <td style=\"padding-right: 20px;\">Total order value</td>\r\n" +
-			"                            <td>allTotal</td>\r\n" +
+			"                            <td>allTotal$</td>\r\n" +
 			"                        </tr>\r\n" +
 			"                    </tfoot>\r\n" +
 			"                </table>\r\n" +
