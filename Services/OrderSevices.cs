@@ -112,5 +112,11 @@ namespace Services
 
 			return list.Select(o => o.ToOrderResopnse()).ToList();
 		}
+
+		public async Task<int> GetRevenue(DateTime from, DateTime to, int ticketId = -1)
+		{
+			int totalQuantity = await _orderReponsitories.GetTotalQuantity(from, to, ticketId);
+			return totalQuantity;
+		}
 	}
 }

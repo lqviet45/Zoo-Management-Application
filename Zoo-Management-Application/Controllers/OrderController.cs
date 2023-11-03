@@ -121,6 +121,23 @@ namespace Zoo_Management_Application.Controllers
 			return Ok(new { total, listOrder });
 		}
 
+		[HttpGet("revenue")]
+		public async Task<IActionResult> GetRevenue(DateTime from, DateTime to, int ticketId = -1)
+		{
+			int totalQuantity;
+			double totalRevenue;
+			if (ticketId == -1)
+			{
+				totalRevenue = await _orderSevices.GetTotalByDay(from, to);
+				totalQuantity = await _orderSevices.GetRevenue(to, from, ticketId);
+				return Ok(new { totalQuantity, totalRevenue });
+			}
+
+			totalRevenue = await _orderSevices.GetTotalByDay(to, from, ticketId);
+			totalQuantity = await _orderSevices.GetRevenue(from, to, ticketId);
+			return Ok(new { totalQuantity, totalRevenue });
+		}
+
 		#region Send Mail
 		private async Task SendMail(OrderResponse order)
 		{

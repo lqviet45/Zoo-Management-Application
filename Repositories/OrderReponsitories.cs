@@ -130,5 +130,26 @@ namespace Repositories
 
 			return list;
 		}
+
+		public async Task<int> GetTotalQuantity(DateTime from, DateTime to, int ticketId = -1)
+		{
+			int totalQuantity = 0;
+			if (ticketId == -1)
+			{
+				totalQuantity = await _context.OrderDetails
+					.Include(od => od.Order)
+					.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to)
+					.SumAsync(od => od.Quantity);
+
+				return totalQuantity;
+			}
+
+			totalQuantity = await _context.OrderDetails
+					.Include(od => od.Order)
+					.Where(od => od.Order != null && od.Order.PurchaseDate >= from && od.Order.PurchaseDate <= to && od.TicketId == ticketId)
+					.SumAsync(od => od.Quantity);
+
+			return totalQuantity;
+		}
 	}
 }

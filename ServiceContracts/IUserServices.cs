@@ -91,5 +91,12 @@ namespace ServiceContracts
 		/// <param name="user"></param>
 		/// <returns></returns>
 		Task<UserResponse> ChangePassword(long userId, string oldPassword, string newPassword);
+
+		/// <summary>
+		/// Get the user by Id
+		/// </summary>
+		/// <param name="userId">The userId to search</param>
+		/// <returns>The matching user as userResponse</returns>
+		Task<UserResponse?> GetUserById(long userId);
 	}
 }
