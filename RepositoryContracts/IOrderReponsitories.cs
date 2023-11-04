@@ -51,6 +51,15 @@ namespace RepositoryContracts
 		Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId);
 
 		/// <summary>
+		/// Get how many ticket has been bought
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <param name="ticketId">The ticketId to search</param>
+		/// <returns>Return all the ticket that has been bought</returns>
+		Task<int> GetTotalQuantity(DateTime from, DateTime to, int ticketId = -1);
+
+		/// <summary>
 		/// Get list of order detail between the From and To day
 		/// </summary>
 		/// <param name="from">The from day</param>
