@@ -37,7 +37,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainer")]
 		public async Task<ActionResult<List<AnimalResponse>>> GetAllAnimal(int? pageNumber, string searchBy = "AnimalName", string? searchString = null)
 		{
 			var listAnimal = await _animalServices.GetFiteredAnimal(searchBy, searchString);
@@ -48,7 +48,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("{AnimalId}")]
-		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainer")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<Animal>), Arguments = new object[] { "AnimalId", typeof(long) })]
 		public async Task<ActionResult<AnimalResponse>> GetAnimalById(long AnimalId)
 		{
@@ -68,7 +68,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
-		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainer")]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<AnimalResponse>> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest)
 		{

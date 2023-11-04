@@ -12,7 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "Admin,OfficeStaff")]
+	[Authorize(Roles = "Admin,OfficeStaff,ZooTrainer")]
 	public class ZooTrainerController : ControllerBase
 	{
 		private readonly IUserServices _userServices;

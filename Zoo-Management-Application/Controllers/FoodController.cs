@@ -12,7 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "OfficeStaff")]
+	[Authorize(Roles = "OfficeStaff,ZooTrainer")]
 	public class FoodController : ControllerBase
 	{
 		// private field
