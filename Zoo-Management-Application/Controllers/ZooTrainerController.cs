@@ -23,6 +23,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "Admin,OfficeStaff")]
 		public async Task<IActionResult> GetAllZooTrainer(int? pageNumber, string searchBy = "FullName", string? searchString = null)
 		{
 			var listZooTrainer = await _userServices.GetFiteredZooTrainer(searchBy, searchString);
@@ -37,6 +38,7 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpGet("{UserId}")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
+		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainner")]
 		public async Task<IActionResult> GetZooTrainer(long UserId)
 		{
 			var mathcingZooTrainer = await _userServices.GetZooTrainerById(UserId);

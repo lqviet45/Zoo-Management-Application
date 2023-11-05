@@ -136,5 +136,16 @@ namespace Zoo_Management_Application.Controllers
 
 			return Ok(user);
 		}
+
+		[HttpGet("{userId}")]
+		public async Task<IActionResult> GetUser(long userId)
+		{
+			var user = await _userServices.GetUserById(userId);
+			if (user == null)
+			{
+				return NotFound("The User does not exist!!");
+			}
+			return Ok(user);
+		}
 	}
 }
