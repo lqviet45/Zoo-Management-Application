@@ -52,6 +52,15 @@ namespace ServiceContracts
 		Task<double> GetTotalByDay(DateTime from, DateTime to, int ticketId);
 
 		/// <summary>
+		/// Get how many ticket has been bought
+		/// </summary>
+		/// <param name="from">The from day</param>
+		/// <param name="to">The to day</param>
+		/// <param name="ticketId">The ticketId to search(default = -1)</param>
+		/// <returns>all of the total ticket has been bought</returns>
+		Task<int> GetRevenue(DateTime from, DateTime to, int ticketId = -1);
+
+		/// <summary>
 		/// Get all the orderDetails between the given From and To date
 		/// </summary>
 		/// <param name="from">The from date</param>
