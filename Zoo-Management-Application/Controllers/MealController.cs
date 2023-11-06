@@ -10,7 +10,7 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "ZooTrainer")]
+	[Authorize(Roles = "ZooTrainner")]
 	public class MealController : ControllerBase
 	{
 		private readonly IMealServices _mealServices;

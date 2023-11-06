@@ -76,7 +76,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpPut]
-		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainer")]
+		[Authorize(Roles = "Admin,OfficeStaff,ZooTrainner")]
 		[ServiceFilter(typeof(ValidationFilterAttribute))]
 		public async Task<ActionResult<UserResponse>> PutUser(UserUpdateRequest userUpdateRequest)
 		{

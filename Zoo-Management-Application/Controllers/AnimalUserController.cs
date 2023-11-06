@@ -12,7 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "OfficeStaff,ZooTrainer")]
+	[Authorize(Roles = "OfficeStaff,ZooTrainner")]
 	public class AnimalUserController : ControllerBase
 	{
 		// private fields
@@ -50,7 +50,7 @@ namespace Zoo_Management_Application.Controllers
 
 
 		[HttpGet("user/{UserId}")]
-		[Authorize(Roles = "ZooTrainer,OfficeStaff")]
+		[Authorize(Roles = "ZooTrainner,OfficeStaff")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
 		public async Task<ActionResult<List<AnimalResponse>>> GetAnimalByZooTrainerId(long UserId)
 		{
@@ -79,7 +79,7 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet("animal-trainer-relationship")]
-		[Authorize(Roles = "ZooTrainer,OfficeStaff")]
+		[Authorize(Roles = "ZooTrainner,OfficeStaff")]
 		public async Task<ActionResult<AnimalUserResponse>> GetAnimalUserRelationship(long animalId, long userId)
 		{
 			var animalUser = await _animalUserServices.GetAnimalUserRelationship(animalId, userId);
