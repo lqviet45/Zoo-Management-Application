@@ -21,8 +21,8 @@ namespace Zoo_Management_Application.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetAllStaff(int? pageNumber, string searchBy = "FullName", string? searchString = null)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllStaff(int? pageNumber, string searchBy = "FullName", string? searchString = null)
 		{
 			var listStaff = await _userServices.GetFiteredStaff(searchBy, searchString);
 			int pageSize = 5;
@@ -33,8 +33,8 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpGet("{UserId}")]
 		[TypeFilter(typeof(ValidateEntityExistsAttribute<User>), Arguments = new object[] { "UserId", typeof(long) })]
-		[Authorize(Roles = "Admin,OfficeStaff")]
-		public async Task<IActionResult> GetStaff(long UserId)
+        [Authorize(Roles = "Admin,OfficeStaff")]
+        public async Task<IActionResult> GetStaff(long UserId)
 		{
 			var mathcingStaff = await _userServices.GetStaffById(UserId);
 			if (mathcingStaff == null || mathcingStaff.RoleId != 2)

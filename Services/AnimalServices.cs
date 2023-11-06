@@ -47,7 +47,7 @@ namespace Services
 				throw new ArgumentException("The zoo trainer id doesn't exist!");
 			}
 
-			var cage = _cageRepositories.GetCageById(animaladd.cageId); 
+			var cage = await _cageRepositories.GetCageById(animaladd.cageId); 
 
 			if(cage == null)
 			{
