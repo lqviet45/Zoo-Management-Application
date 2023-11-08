@@ -74,7 +74,7 @@ namespace Repositories
 				throw new ArgumentException("Animal or cage is not exist");
 			}
 
-			var isExist = _dbContext.AnimalCages.FirstOrDefault
+			var isExist = await _dbContext.AnimalCages.FirstOrDefaultAsync
 				(a => a.AnimalId == animalCage.AnimalId 
 				 && a.CageId == animalCage.CageId
 				 && a.DayIn == animalCage.DayIn
@@ -109,7 +109,7 @@ namespace Repositories
 
 		public async Task<bool> MoveAnimalOut(long animalId)
 		{
-			var animalCage = _dbContext.AnimalCages.FirstOrDefault(animalCage => animalCage.AnimalId == animalId && animalCage.IsIn == true);
+			var animalCage = await _dbContext.AnimalCages.FirstOrDefaultAsync(animalCage => animalCage.AnimalId == animalId && animalCage.IsIn == true);
 
 			if (animalCage is null)
 			{
