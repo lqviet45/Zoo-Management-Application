@@ -55,7 +55,7 @@ namespace Repositories
 
 		public async Task<Food> Update(Food food)
 		{
-			Food? matchingFood = await _dbContext.Foods.FirstOrDefaultAsync(food => food.FoodId == food.FoodId);
+			Food? matchingFood = await _dbContext.Foods.FirstOrDefaultAsync(f => f.FoodId == food.FoodId);
 
 			if(matchingFood is null) { return food; }
 

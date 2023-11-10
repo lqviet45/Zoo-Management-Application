@@ -79,7 +79,7 @@ namespace Repositories
 		public async Task<Species> Update(Species species)
 		{
 			Species? matchingSpecies = await _dbContext.Species
-									 .FirstOrDefaultAsync(species => species.SpeciesId == species.SpeciesId);
+									 .FirstOrDefaultAsync(s => s.SpeciesId == species.SpeciesId);
 
 			if (matchingSpecies == null) { return species; }
 

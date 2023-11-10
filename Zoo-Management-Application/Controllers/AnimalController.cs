@@ -81,5 +81,16 @@ namespace Zoo_Management_Application.Controllers
 			return BadRequest();
 		}
 
+		[HttpGet("search-animal")]
+		[Authorize(Roles = "OfficeStaff,ZooTrainner")]
+		public async Task<ActionResult<List<AnimalResponse>>> SearchAnimalOfZooTrainer(int? pageNumber, long userId,string searchBy = "AnimalName", string? searchString = null)
+		{
+			var listAnimal = await _animalServices.GetFiteredAnimal(userId ,searchBy, searchString);
+			int pageSize = 7;
+			var pagingList = PaginatedList<AnimalResponse>.CreateAsync(listAnimal.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
+			var response = new { pagingList, pagingList.TotalPages };
+			return Ok(response);
+		}
+
 	}
 }

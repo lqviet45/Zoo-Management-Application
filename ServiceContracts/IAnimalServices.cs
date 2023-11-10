@@ -51,5 +51,15 @@ namespace ServiceContracts
 		/// <param name="searchString">Search string to search</param>
 		/// <returns>Returns all matching Animal base on the given search field and search string</returns>
 		Task<List<AnimalResponse>> GetFiteredAnimal(string searchBy, string? searchString);
- 	}
+
+
+		/// <summary>
+		/// Returns all Animal objects that matches with the given search field and search string and zoo trainer id
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching Animal base on the given search field and search string</returns>
+		Task<List<AnimalResponse>> GetFiteredAnimal(long userId,string searchBy, string? searchString);
+	}
 }

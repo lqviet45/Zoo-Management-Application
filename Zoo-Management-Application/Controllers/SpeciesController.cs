@@ -12,6 +12,7 @@ namespace Zoo_Management_Application.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles = "Admin,OfficeStaff")]
 	public class SpeciesController : ControllerBase
 	{
 		// private field

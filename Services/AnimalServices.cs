@@ -16,6 +16,7 @@ namespace Services
 		private readonly ICageRepositories _cageRepositories;
 		private readonly IAnimalCageRepositories _animalCageRepositories;
 		private readonly ISpeciesRepositories _speciesRepositories;
+		
 
 		// constructor
 		public AnimalServices(IAnimalRepositories animalRepositories, IAnimalUserRepositories animalUserRepositories, IUserRepositories userRepositories, ICageRepositories cageRepositories, IAnimalCageRepositories animalCageRepositories, ISpeciesRepositories speciesRepositories)
@@ -47,7 +48,7 @@ namespace Services
 				throw new ArgumentException("The zoo trainer id doesn't exist!");
 			}
 
-			var cage = _cageRepositories.GetCageById(animaladd.cageId); 
+			var cage = await _cageRepositories.GetCageById(animaladd.cageId); 
 
 			if(cage == null)
 			{
@@ -132,6 +133,39 @@ namespace Services
 			};
 
 			return animals.Select(animal => animal.ToAnimalResponse()).ToList();
+		}
+
+		public async Task<List<AnimalResponse>> GetFiteredAnimal(long userId, string searchBy, string? searchString)
+		{
+			var zooTrainer = await _userRepositories.GetZooTrainerById(userId);
+
+			if(zooTrainer is null)
+			{
+				throw new ArgumentException("Zoo trainer is not exsit!");
+			}
+
+			if (string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<Animal> animals = searchBy switch
+			{
+				nameof(AnimalResponse.AnimalName) =>
+				await _animalRepositories.GetFilteredAnimal(temp =>
+						temp.AnimalName.Contains(searchString) && temp.IsDelete == false),
+
+				nameof(AnimalResponse.Species.SpeciesName) =>
+				await _animalRepositories.GetFilteredAnimal(temp =>
+						temp.Species.SpeciesName.Contains(searchString) && temp.IsDelete == false),
+
+				nameof(AnimalResponse.Status) =>
+				await _animalRepositories.GetFilteredAnimal(temp =>
+						temp.Status.Contains(searchString) && temp.IsDelete == false),
+
+				_ => await _animalRepositories.GetAllAnimal()
+			};
+
+			var list = animals.Where(a => a.AnimalZooTrainers.FirstOrDefault(u => u.UserId == zooTrainer.UserId) != null);
+
+			return list.Select(animal => animal.ToAnimalResponse()).ToList();
 		}
 
 		public async Task<AnimalResponse> UpdateAnimal(AnimalUpdateRequest animalUpdateRequest)
