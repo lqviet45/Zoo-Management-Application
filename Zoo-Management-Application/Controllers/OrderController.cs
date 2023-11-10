@@ -129,11 +129,11 @@ namespace Zoo_Management_Application.Controllers
 			if (ticketId == -1)
 			{
 				totalRevenue = await _orderSevices.GetTotalByDay(from, to);
-				totalQuantity = await _orderSevices.GetRevenue(to, from, ticketId);
+				totalQuantity = await _orderSevices.GetRevenue(from, to, ticketId);
 				return Ok(new { totalQuantity, totalRevenue });
 			}
 
-			totalRevenue = await _orderSevices.GetTotalByDay(to, from, ticketId);
+			totalRevenue = await _orderSevices.GetTotalByDay(from, to, ticketId);
 			totalQuantity = await _orderSevices.GetRevenue(from, to, ticketId);
 			return Ok(new { totalQuantity, totalRevenue });
 		}
