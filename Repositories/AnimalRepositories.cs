@@ -52,9 +52,9 @@ namespace Repositories
 			return true;
 		}
 
-		public Task<List<Animal>> GetAllAnimal()
+		public async Task<List<Animal>> GetAllAnimal()
 		{
-			var listAnimal = _dbContext.Animals.Where(animal => animal.IsDelete == false)
+			var listAnimal = await _dbContext.Animals.Where(animal => animal.IsDelete == false)
 				.Include(a => a.Species)
 				.Include(a => a.AnimalZooTrainers)
 				.Include(a => a.AnimalCages)

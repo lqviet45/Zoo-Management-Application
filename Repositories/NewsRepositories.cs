@@ -66,9 +66,9 @@ namespace Repositories
 			return listNews;
 		}
 
-		public Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate)
+		public async Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate)
 		{
-			return _dbContext.News.Include(news => news.NewsCategories)
+			return await _dbContext.News.Include(news => news.NewsCategories)
 								  .Include(user => user.User)	
 								  .Where(predicate).ToListAsync();
 		}
