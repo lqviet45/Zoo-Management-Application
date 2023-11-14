@@ -21,12 +21,12 @@ namespace Repositories
 		}
 		public async Task<AnimalUser> Add(AnimalUser animalUser)
 		{
-			var animal = _animalRepositories.GetAnimalById(animalUser.AnimalId);
+			var animal = await _animalRepositories.GetAnimalById(animalUser.AnimalId);
 			if(animal == null)
 			{
 				throw new Exception("Animal not found");
 			}
-			var user = _userRepositories.GetUserById(animalUser.UserId);
+			var user = await _userRepositories.GetUserById(animalUser.UserId);
 			if(user == null)
 			{
 				throw new Exception("User not found");
