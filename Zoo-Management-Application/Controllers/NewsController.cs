@@ -40,7 +40,7 @@ namespace Zoo_Management_Application.Controllers
 		public async Task<ActionResult<List<NewsResponse>>> GetAllNews(int? pageNumber, string searchBy = "Title", string? searchString = null)
 		{
 			var listNews = await _newsServices.GetFiteredNews(searchBy, searchString);
-			int pageSize = 5;
+			int pageSize = 6;
 			var pagingList = PaginatedList<NewsResponse>.CreateAsync(listNews.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize);
 			var response = new { pagingList, pagingList.TotalPages };
 			return Ok(response);
