@@ -21,6 +21,14 @@ namespace ServiceContracts.DTO.NewsDTO
 		public string? Author { get; set; } = string.Empty;
 		[Required(ErrorMessage = "Release Date can not be blank!")]
 		public DateTime ReleaseDate { get; set; }
+
+		[Required(ErrorMessage = "Priority can not be blank!")]
+		[Range(1, 5, ErrorMessage = "Priority must be between {1} and {2}")]
+		public int Priority { get; set; }
+
+		[Required(ErrorMessage = "Active Status can not be blank!")]
+		public bool IsActive { get; set; }
+
 		[Required(ErrorMessage = "User Id can not be blank!")]
 		public long? UserId { get; set; }
 		[Required]
@@ -51,6 +59,8 @@ namespace ServiceContracts.DTO.NewsDTO
 				UserId = news.UserId,
 				NewsCategories = news.NewsCategories.ToNewsCategoryResponse(),
 				FullName = news.User.FullName,
+				Priority = news.Priority,
+				IsActive = news.IsActive,
 			};
 		}
 

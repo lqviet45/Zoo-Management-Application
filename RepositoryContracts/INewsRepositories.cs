@@ -55,5 +55,19 @@ namespace RepositoryContracts
 		/// <param name="predicate">Linq expression to check</param>
 		/// <returns>All matching News with given condition</returns>
 		Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate);
+
+		/// <summary>
+		/// Change the Active status of Deleted news
+		/// </summary>
+		/// <param name="newsId">The news id</param>
+		/// <returns>Return true if successfully recovery the news, else return false</returns>
+		Task<bool> RecoveryNews(int newsId);
+
+		/// <summary>
+		/// Get all the delete news
+		/// </summary>
+		/// <returns>Return list of deleted news</returns>
+		Task<List<News>> GetAllDeleteNews();
+
 	}
 }

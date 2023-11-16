@@ -51,14 +51,31 @@ namespace Repositories
 				return false;
 			}
 
-			 _dbContext.News.Remove(deleteNews);
-			int rowDeleted = await _dbContext.SaveChangesAsync();
-			return rowDeleted > 0;
+			if(deleteNews.IsActive == false)
+			{
+				return false;
+			}
+
+			deleteNews.IsActive = false; 
+
+			await _dbContext.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<List<News>> GetAllDeleteNews()
+		{
+			var listNews = await _dbContext.News.Where(n => n.IsActive == false)
+									.Include(cate => cate.NewsCategories)
+									.Include(user => user.User)
+									.ToListAsync();
+
+			return listNews;
 		}
 
 		public async Task<List<News>> GetAllNews()
 		{
-			var listNews = await _dbContext.News
+			var listNews = await _dbContext.News.Where(n => n.IsActive == true)
 									.Include(cate => cate.NewsCategories)
 									.Include(user => user.User)
 									.ToListAsync();
@@ -89,6 +106,28 @@ namespace Repositories
 			var news = await _dbContext.News.Where(n => n.Title == title).FirstOrDefaultAsync();
 
 			return news;
+		}
+
+		public async Task<bool> RecoveryNews(int newsId)
+		{
+			var recoveryNews = await _dbContext.News.Where
+							(n => n.NewsId == newsId).FirstAsync();
+
+			if (recoveryNews is null)
+			{
+				return false;
+			}
+
+			if(recoveryNews.IsActive == true)
+			{
+				return false;
+			}
+
+			recoveryNews.IsActive = true;
+
+			await _dbContext.SaveChangesAsync();
+
+			return true;
 		}
 
 		public async Task<News> UpdateNews(News news)

@@ -70,14 +70,21 @@ namespace Services
 				return false;
 			}
 
-			var isDeleted = await _newsRepositories.DeleteNews(newsId);
+			if(existNews.IsActive == false)
+			{
+				return false;
+			}
 
-			return isDeleted;
+			var isActive = await _newsRepositories.DeleteNews(newsId);
+
+			return isActive;
 		}
 
 		public async Task<List<NewsResponse>> GetAllNews()
 		{
 			var listNews = await _newsRepositories.GetAllNews();
+
+			listNews.OrderByDescending(n => n.ReleaseDate);
 
 			var listNewsResponse = listNews.Select(news => news.ToNewsResponse()).ToList();
 
@@ -105,6 +112,8 @@ namespace Services
 				_ => await _newsRepositories.GetAllNews()
 			};
 
+			news.OrderBy(n => n.Priority);
+
 			return news.Select(news => news.ToNewsResponse()).ToList();
 
 		}
@@ -124,7 +133,7 @@ namespace Services
 		public async Task<List<NewsResponse>> GetTop3News()
 		{
 			var list= await _newsRepositories.GetAllNews();
-			var listNews = list.OrderBy(n => n.ReleaseDate)
+			var listNews = list.OrderByDescending(n => n.ReleaseDate)
 				.Take(3);
 
 			return listNews.Select(n => n.ToNewsResponse()).ToList();
@@ -173,7 +182,45 @@ namespace Services
 
 		}
 
-		
+		public async Task<bool> RecoveryNews(int newsId)
+		{
+			var recoveryNews = await _newsRepositories.GetNewsById(newsId);
 
+			if (recoveryNews is null)
+			{
+				return false;
+			}
+
+			if (recoveryNews.IsActive == true)
+			{
+				return false;
+			}
+
+			var isActive = await _newsRepositories.RecoveryNews(newsId);
+
+			return isActive;
+		}
+
+		public async Task<List<NewsResponse>> GetAllDeletedNews()
+		{
+			var listNews = await _newsRepositories.GetAllDeleteNews();
+
+			var listNewsResponse = listNews.Select(news => news.ToNewsResponse()).ToList();
+
+			return listNewsResponse;
+		}
+
+		public async Task<List<NewsResponse>> Get3ReletiveNews(int CategoryId)
+		{
+			var list = await _newsRepositories.GetAllNews();
+
+			var listNews = list.Where(n => n.CategoryId == CategoryId);
+
+			listNews = list.OrderBy(n => n.CategoryId)
+							.ThenByDescending(n => n.ReleaseDate)
+							.Take(3);
+
+			return listNews.Select(n => n.ToNewsResponse()).ToList();
+		}
 	}
 }
