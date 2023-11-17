@@ -84,9 +84,11 @@ namespace Services
 		{
 			var listNews = await _newsRepositories.GetAllNews();
 
-			listNews.OrderByDescending(n => n.ReleaseDate);
+			var listOrderNews = listNews.OrderByDescending(n => n.Priority)
+				.ThenByDescending(n => n.ReleaseDate)
+				.ToList();
 
-			var listNewsResponse = listNews.Select(news => news.ToNewsResponse()).ToList();
+			var listNewsResponse = listOrderNews.Select(news => news.ToNewsResponse()).ToList();
 
 			return listNewsResponse;
 		}
@@ -112,9 +114,11 @@ namespace Services
 				_ => await _newsRepositories.GetAllNews()
 			};
 
-			news.OrderBy(n => n.Priority);
+			var listNewsResopne = news.OrderByDescending(n => n.Priority)
+				.ThenByDescending(n => n.ReleaseDate)
+				.ToList();
 
-			return news.Select(news => news.ToNewsResponse()).ToList();
+			return listNewsResopne.Select(news => news.ToNewsResponse()).ToList();
 
 		}
 
@@ -133,7 +137,8 @@ namespace Services
 		public async Task<List<NewsResponse>> GetTop3News()
 		{
 			var list= await _newsRepositories.GetAllNews();
-			var listNews = list.OrderByDescending(n => n.ReleaseDate)
+			var listNews = list.OrderByDescending(n => n.Priority)
+				.ThenByDescending(n => n.ReleaseDate)
 				.Take(3);
 
 			return listNews.Select(n => n.ToNewsResponse()).ToList();
@@ -216,7 +221,7 @@ namespace Services
 
 			var listNews = list.Where(n => n.CategoryId == CategoryId);
 
-			listNews = list.OrderBy(n => n.CategoryId)
+			listNews = list.OrderByDescending(n => n.Priority)
 							.ThenByDescending(n => n.ReleaseDate)
 							.Take(3);
 
