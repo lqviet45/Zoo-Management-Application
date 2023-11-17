@@ -84,5 +84,34 @@ namespace Zoo_Management_Application.Controllers
 			
 			return Ok(listNews);
 		}
+
+		[HttpGet("get-relative-news")]
+		[AllowAnonymous]
+		public async Task<ActionResult<List<NewsResponse>>> GetRelativeNews(int CategoryId)
+		{
+			var listNews = await _newsServices.Get3ReletiveNews(CategoryId);
+
+			return Ok(listNews);
+		}
+
+		[HttpGet("get-unactive-news")]
+		public async Task<ActionResult<List<NewsResponse>>> GetUnActiveNews()
+		{
+			var listNews = await _newsServices.GetAllDeletedNews();
+
+			return Ok(listNews);
+		}
+
+		[HttpPut("active-news")]
+		[TypeFilter(typeof(ValidateEntityExistsAttribute<News>), Arguments = new object[] { "NewsId", typeof(int) })]
+		public async Task<ActionResult<NewsResponse>> ActiveNews(int NewsId)
+		{
+			var result = await _newsServices.RecoveryNews(NewsId);
+
+			if (result == false) return NotFound();
+
+			return Ok(result);
+		}
+
 	}
 }

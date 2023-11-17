@@ -37,6 +37,12 @@ namespace Entities.Models
 		[NotNull]
 		public long? UserId { get; set; }
 
+		[NotNull]
+		[Range(1, 5)]
+		public int Priority { get; set; }
+		[NotNull]
+		public bool IsActive { get; set; }
+
 		public NewsCategories NewsCategories { get; set; } = null!;
 
 		public User User { get; set; } = null!;

@@ -31,6 +31,13 @@ namespace ServiceContracts.DTO.NewsDTO
 		[Required(ErrorMessage = "Category ID can not be blank!")]
 		public int CategoryId { get; set; }
 
+		[Required(ErrorMessage = "Priority can not be blank!")]
+		[Range(1, 5, ErrorMessage = "Priority must be between {1} and {2}")]
+		public int Priority { get; set; }
+
+		[Required(ErrorMessage = "Active Status can not be blank!")]
+		public bool IsActive { get; set; }
+
 
 		/// <summary>
 		/// Converts the current object of NewsAddRequest into a new object of News type
@@ -46,7 +53,8 @@ namespace ServiceContracts.DTO.NewsDTO
 				Author = Author,
 				ReleaseDate = ReleaseDate,
 				CategoryId = CategoryId,
-			
+				Priority = Priority,
+				IsActive = IsActive
 			};
 		}
 	}

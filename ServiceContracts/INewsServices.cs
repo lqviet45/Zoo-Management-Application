@@ -55,5 +55,24 @@ namespace ServiceContracts
 		/// </summary>
 		/// <returns>Return a list of news</returns>
 		Task<List<NewsResponse>> GetTop3News();
+
+		/// <summary>
+		/// Recovery a deleted news by id
+		/// </summary>
+		/// <param name="newsId">The id of the deleted news</param>
+		/// <returns>Returns true if recovery successfully, else return false</returns>
+		Task<bool> RecoveryNews(int newsId);
+
+		/// <summary>
+		/// Get all deleted news
+		/// </summary>
+		/// <returns>Return a list of NewResponse</returns>
+		Task<List<NewsResponse>> GetAllDeletedNews();
+
+		/// <summary>
+		/// Get 3 reletive news
+		/// </summary>
+		/// <returns>Returns a list of NewsResponse</returns>
+		Task<List<NewsResponse>> Get3ReletiveNews(int CategoryId);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -28,6 +29,13 @@ namespace ServiceContracts.DTO.NewsDTO
 		[Required(ErrorMessage = "User Id can not be blank!")]
 		public long UserId { get; set; }
 
+		[Required(ErrorMessage ="Priority can not be blank!")]
+		[Range(1, 5, ErrorMessage ="Priority must be between {1} and {2}")]
+		public int Priority { get; set; }
+
+		[Required(ErrorMessage ="Active Status can not be blank!")]
+		public bool IsActive { get; set; }
+
 		[NotMapped]
 		public IFormFile? ImageFile { get; set; }
 		[NotMapped]
@@ -47,7 +55,9 @@ namespace ServiceContracts.DTO.NewsDTO
 				Author = Author,
 				CategoryId = CategoryId,
 				ReleaseDate = ReleaseDate,
-				UserId = UserId
+				UserId = UserId,
+				Priority = Priority,
+				IsActive = IsActive,
 			};
 		}
 		
