@@ -219,9 +219,8 @@ namespace Services
 		{
 			var list = await _newsRepositories.GetAllNews();
 
-			var listNews = list.Where(n => n.CategoryId == CategoryId);
-
-			listNews = list.OrderByDescending(n => n.Priority)
+			var listNews = list.Where(n => n.CategoryId == CategoryId)
+							.OrderByDescending(n => n.Priority)
 							.ThenByDescending(n => n.ReleaseDate)
 							.Take(3);
 
