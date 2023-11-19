@@ -226,5 +226,33 @@ namespace Services
 
 			return listNews.Select(n => n.ToNewsResponse()).ToList();
 		}
+
+		public async Task<List<NewsResponse>> GetCustomerSiteNews(string searchBy, string? searchString)
+		{
+			if (string.IsNullOrEmpty(searchString)) searchString = string.Empty;
+
+			List<News> news = searchBy switch
+			{
+				nameof(NewsResponse.Title) =>
+				await _newsRepositories.GetCustomerSiteNews(temp =>
+					temp.Title.Contains(searchString)),
+
+				nameof(NewsResponse.Author) =>
+				await _newsRepositories.GetCustomerSiteNews(temp =>
+					temp.Author.Contains(searchString)),
+
+				nameof(NewsResponse.Content) =>
+				await _newsRepositories.GetCustomerSiteNews(temp =>
+					temp.Content.Contains(searchString)),
+
+				_ => await _newsRepositories.GetAllNewsStaffSite()
+			};
+
+			var listNewsResopne = news.OrderByDescending(n => n.Priority)
+				.ThenByDescending(n => n.ReleaseDate)
+				.ToList();
+
+			return listNewsResopne.Select(news => news.ToNewsResponse()).ToList();
+		}
 	}
 }

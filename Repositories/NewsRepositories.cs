@@ -83,6 +83,23 @@ namespace Repositories
 			return listNews;
 		}
 
+		public async Task<List<News>> GetAllNewsStaffSite()
+		{
+			var listNews = await _dbContext.News
+									.Include(cate => cate.NewsCategories)
+									.Include(user => user.User)
+									.ToListAsync();
+			return listNews;
+		}
+
+		public async Task<List<News>> GetCustomerSiteNews(Expression<Func<News, bool>> predicate)
+		{
+			return await _dbContext.News.Where(news => news.IsActive == true)
+								  .Include(news => news.NewsCategories)
+								  .Include(user => user.User)
+								  .Where(predicate).ToListAsync();
+		}
+
 		public async Task<List<News>> GetFilteredNews(Expression<Func<News, bool>> predicate)
 		{
 			return await _dbContext.News.Include(news => news.NewsCategories)
