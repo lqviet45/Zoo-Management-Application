@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.DTO.NewsDTO;
@@ -215,12 +216,27 @@ namespace Services
 			return listNewsResponse;
 		}
 
-		public async Task<List<NewsResponse>> Get3ReletiveNews(int CategoryId)
+		public async Task<List<NewsResponse>> Get3ReletiveNews(int currentNewsId)
 		{
-			var list = await _newsRepositories.GetAllNews();
+			// Get the category of the current news
+			var currentNews = await _newsRepositories.GetNewsById(currentNewsId);
 
+			if(currentNews is null)
+			{
+				throw new ArgumentException("The news is not exist!");
+			}
+
+			if(currentNews.IsActive == false)
+			{
+				throw new ArgumentException("The news is not active!");
+			}
+
+			int categoryId = currentNews.CategoryId.Value;
+
+			// Get all news except the current one
+			var list = await _newsRepositories.GetAllNews();
 			var listNews = list
-				.Where(n => n.CategoryId == CategoryId)
+				.Where(n => n.NewsId != currentNewsId && n.CategoryId == categoryId)
 				.OrderByDescending(n => n.Priority)
 				.ThenByDescending(n => n.ReleaseDate)
 				.Take(3)
@@ -232,15 +248,16 @@ namespace Services
 				// Calculate how many additional news items are needed
 				int additionalNewsCount = 3 - listNews.Count;
 
-				// Fetch the newest news to fill the list
-				var newestNews = list
-					.Where(n => n.CategoryId != CategoryId) // Exclude the news from the same category
-					.OrderByDescending(n => n.ReleaseDate)
+				// Fetch additional news from the same category excluding the current one
+				var additionalNews = list
+					.Where(n => n.NewsId != currentNewsId && n.CategoryId != categoryId)
+					.OrderByDescending(n => n.Priority)
+					.ThenByDescending(n => n.ReleaseDate)
 					.Take(additionalNewsCount)
 					.ToList();
 
-				// Add the newest news to the list
-				listNews.AddRange(newestNews);
+				// Add the additional news to the list
+				listNews.AddRange(additionalNews);
 			}
 
 			return listNews.Select(n => n.ToNewsResponse()).ToList();
