@@ -69,5 +69,17 @@ namespace RepositoryContracts
 		/// <returns>Return list of deleted news</returns>
 		Task<List<News>> GetAllDeleteNews();
 
+		/// <summary>
+		/// Returns all news obj base on the given expression
+		/// </summary>
+		/// <param name="predicate">Linq expression to check</param>
+		/// <returns>All matching News with given condition</returns>
+		Task<List<News>> GetCustomerSiteNews(Expression<Func<News, bool>> predicate);
+
+		/// <summary>
+		/// Get all the news in the dataset
+		/// </summary>
+		/// <returns>A list of News obj</returns>
+		Task<List<News>> GetAllNewsStaffSite();
 	}
 }

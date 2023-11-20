@@ -74,5 +74,13 @@ namespace ServiceContracts
 		/// </summary>
 		/// <returns>Returns a list of NewsResponse</returns>
 		Task<List<NewsResponse>> Get3ReletiveNews(int CategoryId);
+
+		/// <summary>
+		/// Returns all news obj that matches with the given
+		/// </summary>
+		/// <param name="searchBy">Search field to search</param>
+		/// <param name="searchString">Search string to search</param>
+		/// <returns>Returns all matching news base on the given search field and search string</returns>
+		Task<List<NewsResponse>> GetCustomerSiteNews(string searchBy, string? searchString);
 	}
 }
