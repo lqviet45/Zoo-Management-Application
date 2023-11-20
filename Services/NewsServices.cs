@@ -219,10 +219,29 @@ namespace Services
 		{
 			var list = await _newsRepositories.GetAllNews();
 
-			var listNews = list.Where(n => n.CategoryId == CategoryId)
-							.OrderByDescending(n => n.Priority)
-							.ThenByDescending(n => n.ReleaseDate)
-							.Take(3);
+			var listNews = list
+				.Where(n => n.CategoryId == CategoryId)
+				.OrderByDescending(n => n.Priority)
+				.ThenByDescending(n => n.ReleaseDate)
+				.Take(3)
+				.ToList();
+
+			// Check if the list has less than 3 items
+			if (listNews.Count < 3)
+			{
+				// Calculate how many additional news items are needed
+				int additionalNewsCount = 3 - listNews.Count;
+
+				// Fetch the newest news to fill the list
+				var newestNews = list
+					.Where(n => n.CategoryId != CategoryId) // Exclude the news from the same category
+					.OrderByDescending(n => n.ReleaseDate)
+					.Take(additionalNewsCount)
+					.ToList();
+
+				// Add the newest news to the list
+				listNews.AddRange(newestNews);
+			}
 
 			return listNews.Select(n => n.ToNewsResponse()).ToList();
 		}
