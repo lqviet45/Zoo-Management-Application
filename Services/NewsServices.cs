@@ -112,7 +112,6 @@ namespace Services
 				await _newsRepositories.GetFilteredNews(temp =>
 					temp.Content.Contains(searchString)),
 
-				_ => await _newsRepositories.GetAllNews()
 			};
 
 			var listNewsResopne = news.OrderByDescending(n => n.Priority)
@@ -280,6 +279,10 @@ namespace Services
 				nameof(NewsResponse.Content) =>
 				await _newsRepositories.GetCustomerSiteNews(temp =>
 					temp.Content.Contains(searchString)),
+
+				("CategoryName") =>
+			   await _newsRepositories.GetFilteredNews(temp =>
+				   temp.NewsCategories.CategoryName.Contains(searchString)),
 
 				_ => await _newsRepositories.GetAllNewsStaffSite()
 			};
