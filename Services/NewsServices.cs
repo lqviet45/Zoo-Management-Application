@@ -112,6 +112,12 @@ namespace Services
 				await _newsRepositories.GetFilteredNews(temp =>
 					temp.Content.Contains(searchString)),
 
+				("CategoryName") =>
+			   await _newsRepositories.GetFilteredNews(temp =>
+				   temp.NewsCategories.CategoryName.Contains(searchString)),
+
+				_ => await _newsRepositories.GetAllNewsStaffSite()
+
 			};
 
 			var listNewsResopne = news.OrderByDescending(n => n.Priority)
@@ -164,6 +170,8 @@ namespace Services
 			updatedNews.Content = newsUpdateRequest.Content;
 			updatedNews.Author = newsUpdateRequest.Author;
 			updatedNews.ReleaseDate = newsUpdateRequest.ReleaseDate;
+			updatedNews.IsActive = newsUpdateRequest.IsActive;
+			updatedNews.Priority = newsUpdateRequest.Priority;
 
 			var existCategory = await _newsCategoriesRepositories.GetCategoryById(newsUpdateRequest.CategoryId);
 
@@ -284,7 +292,7 @@ namespace Services
 			   await _newsRepositories.GetFilteredNews(temp =>
 				   temp.NewsCategories.CategoryName.Contains(searchString)),
 
-				_ => await _newsRepositories.GetAllNewsStaffSite()
+				_ => await _newsRepositories.GetAllNews()
 			};
 
 			var listNewsResopne = news.OrderByDescending(n => n.Priority)
