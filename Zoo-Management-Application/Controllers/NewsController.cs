@@ -97,9 +97,9 @@ namespace Zoo_Management_Application.Controllers
 
 		[HttpGet("get-relative-news")]
 		[AllowAnonymous]
-		public async Task<ActionResult<List<NewsResponse>>> GetRelativeNews(int CategoryId)
+		public async Task<ActionResult<List<NewsResponse>>> GetRelativeNews(int NewsId)
 		{
-			var listNews = await _newsServices.Get3ReletiveNews(CategoryId);
+			var listNews = await _newsServices.Get3ReletiveNews(NewsId);
 
 			return Ok(listNews);
 		}
